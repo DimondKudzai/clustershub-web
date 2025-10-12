@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cluster Dashboard</title>
+  <link rel="stylesheet" href="createCluster.css">
+</head>
+<body>
+
+  <div class="container">
+
+    <section class="create-cluster">
+      <h2>Create Cluster</h2>
+      <strong class=""> Name</strong>
+      <input type="text" placeholder="Cluster Name"><br><br>
+      <strong class=""> Description</strong>
+      <textarea placeholder="Description"></textarea><br><br>
+      
+      <strong class="">Roles Needed</strong>
+      <div class="tag-input-container">
+      <ul id="tag-list"></ul>
+      <input type="text" id="tag-input" placeholder="Add skill or role..." autocomplete="off" />
+      <ul id="suggestions"></ul>
+      </div>
+     
+     <div class="bold_text">  
+       <strong class=""> Product/Service Status</strong>
+        <select>
+          <option>Idea</option>
+          <option>In progress</option>
+          
+          </div>
+        </select>
+    </section>
+    
+    </div>
+    <script type="text/javascript" src="createCluster.js"></script>
+    </body>
+    </html>
