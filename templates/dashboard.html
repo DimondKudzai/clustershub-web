@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cluster Dashboard</title>
+  <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}"> 
+  <link rel="icon" type="image/jpg" href="{{url_for('static', filename='logo.jpg')}}">
+</head>
+<body>
+
+{% include 'partials/header.html' %}
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+  
+  <section class="dashboardContainer" style="margin-top: +10px;">
+      <h3>@{{name}}</h3>
+      <div class="tabs">
+        <a href="{{ url_for('startCluster') }}" > <button class="dashboardBtn">New Cluster</button></a>
+        <button class="dashboardBtn">Clusters <strong>{{clusterNum}}12</strong></button>
+        <button class="dashboardBtn">Notifications <strong>{{notificationsNum}}4</strong></button>
+        <a href="{{ url_for('myProfile') }}" > <button class="dashboardBtn">Profile</button></a>
+        <button class="dashboardBtn">Settings</button>
+        <button class="dashboardBtn">About - Feedback</button>
+      </div>
+    </section>
+  
+{% include 'partials/footer.html' %}
+  
+</body>
+</html>
