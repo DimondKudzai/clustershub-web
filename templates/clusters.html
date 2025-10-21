@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clusters</title>
+  <link rel="icon" type="image/jpg" href="{{url_for('static', filename='logo.jpg')}}">
+  <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}">
+</head>
+<body>
+{% include 'partials/header.html' %}
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+  
+  <div class="container">
+  <h2>Total clusters: {{clustersCount}}</h2>
+  {% for cluster in clusters %}
+  <section class="profile" id="cluster" class="">
+  <img src="{{ url_for('static', filename='cluster.jpg') }}" class="circle" id="">
+  
+  <h3>{{ cluster.name }}</h3>
+  <p class="about">{{ cluster.target }}</p>      
+  
+  <section class="badges">
+  <strong>Open Slots: </strong>
+  {% for tag in cluster.tags %}
+  <span class="badge">{{ tag }}</span>
+  {% endfor %}
+  </section>
+  <section class="extraText">
+  <ul>
+  <li>Author: {{ cluster.author }}</li>
+  <li>Date Created: {{ cluster.created_at }}</li>
+  </ul>
+  </section>
+  
+  </section>
+  <br>
+  {% endfor %}  
+  </div>
+  
+  
+  
+{% include 'partials/footer.html' %}
+</body>
+</html>

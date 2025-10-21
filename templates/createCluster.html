@@ -19,6 +19,8 @@
 
     <section class="create-cluster">
       <h2>Create Cluster</h2>
+      
+      <form action="" method="POST">
       <strong class=""> Name</strong>
       <input type="text" placeholder="Cluster Name" class="input"><br><br>
       <strong class=""> Description</strong>
@@ -36,11 +38,16 @@
         <select class="projectStatus">
           <option>Idea</option>
           <option>In progress</option>
-          
           </div>
         </select>
-    </section>
+        
+        <br><strong class="">Current Target</strong>
+        <input type="text" placeholder="start typing.." class="input"><br>     
     
+        <center><button class="dashboardBtn" type="submit"><strong style="font-size: 18px;">Create Cluster</strong></button></center>
+    </form>
+    
+    </section>
     </div>
     
     {% include 'partials/footer.html' %}

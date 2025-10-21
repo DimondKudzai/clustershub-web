@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +8,6 @@
   <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}">
 </head>
 <body>
-
 {% include 'partials/header.html' %}
   <main>
     {% block content %}{% endblock %}
@@ -17,15 +15,36 @@
   
   <div class="container">
     <section class="profile">
-      <div class="circle"></div>
+    
+      <div class="avatar" id="avatar"></div>
+      
+      <script>
+      const fullName = "{{ name }}";
+      const initials = fullName
+      .split(' ')
+      .map(word => word[0])
+      .join('')
+      .toUpperCase();
+      
+      document.getElementById('avatar').textContent = initials;
+      </script>
       <div>
         <h3>{{name}}</h3>
-        <strong>About</strong><br>
         <p class="about">{{description}}</p>
+        
+        <div class="badges">
+        <span class="badge">{{skillA}}</span>
+        <span class="badge">{{skillB}}</span>
+        <span class="badge">{{skillC}}</span>
+        </div>
+        
+        <section class="aboutLinks">
         <ul>
         <li>{{email}}
         <li>{{website}}
         </ul>
+        </section>
+        
       </div>
     </section>
   </div>

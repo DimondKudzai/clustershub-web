@@ -6,7 +6,100 @@ def get_all_users():
     "website": "http://smartlearning.liveblog365.com/dimond",
     "email": "diamondkudzai70@gmail.com",
     "phone": "012 345 6789",
-    "image" : "image1.png"
+    "image" : "image1.png",
+    "skills": ["Christ Follower","Developer","SmartLearning"],
+    "clustersCount" : 7,
+    "notificationsCount" : 3,
+    "clusters": [
+    {
+    "id": 1,
+    "name": "Creative Writers",
+    "author": "ChrisVoiloe",
+    "target": "Lets build Apps",
+    "tags": ["Marketing", "Anslyst", "Legal"],
+    "members": ["ChrisVoiloe", "VictorPos", "AnnaSmith"],
+    "conversations": [
+    {
+    "id": 101,
+    "title": "Kickoff Meeting",
+    "author": "ChrisVoiloe",
+    "comments": [
+    {"user": "VictorPose", "text": "Excited to write!", "timestamp": "2025-10-22T10:00:00Z"},
+    {"user": "AnnaSmith", "text": "Let's go!", "timestamp": "2025-10-22T10:05:00Z"}
+    ]
+    }
+    ],
+    "created_at": "2025-10-20T08:00:00Z"
+    },
+    {
+    "id": 2,
+    "name": "Tech Founders",
+    "author": "VictorPose",
+    "members": ["VictorPose", "DevKing", "CodeQueen"],
+    "conversations": [
+    {
+    "id": 102,
+    "title": "Startup Ideas",
+    "author": "VictorPose",
+    "comments": [
+    {"user": "CodeQueen", "text": "AI is the future.", "timestamp": "2025-10-21T12:00:00Z"}
+    ]
+    }
+    ],
+    "created_at": "2025-10-19T13:20:00Z"
+    },
+    {
+    "id": 3,
+    "name": "Legal Minds",
+    "author": "LegalBoss",
+    "members": ["LegalBoss", "VictorPose", "Admin1"],
+    "conversations": [
+    {
+    "id": 103,
+    "title": "Case Reviews",
+    "author": "LegalBoss",
+    "comments": [
+    {"user": "Admin1", "text": "We should meet next week.", "timestamp": "2025-10-20T09:00:00Z"}
+    ]
+    }
+    ],
+    "created_at": "2025-10-15T14:45:00Z"
+    },
+    {
+    "id": 4,
+    "name": "Design Lab",
+    "author": "AnnaSmith",
+    "members": ["AnnaSmith", "SketchMaster", "PixelHero"],
+    "conversations": [
+    {
+    "id": 104,
+    "title": "Color Theory",
+    "author": "AnnaSmith",
+    "comments": [
+    {"user": "SketchMaster", "text": "Love this topic!", "timestamp": "2025-10-18T11:30:00Z"}
+    ]
+    }
+    ],
+    "created_at": "2025-10-16T07:00:00Z"
+    },
+    {
+    "id": 5,
+    "name": "Motivators",
+    "author": "ChrisVoiloe",
+    "members": ["ChrisVoiloe", "InspireZim", "ShineOn"],
+    "conversations": [
+    {
+    "id": 105,
+    "title": "Daily Quotes",
+    "author": "InspireZim",
+    "comments": [
+    {"user": "ShineOn", "text": "Keep pushing!", "timestamp": "2025-10-21T15:00:00Z"}
+    ]
+    }
+    ],
+    "created_at": "2025-10-17T08:15:00Z"
+    }
+    ]
     },
     {
     "name": "JohnDoe",
@@ -14,7 +107,11 @@ def get_all_users():
     "website": "https://github.com/dimondkudzai",
     "email": "contact@secoggnduser.co.za",
     "phone": "+2712 345 6790",
-    "image" : "image2.png"
+    "image" : "image2.png",
+    "skills": ["Design","Art","Creativity"],
+    "clustersCount" : 0,
+    "notificationsCount" : 10,
+    
     },
     {
     "name": "ChrisVoiloe",
@@ -22,7 +119,11 @@ def get_all_users():
     "website": "http://smartlearning.liveblog365.com/dimond/index.html",
     "email": "contact@seconduser.co.za",
     "phone": "+2712 345 6790",
-    "image" : "image3.png"
+    "image" : "image3.png",
+    "skills": ["Public Speaking","Motivator","Counceling"],
+    "clustersCount" : 9,
+    "notificationsCount" : 8
+    
     },
     {
     "name": "VictorPose",
@@ -30,7 +131,98 @@ def get_all_users():
     "website": "www.sPruser.co.za",
     "email": "contact@seconfghduser.co.za",
     "phone": "012 345 6790",
-    "image" : "image4.png"
+    "image" : "image4.png",
+    "skills": ["Real estate","Construction","Legal"],
+    "clustersCount" : 8,
+    "notificationsCount" : 4,
+    "clusters": [
+    {
+    "id": 1,
+    "name": "Creative Writers",
+    "author": "ChrisVoiloe",
+    "members": ["ChrisVoiloe", "VictorPose", "AnnaSmith"],
+    "conversations": [
+    {
+    "id": 101,
+    "title": "Kickoff Meeting",
+    "author": "ChrisVoiloe",
+    "comments": [
+    {"user": "VictorPose", "text": "Excited to write!", "timestamp": "2025-10-22T10:00:00Z"},
+    {"user": "AnnaSmith", "text": "Let's go!", "timestamp": "2025-10-22T10:05:00Z"}
+    ]
+    }
+    ],
+    "created_at": "2025-10-20T08:00:00Z"
+    },
+    {
+    "id": 2,
+    "name": "Tech Founders",
+    "author": "VictorPose",
+    "members": ["VictorPose", "DevKing", "CodeQueen"],
+    "conversations": [
+    {
+    "id": 102,
+    "title": "Startup Ideas",
+    "author": "VictorPose",
+    "comments": [
+    {"user": "CodeQueen", "text": "AI is the future.", "timestamp": "2025-10-21T12:00:00Z"}
+    ]
+    }
+    ],
+    "created_at": "2025-10-19T13:20:00Z"
+    },
+    {
+    "id": 3,
+    "name": "Legal Minds",
+    "author": "LegalBoss",
+    "members": ["LegalBoss", "VictorPose", "Admin1"],
+    "conversations": [
+    {
+    "id": 103,
+    "title": "Case Reviews",
+    "author": "LegalBoss",
+    "comments": [
+    {"user": "Admin1", "text": "We should meet next week.", "timestamp": "2025-10-20T09:00:00Z"}
+    ]
+    }
+    ],
+    "created_at": "2025-10-15T14:45:00Z"
+    },
+    {
+    "id": 4,
+    "name": "Design Lab",
+    "author": "AnnaSmith",
+    "members": ["AnnaSmith", "SketchMaster", "PixelHero"],
+    "conversations": [
+    {
+    "id": 104,
+    "title": "Color Theory",
+    "author": "AnnaSmith",
+    "comments": [
+    {"user": "SketchMaster", "text": "Love this topic!", "timestamp": "2025-10-18T11:30:00Z"}
+    ]
+    }
+    ],
+    "created_at": "2025-10-16T07:00:00Z"
+    },
+    {
+    "id": 5,
+    "name": "Motivators",
+    "author": "ChrisVoiloe",
+    "members": ["ChrisVoiloe", "InspireZim", "ShineOn"],
+    "conversations": [
+    {
+    "id": 105,
+    "title": "Daily Quotes",
+    "author": "InspireZim",
+    "comments": [
+    {"user": "ShineOn", "text": "Keep pushing!", "timestamp": "2025-10-21T15:00:00Z"}
+    ]
+    }
+    ],
+    "created_at": "2025-10-17T08:15:00Z"
+    }
+    ]
     },
     {
     "name": "KnosiDube",
@@ -38,7 +230,98 @@ def get_all_users():
     "website": "www.sgueconduser.co.za",
     "email": "contact@setcondghuser.co.za",
     "phone": "+26312 345 6790",
-    "image" : "image5.png"
+    "image" : "image5.png",
+    "skills": ["Marketing","Business","Analysis"],
+    "clustersCount" : 1,
+    "notificationsCount" : 3,
+    "clusters": [
+    {
+    "id": 1,
+    "name": "Creative Writers",
+    "author": "ChrisVoiloe",
+    "members": ["ChrisVoiloe", "VictorPose", "AnnaSmith"],
+    "conversations": [
+    {
+    "id": 101,
+    "title": "Kickoff Meeting",
+    "author": "ChrisVoiloe",
+    "comments": [
+    {"user": "VictorPose", "text": "Excited to write!", "timestamp": "2025-10-22T10:00:00Z"},
+    {"user": "AnnaSmith", "text": "Let's go!", "timestamp": "2025-10-22T10:05:00Z"}
+    ]
+    }
+    ],
+    "created_at": "2025-10-20T08:00:00Z"
+    },
+    {
+    "id": 2,
+    "name": "Tech Founders",
+    "author": "VictorPose",
+    "members": ["VictorPose", "DevKing", "CodeQueen"],
+    "conversations": [
+    {
+    "id": 102,
+    "title": "Startup Ideas",
+    "author": "VictorPose",
+    "comments": [
+    {"user": "CodeQueen", "text": "AI is the future.", "timestamp": "2025-10-21T12:00:00Z"}
+    ]
+    }
+    ],
+    "created_at": "2025-10-19T13:20:00Z"
+    },
+    {
+    "id": 3,
+    "name": "Legal Minds",
+    "author": "LegalBoss",
+    "members": ["LegalBoss", "VictorPose", "Admin1"],
+    "conversations": [
+    {
+    "id": 103,
+    "title": "Case Reviews",
+    "author": "LegalBoss",
+    "comments": [
+    {"user": "Admin1", "text": "We should meet next week.", "timestamp": "2025-10-20T09:00:00Z"}
+    ]
+    }
+    ],
+    "created_at": "2025-10-15T14:45:00Z"
+    },
+    {
+    "id": 4,
+    "name": "Design Lab",
+    "author": "AnnaSmith",
+    "members": ["AnnaSmith", "SketchMaster", "PixelHero"],
+    "conversations": [
+    {
+    "id": 104,
+    "title": "Color Theory",
+    "author": "AnnaSmith",
+    "comments": [
+    {"user": "SketchMaster", "text": "Love this topic!", "timestamp": "2025-10-18T11:30:00Z"}
+    ]
+    }
+    ],
+    "created_at": "2025-10-16T07:00:00Z"
+    },
+    {
+    "id": 5,
+    "name": "Motivators",
+    "author": "ChrisVoiloe",
+    "members": ["ChrisVoiloe", "InspireZim", "ShineOn"],
+    "conversations": [
+    {
+    "id": 105,
+    "title": "Daily Quotes",
+    "author": "InspireZim",
+    "comments": [
+    {"user": "ShineOn", "text": "Keep pushing!", "timestamp": "2025-10-21T15:00:00Z"}
+    ]
+    }
+    ],
+    "created_at": "2025-10-17T08:15:00Z"
+    }
+    ]
     }
     ]
     return users

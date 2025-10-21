@@ -10,26 +10,39 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    name = get_all_users()[0]['name']
-    return render_template('dashboard.html',name=name)
-
+    user = get_all_users()[4]
+    return render_template(
+        'dashboard.html',
+        name=user['name'],
+        clustersCount=user['clustersCount'],
+        notificationsCount=user['notificationsCount']
+    )
 @app.route('/home')
 def home():
-    name = get_all_users()[0]['name']
-    return render_template('dashboard.html',name=name)
-        
-    
+    user = get_all_users()[2]
+    return render_template(
+        'dashboard.html',
+        name=user['name'],
+        clustersCount=user['clustersCount'],
+        notificationsCount=user['notificationsCount']
+    )
 @app.route('/startCluster')
 def startCluster():
     return render_template('createCluster.html')
 
 @app.route('/myProfile')
 def myProfile():
-    name = get_all_users()[0]['name']
-    description = get_all_users()[0]['description']
-    email = get_all_users()[0]['email']
-    website = get_all_users()[0]['website']
-    return render_template('profile.html',name=name,description=description,email=email,website=website)
+    user = get_all_users()[0]
+    return render_template(
+        'profile.html',
+        name=user['name'],
+        description=user['description'],
+        email=user['email'],
+        website=user['website'],
+        skillA=user['skills'][0],
+        skillB=user['skills'][1],
+        skillC=user['skills'][2]
+    )
 
 @app.route('/login')
 def login():
@@ -42,6 +55,32 @@ def groupChat():
 @app.route("/users")
 def users():
     return jsonify(get_all_users())
+    
+@app.route("/users/<name>")
+def getUser(name):
+	users = get_all_users()
+	user = next((u for u in users if u['name'] == name), None)
+	if user:
+		return render_template(
+		'profile.html', 
+		name=user['name'], 
+		description=user.get('description', ''), 
+		email=user.get('email', ''), 
+		website=user.get('website', ''),
+		skillA=user['skills'][0],
+		skillB=user['skills'][1],
+		skillC=user['skills'][2]
+		)
+	return jsonify({'error': 'User not found'}), 404
+
+@app.route('/clusters')
+def clusters():
+    user = get_all_users()[0]
+    return render_template(
+        'clusters.html',
+        clustersCount=user['clustersCount'],
+        clusters=user['clusters']
+    )
     
 if __name__ == '__main__':
     app.run(debug=True)

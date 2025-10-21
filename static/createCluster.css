@@ -105,10 +105,11 @@ height: 5rem;
 
 
 .circle {
-  width: 40px;
-  height: 40px;
+  width: 80px;
+  height: 80px;
   background: #ccc;
   border-radius: 50%;
+  border: 1px solid green;
 }
 
 .tags span {
@@ -184,7 +185,7 @@ height: 5rem;
 }
 
 #suggestions li:hover {
-  background: #eee;
+  font-weight: 500;
 }
 
 .bold_text{
@@ -251,6 +252,48 @@ color: white;
   cursor: pointer;
 }
 
+.about{
+color: black
+}
+.aboutLinks{
+font-weight: 350;
+font-size: 14px;
+padding: 5px;
+color: blue;
+}
+
+.badges {
+margin: 10px 0;
+}
+.badge {
+display: inline-block;
+background-color: green;
+padding: 5px 10px;
+margin: 2px;
+border-radius: 3px;
+font-weight: 500;
+font-size: 14px;
+padding: 5px;
+color: white;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: green;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 18px;
+  text-transform: uppercase;
+}
+.extraText{
+color: black;
+padding: 15px;
+}
 /* Responsive */
 @media screen and (max-width: 768px) {
   .menu-toggle {
