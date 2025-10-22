@@ -79,7 +79,8 @@ def clusters():
     return render_template(
         'clusters.html',
         clustersCount=user['clustersCount'],
-        clusters=user['clusters']
+        clusters=user['clusters'],
+        name=user['name']
     )
     
 if __name__ == '__main__':

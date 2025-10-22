@@ -1,6 +1,7 @@
 def get_all_users():
     users = [
     {
+    "id": 1,
     "name": "Dimond",
     "description": "A well known dev.",
     "website": "http://smartlearning.liveblog365.com/dimond",
@@ -14,7 +15,7 @@ def get_all_users():
     {
     "id": 1,
     "name": "Creative Writers",
-    "author": "ChrisVoiloe",
+    "author": "Dimond",
     "target": "Lets build Apps",
     "tags": ["Marketing", "Anslyst", "Legal"],
     "members": ["ChrisVoiloe", "VictorPos", "AnnaSmith"],
@@ -25,7 +26,7 @@ def get_all_users():
     "author": "ChrisVoiloe",
     "comments": [
     {"user": "VictorPose", "text": "Excited to write!", "timestamp": "2025-10-22T10:00:00Z"},
-    {"user": "AnnaSmith", "text": "Let's go!", "timestamp": "2025-10-22T10:05:00Z"}
+    {"user": "KnosiDube", "text": "Let's go!", "timestamp": "2025-10-22T10:05:00Z"}
     ]
     }
     ],
@@ -102,6 +103,7 @@ def get_all_users():
     ]
     },
     {
+    "id": 2,
     "name": "JohnDoe",
     "description": "A musician and Description for second user.",
     "website": "https://github.com/dimondkudzai",
@@ -114,6 +116,7 @@ def get_all_users():
     
     },
     {
+    "id": 3,
     "name": "ChrisVoiloe",
     "description": "Here is Description for Chris user.",
     "website": "http://smartlearning.liveblog365.com/dimond/index.html",
@@ -126,6 +129,7 @@ def get_all_users():
     
     },
     {
+    "id": 4,
     "name": "VictorPose",
     "description": "Description for Victor Pose.",
     "website": "www.sPruser.co.za",
