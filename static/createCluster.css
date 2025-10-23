@@ -292,7 +292,7 @@ color: white;
 }
 .extraText{
 color: black;
-padding: 15px;
+padding: 5px;
 }
 /* Responsive */
 @media screen and (max-width: 768px) {
@@ -314,7 +314,7 @@ padding: 15px;
     z-index: 1000;
     color: white;
     opacity: .8;
-    animation: fadeIn 1s ease-in-out;
+    animation: slideIn 1s ease-in-out;
     border-bottom: 1px solid grey;
     
   }
@@ -331,7 +331,16 @@ padding: 15px;
     display: flex;
   }
 }
-
+.aboutLinks{
+font-weight: 350;
+font-size: 14px;
+padding: 5px;
+color: blue;
+flex-wrap: wrap;
+white-space: normal;
+word-wrap: break-word;
+overflow-wrap: break-word;
+}
 
 /* Animations */
 

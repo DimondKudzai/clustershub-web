@@ -4,7 +4,7 @@ import sqlite3
 from datetime import datetime
 from werkzeug.utils import secure_filename
 from flask import jsonify
-from services.appData import get_all_users
+from services.appData import get_all_users, get_all_clusters
 
 app = Flask(__name__)
 
@@ -75,11 +75,12 @@ def getUser(name):
 
 @app.route('/clusters')
 def clusters():
+    cluster = get_all_clusters()
     user = get_all_users()[0]
     return render_template(
         'clusters.html',
         clustersCount=user['clustersCount'],
-        clusters=user['clusters'],
+        clusters=cluster,
         name=user['name']
     )
     
