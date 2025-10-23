@@ -95,5 +95,14 @@ def getCluster(id):
         return render_template("cluster_detail.html", cluster=cluster)
 
     return jsonify({'error': 'Cluster not found'}), 404
+        
+@app.route("/notifications")
+def notifications():
+    user = get_all_users()[0]
+    messages = user["messages"]
+    #message = next((m for m in messages if m['id'] == id), None)
+    return render_template("notifications.html", messages=messages)
+
+
 if __name__ == '__main__':
     app.run(debug=True)

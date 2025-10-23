@@ -10,7 +10,8 @@ def get_all_users():
     "image" : "image1.png",
     "skills": ["Christ Follower","Developer","SmartLearning"],
     "clustersCount" : 7,
-    "notificationsCount" : 3
+    "notificationsCount" : 4,
+    "messages":["Doing great","We expect more","we will get there"]
     },
     {
     "id": 2,
