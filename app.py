@@ -81,8 +81,19 @@ def clusters():
         'clusters.html',
         clustersCount=user['clustersCount'],
         clusters=cluster,
-        name=user['name']
+        name=user['name'],
+        id=user['id']
     )
-    
+   
+@app.route("/clusters/<int:id>")
+def getCluster(id):
+    user = get_all_users()[0]
+    clusters = get_all_clusters()
+    cluster = next((c for c in clusters if c['id'] == id), None)
+
+    if cluster:
+        return render_template("cluster_detail.html", cluster=cluster)
+
+    return jsonify({'error': 'Cluster not found'}), 404
 if __name__ == '__main__':
     app.run(debug=True)

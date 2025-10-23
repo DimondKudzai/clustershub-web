@@ -73,11 +73,11 @@ def get_all_clusters():
 	"name": "Creative Writers",
 	"author": "Dimond",
 	"target": "Lets build Apps",
-	"tags": ["Marketing", "Anslyst", "Legal"],
+	"tags": ["Marketing", "Analyst", "Legal"],
 	"members": ["ChrisVoiloe", "VictorPos", "AnnaSmith"],
 	"conversations": [
 	{
-	"id": 101,
+	"chatId": 101,
 	"title": "Kickoff Meeting",
 	"author": "ChrisVoiloe",
 	"comments": [
@@ -95,7 +95,7 @@ def get_all_clusters():
 	"members": ["VictorPose", "DevKing", "CodeQueen"],
 	"conversations": [
 	{
-	"id": 102,
+	"chatId": 102,
 	"title": "Startup Ideas",
 	"author": "VictorPose",
 	"comments": [
@@ -112,7 +112,7 @@ def get_all_clusters():
 	"members": ["LegalBoss", "VictorPose", "Admin1"],
 	"conversations": [
 	{
-	"id": 103,
+	"chatId": 103,
 	"title": "Case Reviews",
 	"author": "LegalBoss",
 	"comments": [
@@ -129,7 +129,7 @@ def get_all_clusters():
 	"members": ["AnnaSmith", "SketchMaster", "PixelHero"],
 	"conversations": [
 	{
-	"id": 104,
+	"chatId": 104,
 	"title": "Color Theory",
 	"author": "AnnaSmith",
 	"comments": [
@@ -146,7 +146,7 @@ def get_all_clusters():
 	"members": ["ChrisVoiloe", "InspireZim", "ShineOn"],
 	"conversations": [
 	{
-	"id": 105,
+	"chatId": 105,
 	"title": "Daily Quotes",
 	"author": "InspireZim",
 	"comments": [
@@ -163,7 +163,7 @@ def get_all_clusters():
 	"members": ["ChrisVoiloe", "VictorPose", "AnnaSmith"],
 	"conversations": [
 	{
-	"id": 101,
+	"chatId": 101,
 	"title": "Kickoff Meeting",
 	"author": "ChrisVoiloe",
 	"comments": [
@@ -181,7 +181,7 @@ def get_all_clusters():
 	"members": ["VictorPose", "DevKing", "CodeQueen"],
 	"conversations": [
 	{
-	"id": 102,
+	"chatId": 102,
 	"title": "Startup Ideas",
 	"author": "VictorPose",
 	"comments": [
@@ -198,7 +198,7 @@ def get_all_clusters():
 	"members": ["LegalBoss", "VictorPose", "Admin1"],
 	"conversations": [
 	{
-	"id": 103,
+	"chatId": 103,
 	"title": "Case Reviews",
 	"author": "LegalBoss",
 	"comments": [
@@ -215,7 +215,7 @@ def get_all_clusters():
 	"members": ["AnnaSmith", "SketchMaster", "PixelHero"],
 	"conversations": [
 	{
-	"id": 104,
+	"chatId": 104,
 	"title": "Color Theory",
 	"author": "AnnaSmith",
 	"comments": [
@@ -232,7 +232,7 @@ def get_all_clusters():
 	"members": ["ChrisVoiloe", "InspireZim", "ShineOn"],
 	"conversations": [
 	{
-	"id": 105,
+	"chatId": 105,
 	"title": "Daily Quotes",
 	"author": "InspireZim",
 	"comments": [
@@ -249,7 +249,7 @@ def get_all_clusters():
 	"members": ["ChrisVoiloe", "VictorPose", "AnnaSmith"],
 	"conversations": [
 	{
-	"id": 101,
+	"chatId": 101,
 	"title": "Kickoff Meeting",
 	"author": "ChrisVoiloe",
 	"comments": [
@@ -267,7 +267,7 @@ def get_all_clusters():
 	"members": ["VictorPose", "DevKing", "CodeQueen"],
 	"conversations": [
 	{
-	"id": 102,
+	"chatId": 102,
 	"title": "Startup Ideas",
 	"author": "VictorPose",
 	"comments": [
@@ -284,7 +284,7 @@ def get_all_clusters():
 	"members": ["LegalBoss", "VictorPose", "Admin1"],
 	"conversations": [
 	{
-	"id": 103,
+	"chatId": 103,
 	"title": "Case Reviews",
 	"author": "LegalBoss",
 	"comments": [
@@ -301,7 +301,7 @@ def get_all_clusters():
 	"members": ["AnnaSmith", "SketchMaster", "PixelHero"],
 	"conversations": [
 	{
-	"id": 104,
+	"chatId": 104,
 	"title": "Color Theory",
 	"author": "AnnaSmith",
 	"comments": [
@@ -318,7 +318,7 @@ def get_all_clusters():
 	"members": ["ChrisVoiloe", "InspireZim", "ShineOn"],
 	"conversations": [
 	{
-	"id": 105,
+	"chatId": 105,
 	"title": "Daily Quotes",
 	"author": "InspireZim",
 	"comments": [
