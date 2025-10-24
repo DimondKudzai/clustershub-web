@@ -1,26 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Cluster Conversations</title>
-  <link rel="stylesheet" href="conversations.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clusters</title>
+  <link rel="icon" type="image/jpg" href="{{url_for('static', filename='logo.jpg')}}">
+  <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}">
 </head>
 <body>
+
+{% include 'partials/header.html' %}
   <div class="container">
     <h2>💬 Cluster Conversation</h2>
 
+<section class="create-cluster">
+    <form id="new-thread-form">
+      <input type="text" id="thread-title" placeholder="New topic title..." required /><br>
+      <textarea id="thread-body" placeholder="Start the conversation..." required></textarea><br>
+      <button type="submit" class="dashboardBtn">Post Thread</button>
+    </form>
+    </section>
+  </div>
+<section>
     <div id="threads">
       <!-- Threads will be inserted here -->
     </div>
-
-    <form id="new-thread-form">
-      <input type="text" id="thread-title" placeholder="New topic title..." required />
-      <textarea id="thread-body" placeholder="Start the conversation..." required></textarea>
-      <button type="submit">Post Thread</button>
-    </form>
-  </div>
-
-  <script src="conversation.js"></script>
+</section>
+  <script type="text/javascript" src="{{url_for('static', filename='conversation.js')}}"></script>
+  
+  {% include 'partials/footer.html' %}
 </body>
 </html>

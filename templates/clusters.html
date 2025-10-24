@@ -8,13 +8,11 @@
   <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}">
 </head>
 <body>
+
 {% include 'partials/header.html' %}
-  <main>
-    {% block content %}{% endblock %}
-  </main>
-  
+
   <div class="container">
-  <h2>Total clusters: {{clustersCount}}</h2>
+  <h2>Clusters envolved {{clustersCount}}</h2>
   
   {% for cluster in clusters %}
   
@@ -29,12 +27,6 @@
   {% for tag in cluster.tags %}
   <span class="badge">{{ tag }}</span>
   {% endfor %}
-  </section>
-  <section class="extraText">
-  <ul>
-  <li>Author: <a href="{{ url_for('getUser',name=cluster.author) }}"> @{{ cluster.author }}</a></li>
-  <li>Date Created: {{ cluster.created_at }}</li>
-  </ul>
   </section>
   
   </section>
