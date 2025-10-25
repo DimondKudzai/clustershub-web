@@ -31,25 +31,27 @@ function renderThreads() {
 
   threads.forEach((thread, index) => {
     const threadEl = document.createElement('div');
-   threadEl.classList.add('thread');
+    threadEl.classList.add('thread');
 
+    const commentsHtml = thread.comments.map(comment =>`<div class="comment">comment</div>`
+    ).join(”);
+    
     threadEl.innerHTML = `
-      <p class="thread-title">thread.title</p>
-      <p>{thread.body}</p>
-      <div class="comment-section">
-        thread.comments.map(c => `<div class="comment">{c}</div>`).join('')}
-        <input type="text" placeholder="Reply..." data-index="${index}" />
-      </div>
+    <h4 class="thread-title">{thread.title}</h4>
+    <p>thread.body</p>
+    <div class="comment-section">{commentsHtml}
+    <input type="text" class="reply-input" placeholder="Reply..." data-index="${index}" />
+    </div>
     `;
-
-    const replyInput = threadEl.querySelector('input');
+    
+    const replyInput = threadEl.querySelector('.reply-input');
     replyInput.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' && this.value.trim() !== '') {
-        threads[index].comments.push(this.value.trim());
-        renderThreads();
-      }
+    if (e.key === 'Enter' && this.value.trim() !== '') {
+    threads[index].comments.push(this.value.trim());
+    renderThreads();
+    }
     });
-
+    
     threadsContainer.appendChild(threadEl);
-  });
-}
+    });
+    }

@@ -11,23 +11,93 @@
 
 {% include 'partials/header.html' %}
   <div class="container">
-    <h2>💬 Cluster Conversation</h2>
-
-<section class="create-cluster">
-    <form id="new-thread-form">
-      <input type="text" id="thread-title" placeholder="New topic title..." required /><br>
-      <textarea id="thread-body" placeholder="Start the conversation..." required></textarea><br>
-      <button type="submit" class="dashboardBtn">Post Thread</button>
-    </form>
-    </section>
-  </div>
-<section>
-    <div id="threads">
-      <!-- Threads will be inserted here -->
-    </div>
-</section>
-  <script type="text/javascript" src="{{url_for('static', filename='conversation.js')}}"></script>
   
-  {% include 'partials/footer.html' %}
+  <h2>{{ cluster.name }}  💬 </h2>
+  <p>{{ cluster.target }}</p>
+
+  <section class="create-cluster">
+    <h3>Start a new thread</h3>
+    <input type="text" id="new-thread-title" placeholder="Title" />
+    <textarea id="new-thread-body" placeholder="Body"></textarea><br>
+    <button id="btn-new-thread" class="dashboardBtn">Post Thread</button>
+  </section>
+
+  <br />
+<section>
+  <div id="threads"></div>
+  </section>
+</div>
+
+   <script>
+   
+   const clusterId = {{ cluster.id }};
+   const threadsContainer = document.getElementById("threads");
+   const btnNewThread = document.getElementById("btn-new-thread");
+   const inputTitle = document.getElementById("new-thread-title");
+   const inputBody = document.getElementById("new-thread-body");
+   
+   function fetchThreads() {
+   fetch(`/api/groupChat/clusterId/threads`)
+   .then(res => res.json())
+   .then(data => renderThreads(data));
+   
+   
+   function renderThreads(threads) 
+   threadsContainer.innerHTML = "";
+   threads.forEach((thread, idx) => 
+   const commentsHtml = thread.comments.map(c =>
+   `<div class="comment"><strong>{c.user}:</strong> c.text <small>{c.timestamp}</small></div>`
+   ).join("");
+   
+   const threadEl = document.createElement("div");
+   threadEl.className = "thread";
+   threadEl.innerHTML = `
+   <div class="thread-title">thread.title</div>
+   <p>By:{thread.author}</p>
+   <div class="comment-section">${commentsHtml}</div>
+   <input type="text" class="reply-input" placeholder="Reply…" data-thread-index="{idx}" />
+   `;
+   
+   const replyInput = threadEl.querySelector(".reply-input");
+   replyInput.addEventListener("keydown", function (e) {
+   if (e.key === "Enter" && this.value.trim()) {
+   const commentText = this.value.trim();
+   fetch(`/api/groupChat/clusterId/threads/{idx}/comments`, {
+   method: "POST",
+   headers: { "Content-Type": "application/json" },
+   body: JSON.stringify({
+   user: "Anonymous",
+   text: commentText,
+   timestamp: new Date().toISOString()
+   })
+   }).then(() => fetchThreads());
+   }
+   });
+   
+   threadsContainer.appendChild(threadEl);
+   });
+   }
+   
+   btnNewThread.addEventListener("click", () => {
+   const title = inputTitle.value.trim();
+   const body = inputBody.value.trim();
+   if (!title || !body) return;
+   
+   fetch(`/api/groupChat/${clusterId}/threads`, {
+   method: "POST",
+   headers: { "Content-Type": "application/json" },
+   body: JSON.stringify({ title, body, author: "Anonymous" })
+   })
+   .then(() => {
+   inputTitle.value = "";
+   inputBody.value = "";
+   fetchThreads();
+   });
+   });
+   
+
+    // Initial load
+  </script>
+  {% include 'partials/footer.html' %} 
 </body>
 </html>
