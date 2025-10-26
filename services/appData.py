@@ -72,39 +72,58 @@ def get_all_clusters():
 	{
 	"id": 1,
 	"name": "Creative Writers",
-	"author": "Dimond",
-	"target": "Lets build Apps",
-	"tags": ["Marketing", "Analyst", "Legal"],
-	"members": ["ChrisVoiloe", "VictorPos", "AnnaSmith"],
+	"target": "Let's build Apps",
+	"author": "ChrisVoiloe",
+	"created": "2025-10-22T10:05:00Z",
+	"tags": ["Legal", "Marketing", "Designer"],
+	"members": ["VictorPose", "KnosiDube", "Dimond"],
 	"conversations": [
 	{
+	"chatId": 100,
+	"title": "Kickoff Meeting",
+	"author": "ChrisVoiloe",
+	"body": "Lets start working guys",
+	"created": "2025-10-22T10:05:00Z",
+	"comments": [
+	{"user": "VictorPose", "text": "Excited to write!", "timestamp": "2025-10-22T10:00:00Z"},
+	{"user": "KnosiDube", "text": "Let's go!", "timestamp": "2025-10-22T10:05:00Z"}
+	]
+	},{
 	"chatId": 101,
 	"title": "Kickoff Meeting",
 	"author": "ChrisVoiloe",
+	"body": "Lets start working guys",
+	"created": "2025-10-22T10:05:00Z",
 	"comments": [
 	{"user": "VictorPose", "text": "Excited to write!", "timestamp": "2025-10-22T10:00:00Z"},
 	{"user": "KnosiDube", "text": "Let's go!", "timestamp": "2025-10-22T10:05:00Z"}
 	]
 	}
-	],
-	"created_at": "2025-10-20T08:00:00Z"
+	]
 	},
 	{
 	"id": 2,
-	"name": "Tech Founders",
-	"author": "VictorPose",
-	"members": ["VictorPose", "DevKing", "CodeQueen"],
+	"name": "Native buider",
+	"target": "Launching",
 	"conversations": [
 	{
-	"chatId": 102,
-	"title": "Startup Ideas",
-	"author": "VictorPose",
+	"title": "Kickoff Meeting",
+	"body": "Let's brainstorm the app structure.",
+	"author": "ChrisVoiloe",
 	"comments": [
-	{"user": "CodeQueen", "text": "AI is the future.", "timestamp": "2025-10-21T12:00:00Z"}
+	{
+	"user": "VictorPose",
+	"text": "Excited to write!",
+	"timestamp": "2025-10-22T10:00:00Z"
+	},
+	{
+	"user": "KnosiDube",
+	"text": "Let's go!",
+	"timestamp": "2025-10-22T10:05:00Z"
+	}
 	]
 	}
-	],
-	"created_at": "2025-10-19T13:20:00Z"
+	]
 	},
 	{
 	"id": 3,

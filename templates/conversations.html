@@ -6,98 +6,85 @@
   <title>Clusters</title>
   <link rel="icon" type="image/jpg" href="{{url_for('static', filename='logo.jpg')}}">
   <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}">
+  <style>
+  small{
+  color: green;
+  }
+  </style>
 </head>
 <body>
 
 {% include 'partials/header.html' %}
-  <div class="container">
+
+  <div class="" style="width: 100%">
   
   <h2>{{ cluster.name }}  💬 </h2>
-  <p>{{ cluster.target }}</p>
+  <p style="color: black">{{ cluster.target }} 
+  <a href="#start-thread" >
+  <button class="dashboardBtn">Start Thread</button></p>
+  </a>
 
+  <br>
+   {% for thread in cluster.conversations %}
+   <div style=" ">
+   <section style="color: black">
+   <section>
+   <div class="thread">
+   <strong style="font-size:16px; color: green;">{{ thread.title }}</strong><span> by <a href="{{ url_for('getUser', name=member) }}" style="color: blue">@{{ thread.author }}</a></span>
+   <br>
+   <p>{{ thread.body }}</p>
+   <small>{{thread.created}}</small>
+   </section>
+   
+   <div class="comments">
+   <h3>Commments</h3>
+   {% for comment in thread.comments %}
+   <p><a href="{{ url_for('getUser', name=member) }}" style="color: blue">@{{ comment.user }}</a> {{ comment.text }} <br><small>{{ comment.timestamp }}</small></p>
+  
+   {% endfor %}
+   </div>
+
+   <!-- Comment Form -->
+   <form method="POST" action="{{ url_for('post_comment', cluster_id=cluster.id, thread_id=thread.chatId) }}" class="create-cluster">
+   <textarea type="text" name="text" placeholder="Your comment" required></textarea><br>
+   <button type="submit" class="dashboardBtn">Post Comment</button>
+   </form>
+   </div>
+   </section>
+   </div>
+   
+   </div><br>
+   
+  {% endfor %}
+   
+  
+  
   <section class="create-cluster">
-    <h3>Start a new thread</h3>
-    <input type="text" id="new-thread-title" placeholder="Title" />
-    <textarea id="new-thread-body" placeholder="Body"></textarea><br>
-    <button id="btn-new-thread" class="dashboardBtn">Post Thread</button>
+  <h3>New Thread</h3>
+  <form id="new-thread-form">
+  <input type="text" id="thread-title" placeholder="Thread title" required />
+  <textarea type="text" name="text" placeholder="Your comment" required></textarea><br>
+  <button type="submit" class="dashboardBtn">Post</button>
+  <span id="start-thread"></span>
+  </form>
+  
   </section>
-
-  <br />
-<section>
-  <div id="threads"></div>
-  </section>
-</div>
-
-   <script>
-   
-   const clusterId = {{ cluster.id }};
-   const threadsContainer = document.getElementById("threads");
-   const btnNewThread = document.getElementById("btn-new-thread");
-   const inputTitle = document.getElementById("new-thread-title");
-   const inputBody = document.getElementById("new-thread-body");
-   
-   function fetchThreads() {
-   fetch(`/api/groupChat/clusterId/threads`)
-   .then(res => res.json())
-   .then(data => renderThreads(data));
-   
-   
-   function renderThreads(threads) 
-   threadsContainer.innerHTML = "";
-   threads.forEach((thread, idx) => 
-   const commentsHtml = thread.comments.map(c =>
-   `<div class="comment"><strong>{c.user}:</strong> c.text <small>{c.timestamp}</small></div>`
-   ).join("");
-   
-   const threadEl = document.createElement("div");
-   threadEl.className = "thread";
-   threadEl.innerHTML = `
-   <div class="thread-title">thread.title</div>
-   <p>By:{thread.author}</p>
-   <div class="comment-section">${commentsHtml}</div>
-   <input type="text" class="reply-input" placeholder="Reply…" data-thread-index="{idx}" />
-   `;
-   
-   const replyInput = threadEl.querySelector(".reply-input");
-   replyInput.addEventListener("keydown", function (e) {
-   if (e.key === "Enter" && this.value.trim()) {
-   const commentText = this.value.trim();
-   fetch(`/api/groupChat/clusterId/threads/{idx}/comments`, {
-   method: "POST",
-   headers: { "Content-Type": "application/json" },
-   body: JSON.stringify({
-   user: "Anonymous",
-   text: commentText,
-   timestamp: new Date().toISOString()
-   })
-   }).then(() => fetchThreads());
-   }
-   });
-   
-   threadsContainer.appendChild(threadEl);
-   });
-   }
-   
-   btnNewThread.addEventListener("click", () => {
-   const title = inputTitle.value.trim();
-   const body = inputBody.value.trim();
-   if (!title || !body) return;
-   
-   fetch(`/api/groupChat/${clusterId}/threads`, {
-   method: "POST",
-   headers: { "Content-Type": "application/json" },
-   body: JSON.stringify({ title, body, author: "Anonymous" })
-   })
-   .then(() => {
-   inputTitle.value = "";
-   inputBody.value = "";
-   fetchThreads();
-   });
-   });
-   
-
-    // Initial load
-  </script>
+  
+ 
   {% include 'partials/footer.html' %} 
+  
 </body>
 </html>
+
+
+<!--
+  <section class="create-cluster">
+  <h3>New Thread</h3>
+  <form id="new-thread-form">
+  <input type="text" id="thread-title" placeholder="Thread title" required />
+  <input type="text" id="thread-body" placeholder="Thread body" required />
+  <button type="submit" class="dashboardBtn">Post</button>
+  </form>
+  
+  </section>
+  -->

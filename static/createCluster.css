@@ -295,12 +295,6 @@ color: black;
 padding: 5px;
 }
 
-.thread { border:1px solid #ddd; padding:10px; margin-bottom:15px; border-radius:4px;}
- .thread-title { font-weight:bold; margin-bottom:8px; }
-.comment { background:#f9f9f9; padding:5px; margin-top:5px; border-radius:3px;}
-.reply-input { margin-top:10px; width:100%; padding:6px;}
-#new-thread-title, #new-thread-body { width:; margin-top:5px; }
- 
 /* Responsive */
 @media screen and (max-width: 768px) {
   .menu-toggle {
