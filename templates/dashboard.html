@@ -17,6 +17,7 @@
   <section class="dashboardContainer" style="margin-top: +10px;">
      <a href="{{ url_for('getUser',name=name) }}"><h3>@{{name}}</h3></a>
       <div class="tabs">
+      <a href="{{ url_for('recommended_clusters') }}" > <button class="dashboardBtn" style="background-color: blue;"><strong>Exclusive Matches</strong></button></a>
         <a href="{{ url_for('startCluster') }}" > <button class="dashboardBtn">New Cluster</button></a>
         <a href="{{ url_for('clusters') }}" ><button class="dashboardBtn">Clusters <strong>{{clustersCount}}</strong></button></a>
         <a href="{{ url_for('notifications') }}" ><button class="dashboardBtn">Notifications <strong>{{notificationsCount}}</strong></button></a>

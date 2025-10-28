@@ -20,7 +20,11 @@
     <img src="{{ url_for('static', filename='cluster.jpg') }}" class="circle" id="">
     
     <h3>{{ cluster.name }}</h3>
-    <p class="about">{{ cluster.target }}</p>      
+    <p class="about">{{ cluster.target }}</p>  
+    
+    <section>
+    <strong>Location: </strong> <span class="badge">{{ cluster.location }}</span>
+    </section>
     
     <section class="badges">
     <strong>Open Slots: </strong>
@@ -38,8 +42,16 @@
       {% endfor %}
     </section>
     
+    <section class="about" style="padding:5px;">
+    <h3>About Cluster</h3>
+    <p>{{ cluster.description }}</p>
+    </section>
+    
    <a href="{{ url_for('show_cluster', cluster_id=cluster.id) }}">
-   <button class="dashboardBtn" style="background-color: ; width: 100%;"><strong>Open</strong></button>
+   <button class="dashboardBtn" style="background-color: ; width: 40%;"><strong>Open Cluster</strong></button>
+   <button class="dashboardBtn" style="background-color: ; width: 40%;"><strong>Edit Cluster</strong></button>
+   <button class="dashboardBtn" style="background-color: ; width: 40%;"><strong>Open Cluster</strong></button>
+   
    </a>
    <br><br>
     <section class="extraText">

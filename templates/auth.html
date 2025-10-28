@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clusters</title>
+  <link rel="icon" type="image/jpg" href="{{url_for('static', filename='logo.jpg')}}">
+  <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}">
+</head>
+<body>
+
+<!--{% include 'partials/header.html' %}-->
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+ <center>
+ <img src="{{url_for('static', filename='banner.jpg')}}" style="width: 100%;border-radius: 10px;">
+ </center>
+ 
+
+ <div class="hero" style="background: url('{{url_for('static', filename='')}}') center/cover no-repeat;
+ border-radius: 10px; font: weght: 400;padding: 15px;">
+ 
+
+ <h3 style="purple"> Team & Partnership building </h3>
+,
+ <a href="#form">
+ <p style="background-color: ; padding: +15px;"><strong>Login</strong></p>
+ </a>
+ ,
+ <p style="background-color: ; width: ;">
+ <a href="#">
+ <strong>Create Account</strong>
+ </a>
+ <small> It's less than 2 minutes</small>
+ </p>
+ 
+ </div>
+ 
+ <br><br>
+ <section class="create-cluster">
+<h2>Login</h2>
+<form id="form">
+<input type="text/number" placeholder="Username or Email"><br>
+<input type="text/number" placeholder="Password"><br>
+<button class="dashboardBtn" style="background-color: blue;">Login</button>
+</form>
+</section>
+ 
+{% include 'partials/footer.html' %}
+</body>
+</html>

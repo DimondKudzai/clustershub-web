@@ -48,7 +48,7 @@ color: #18bc9c;
 
 /* Hero Section */
 .hero {
-//background: url('images/bg-image.jpg') center/cover no-repeat;
+//background: url('cluster.jpg') center/cover no-repeat;
 display: flex;
 align-items: center;
 justify-content: center;
@@ -294,6 +294,7 @@ color: white;
 color: black;
 padding: 5px;
 }
+
 
 /* Responsive */
 @media screen and (max-width: 768px) {

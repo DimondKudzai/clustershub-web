@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clusters</title>
+  <link rel="icon" type="image/jpg" href="{{url_for('static', filename='logo.jpg')}}">
+  <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}">
+</head>
+<body>
+
+{% include 'partials/header.html' %}
+
+    <center>
+    <h3 style="color: black;">
+    Recommended Clusters for <a href="{{ url_for('getUser',name=user.name) }}">@{{ user.name }}</a>
+    </h3>
+    </center>
+    
+    <div class="container">
+    
+    {% if clusters %}
+    {% for cluster in clusters %}
+    
+    <section class="profile" id="cluster" class="">
+    <img src="{{ url_for('static', filename='cluster.jpg') }}" class="circle" id="">
+    <a href="{{ url_for('getCluster', id=cluster.id) }}"><button class="dashboardBtn" style="float: right;background-color: blue;">view</button></a>
+    <h3>{{ cluster.name }}</h3>
+    <p class="about">{{ cluster.target }}</p>      
+    
+    <section class="badges">
+    <strong>Open Slots: </strong>
+    {% for tag in cluster.tags %}
+    <span class="badge">{{ tag }}</span>
+    {% endfor %}
+    </section>
+    
+    </section>
+    <br>
+    
+    
+    {% endfor %}  
+    {% else %}
+    <p>No recommended clusters found.</p>
+    {% endif %}
+    </div>
+    
+    {% include 'partials/footer.html' %}
+</body>
+</html>

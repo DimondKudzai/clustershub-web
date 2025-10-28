@@ -11,6 +11,7 @@ def get_all_users():
     "skills": ["Christ Follower","Developer","SmartLearning"],
     "clustersCount" : 7,
     "notificationsCount" : 4,
+    "location": "Caribian",
     "messages":["Doing great","We expect more","we will get there"]
     },
     {
@@ -23,6 +24,7 @@ def get_all_users():
     "image" : "image2.png",
     "skills": ["Design","Art","Creativity"],
     "clustersCount" : 0,
+    "location": "Jamaica",
     "notificationsCount" : 10,
     
     },
@@ -75,6 +77,8 @@ def get_all_clusters():
 	"target": "Let's build Apps",
 	"author": "ChrisVoiloe",
 	"created": "2025-10-22T10:05:00Z",
+	"location": "Harare",
+	"description": "Buiding Everything",
 	"tags": ["Legal", "Marketing", "Designer"],
 	"members": ["VictorPose", "KnosiDube", "Dimond"],
 	"conversations": [
@@ -107,6 +111,7 @@ def get_all_clusters():
 	"target": "Launching",
 	"conversations": [
 	{
+	"chatId": 106,
 	"title": "Kickoff Meeting",
 	"body": "Let's brainstorm the app structure.",
 	"author": "ChrisVoiloe",
@@ -130,6 +135,7 @@ def get_all_clusters():
 	"name": "Legal Minds",
 	"author": "LegalBoss",
 	"members": ["LegalBoss", "VictorPose", "Admin1"],
+	"location": "International",
 	"conversations": [
 	{
 	"chatId": 103,
@@ -146,6 +152,7 @@ def get_all_clusters():
 	"id": 4,
 	"name": "Design Lab",
 	"author": "AnnaSmith",
+	"location": "Harare",
 	"members": ["AnnaSmith", "SketchMaster", "PixelHero"],
 	"conversations": [
 	{
@@ -163,6 +170,7 @@ def get_all_clusters():
 	"id": 5,
 	"name": "Motivators",
 	"author": "ChrisVoiloe",
+	"location": "International",
 	"members": ["ChrisVoiloe", "InspireZim", "ShineOn"],
 	"conversations": [
 	{
