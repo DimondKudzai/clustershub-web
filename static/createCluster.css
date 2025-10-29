@@ -255,11 +255,11 @@ color: white;
 .about{
 color: black
 }
-.aboutLinks{
-font-weight: 350;
-font-size: 14px;
+.about_links{
+font-size: 15px;
 padding: 5px;
 color: blue;
+
 }
 
 .badges {

@@ -9,45 +9,57 @@
 </head>
 <body>
 {% include 'partials/header.html' %}
-  <main>
-    {% block content %}{% endblock %}
-  </main>
   
-  <div class="container">
-    <section class="profile">
-    
-      <div class="avatar" id="avatar"></div>
-      
-      <script>
-      const fullName = "{{ name }}";
-      const initials = fullName
-      .split(' ')
-      .map(word => word[0])
-      .join('')
-      .toUpperCase();
-      
-      document.getElementById('avatar').textContent = initials;
-      </script>
-      <div>
-        <h3>{{name}}</h3>
-        <p class="about">{{description}}</p>
-        <strong>Location: </strong><span class="badge">{{location}}</span>
-        <section class="badges">
-        <span class="badge">{{skillA}}</span>
-        <span class="badge">{{skillB}}</span>
-        <span class="badge">{{skillC}}</span>
-        </section>
-        
-        <section class="aboutLinks">
-        <ul>
-        <li>{{email}}
-        <li>{{website}}
-        </ul>
-        </section>
-        
-      </div>
-    </section>
-  </div>
+  
+ <div class="container">
+ 
+ <section class="profile">
+ 
+ 
+ <div class="avatar" id="avatar" style="background-color: green;color: white">                                                                    
+ <script>
+ const fullName = "{{user.full_name}}";
+ if (fullName) {
+ const initials = fullName
+ .split(' ')
+ .map(word => word[0])
+ .join('')
+ .toUpperCase();
+ document.getElementById('avatar').textContent = initials;
+ }
+ </script>
+ </div>
+ <br>
+ <strong style="border-right: 1px solid green;padding-right: 15px;color:black;">{{ user.full_name | e }} </strong><strong style="padding: 15px"> @{{ user.name | e }}</strong>
+ 
+ 
+ <p class="about">{{ user.description | e }}</p>
+ 
+ <h3>Skills </h3>
+ <section class="badges">
+ {% for skill in user.skills %}
+ <span class="badge">{{ skill | e }}</span>
+ {% endfor %}
+ </section>
+ 
+ <strong>Location </strong><span class="badge">{{ user.location | e }}</span>
+ 
+
+ <h3>Public links </h3>
+ <section class="about_links" >
+ 
+ <strong>
+ <ul style="list-style: none;padding: 10px">
+ <li>{{ user.email | e }}</li><br>
+ 
+ <li>{{ user.website | e }}</li>
+ </ul>
+ </strong>
+ </section>
+ 
+ </div>
+ 
+ 
 {% include 'partials/footer.html' %}
 </body>
 </html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clusters</title>
+  <link rel="icon" type="image/jpg" href="{{url_for('static', filename='logo.jpg')}}">
+  <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}">
+</head>
+<body>
+
+<!--{% include 'partials/header.html' %}-->
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+ <center>
+ <img src="{{url_for('static', filename='banner.jpg')}}" style="width: 100%;border-radius: 10px;">
+ </center>
+ 
+
+ <div class="hero" style="background: url('{{url_for('static', filename='')}}') center/cover no-repeat;
+ border-radius: 10px; font: weght: 400;padding: 15px;">
+ 
+
+ <h3 style="purple"> Team & Partnership building </h3>
+,
+ <a href="{{ url_for('login') }}" >
+ <p style="padding: +15px;"><strong>Login</strong></p>
+ </a>
+ ,
+ <p style="">
+ 
+<a href="{{ url_for('register') }}" >
+<strong>Create Account</strong>
+</a>
+ 
+ <small> It's less than 2 minutes and free</small>
+ </p>
+ 
+ </div>
+ 
+ <br><br>
+ <section class="create-cluster">
+
+<h2>Create account</h2>
+<form action="/register" method="POST">
+  <strong>Name</strong>
+  <input type="text" name="username" placeholder="Preferred Username"><br>
+  <strong>Full Name</strong>
+  <input type="text" name="full_name" placeholder="Full Name"><br>
+  <strong>Email</strong>
+  <input type="email" name="email" placeholder="Email"><br>
+  <strong>Location</strong>
+  <input type="text" name="location" placeholder="Location"><br><br>
+  
+  <strong>Key Skills</strong>
+  
+  <div class="tag-input-container">
+    <ul id="tag-list"></ul>
+    <input type="text" id="tag-input" placeholder="Add upto 3 of your skills" autocomplete="off" />
+    <ul id="suggestions"></ul>
+    <input type="hidden" name="skills" id="skills-input">
+  </div>
+  
+  <br>
+  <strong>Password</strong>
+  <input type="password" name="password" placeholder="Password"><br>
+  <strong>Confirm Password</strong>
+  <input type="password" name="confirm_password" placeholder="Confirm Password"><br>
+  <button class="dashboardBtn" type="submit"> Register </button>
+</form>
+
+</section>
+
+ 
+{% include 'partials/footer.html' %}
+
+<script type="text/javascript" src="{{url_for('static', filename='createCluster.js')}}"></script>
+</body>
+</html>

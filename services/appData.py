@@ -3,12 +3,13 @@ def get_all_users():
     {
     "id": 1,
     "name": "Dimond",
+    "full_name": "Dimond Madechawo",
     "description": "A well known dev.",
     "website": "http://smartlearning.liveblog365.com/dimond",
     "email": "diamondkudzai70@gmail.com",
     "phone": "012 345 6789",
     "image" : "image1.png",
-    "skills": ["Christ Follower","Developer","SmartLearning"],
+    "skills": ["Developer","SmartLearning"],
     "clustersCount" : 7,
     "notificationsCount" : 4,
     "location": "Caribian",
@@ -17,12 +18,13 @@ def get_all_users():
     {
     "id": 2,
     "name": "JohnDoe",
+    "full_name": "Jon Deen Doe",
     "description": "A musician and Description for second user.",
     "website": "https://github.com/dimondkudzai",
     "email": "contact@secoggnduser.co.za",
     "phone": "+2712 345 6790",
     "image" : "image2.png",
-    "skills": ["Design","Art","Creativity"],
+    "skills": ["Designer","Creativity"],
     "clustersCount" : 0,
     "location": "Jamaica",
     "notificationsCount" : 10,
@@ -30,7 +32,8 @@ def get_all_users():
     },
     {
     "id": 3,
-    "name": "ChrisVoiloe",
+    "name": "ChrisVoiloe2",
+    "full_name": "Chris Voiloe",
     "description": "Here is Description for Chris user.",
     "website": "http://smartlearning.liveblog365.com/dimond/index.html",
     "email": "contact@seconduser.co.za",
@@ -43,7 +46,8 @@ def get_all_users():
     },
     {
     "id": 4,
-    "name": "VictorPose",
+    "name": "VictorPoseZw",
+    "full_name": "Victor Pose",
     "description": "Description for Victor Pose.",
     "website": "www.sPruser.co.za",
     "email": "contact@seconfghduser.co.za",
@@ -55,7 +59,8 @@ def get_all_users():
     },
     {
     "id": 5,
-    "name": "KnosiDube",
+    "name": "KnosiDubeSA",
+    "full_name": "Knosilazi Dube",
     "description": "A lawyer in SA.",
     "website": "www.sgueconduser.co.za",
     "email": "contact@setcondghuser.co.za",
@@ -75,32 +80,32 @@ def get_all_clusters():
 	"id": 1,
 	"name": "Creative Writers",
 	"target": "Let's build Apps",
-	"author": "ChrisVoiloe",
+	"author": "ChrisVoiloe2",
 	"created": "2025-10-22T10:05:00Z",
 	"location": "Harare",
 	"description": "Buiding Everything",
 	"tags": ["Legal", "Marketing", "Designer"],
-	"members": ["VictorPose", "KnosiDube", "Dimond"],
+	"members": ["VictorPoseZw", "KnosiDubeSA", "Dimond"],
 	"conversations": [
 	{
 	"chatId": 100,
 	"title": "Kickoff Meeting",
-	"author": "ChrisVoiloe",
+	"author": "ChrisVoiloe2",
 	"body": "Lets start working guys",
 	"created": "2025-10-22T10:05:00Z",
 	"comments": [
-	{"user": "VictorPose", "text": "Excited to write!", "timestamp": "2025-10-22T10:00:00Z"},
-	{"user": "KnosiDube", "text": "Let's go!", "timestamp": "2025-10-22T10:05:00Z"}
+	{"user": "VictorPoseZw", "text": "Excited to write!", "timestamp": "2025-10-22T10:00:00Z"},
+	{"user": "KnosiDubeSA", "text": "Let's go!", "timestamp": "2025-10-22T10:05:00Z"}
 	]
 	},{
 	"chatId": 101,
 	"title": "Kickoff Meeting",
-	"author": "ChrisVoiloe",
+	"author": "ChrisVoiloe2",
 	"body": "Lets start working guys",
 	"created": "2025-10-22T10:05:00Z",
 	"comments": [
-	{"user": "VictorPose", "text": "Excited to write!", "timestamp": "2025-10-22T10:00:00Z"},
-	{"user": "KnosiDube", "text": "Let's go!", "timestamp": "2025-10-22T10:05:00Z"}
+	{"user": "VictorPoseZw", "text": "Excited to write!", "timestamp": "2025-10-22T10:00:00Z"},
+	{"user": "KnosiDubeSA", "text": "Let's go!", "timestamp": "2025-10-22T10:05:00Z"}
 	]
 	}
 	]
@@ -114,15 +119,15 @@ def get_all_clusters():
 	"chatId": 106,
 	"title": "Kickoff Meeting",
 	"body": "Let's brainstorm the app structure.",
-	"author": "ChrisVoiloe",
+	"author": "ChrisVoiloe2",
 	"comments": [
 	{
-	"user": "VictorPose",
+	"user": "VictorPoseZw",
 	"text": "Excited to write!",
 	"timestamp": "2025-10-22T10:00:00Z"
 	},
 	{
-	"user": "KnosiDube",
+	"user": "KnosiDubeSA",
 	"text": "Let's go!",
 	"timestamp": "2025-10-22T10:05:00Z"
 	}
@@ -134,7 +139,7 @@ def get_all_clusters():
 	"id": 3,
 	"name": "Legal Minds",
 	"author": "LegalBoss",
-	"members": ["LegalBoss", "VictorPose", "Admin1"],
+	"members": ["LegalBoss", "VictorPoseZw", "Admin1"],
 	"location": "International",
 	"conversations": [
 	{
@@ -169,9 +174,9 @@ def get_all_clusters():
 	{
 	"id": 5,
 	"name": "Motivators",
-	"author": "ChrisVoiloe",
+	"author": "ChrisVoiloe2",
 	"location": "International",
-	"members": ["ChrisVoiloe", "InspireZim", "ShineOn"],
+	"members": ["ChrisVoiloe2", "InspireZim", "ShineOn"],
 	"conversations": [
 	{
 	"chatId": 105,
@@ -187,15 +192,15 @@ def get_all_clusters():
 	{
 	"id": 6,
 	"name": "Creative Writers",
-	"author": "ChrisVoiloe",
-	"members": ["ChrisVoiloe", "VictorPose", "AnnaSmith"],
+	"author": "ChrisVoiloe2",
+	"members": ["ChrisVoiloe2", "VictorPoseZw", "AnnaSmith"],
 	"conversations": [
 	{
 	"chatId": 101,
 	"title": "Kickoff Meeting",
-	"author": "ChrisVoiloe",
+	"author": "ChrisVoiloe2",
 	"comments": [
-	{"user": "VictorPose", "text": "Excited to write!", "timestamp": "2025-10-22T10:00:00Z"},
+	{"user": "VictorPoseZw", "text": "Excited to write!", "timestamp": "2025-10-22T10:00:00Z"},
 	{"user": "AnnaSmith", "text": "Let's go!", "timestamp": "2025-10-22T10:05:00Z"}
 	]
 	}
@@ -205,13 +210,13 @@ def get_all_clusters():
 	{
 	"id": 7,
 	"name": "Tech Founders",
-	"author": "VictorPose",
-	"members": ["VictorPose", "DevKing", "CodeQueen"],
+	"author": "VictorPoseZw",
+	"members": ["VictorPoseZw", "DevKing", "CodeQueen"],
 	"conversations": [
 	{
 	"chatId": 102,
 	"title": "Startup Ideas",
-	"author": "VictorPose",
+	"author": "VictorPoseZw",
 	"comments": [
 	{"user": "CodeQueen", "text": "AI is the future.", "timestamp": "2025-10-21T12:00:00Z"}
 	]
@@ -223,7 +228,7 @@ def get_all_clusters():
 	"id": 8,
 	"name": "Legal Minds",
 	"author": "LegalBoss",
-	"members": ["LegalBoss", "VictorPose", "Admin1"],
+	"members": ["LegalBoss", "VictorPoseZw", "Admin1"],
 	"conversations": [
 	{
 	"chatId": 103,
@@ -256,8 +261,8 @@ def get_all_clusters():
 	{
 	"id": 10,
 	"name": "Motivators",
-	"author": "ChrisVoiloe",
-	"members": ["ChrisVoiloe", "InspireZim", "ShineOn"],
+	"author": "ChrisVoiloe2",
+	"members": ["ChrisVoiloe2", "InspireZim", "ShineOn"],
 	"conversations": [
 	{
 	"chatId": 105,
@@ -273,15 +278,15 @@ def get_all_clusters():
 	{
 	"id": 11,
 	"name": "Creative Writers",
-	"author": "ChrisVoiloe",
-	"members": ["ChrisVoiloe", "VictorPose", "AnnaSmith"],
+	"author": "ChrisVoiloe2",
+	"members": ["ChrisVoiloe2", "VictorPoseZw", "AnnaSmith"],
 	"conversations": [
 	{
 	"chatId": 101,
 	"title": "Kickoff Meeting",
-	"author": "ChrisVoiloe",
+	"author": "ChrisVoiloe2",
 	"comments": [
-	{"user": "VictorPose", "text": "Excited to write!", "timestamp": "2025-10-22T10:00:00Z"},
+	{"user": "VictorPoseZw", "text": "Excited to write!", "timestamp": "2025-10-22T10:00:00Z"},
 	{"user": "AnnaSmith", "text": "Let's go!", "timestamp": "2025-10-22T10:05:00Z"}
 	]
 	}
@@ -291,13 +296,13 @@ def get_all_clusters():
 	{
 	"id": 12,
 	"name": "Tech Founders",
-	"author": "VictorPose",
-	"members": ["VictorPose", "DevKing", "CodeQueen"],
+	"author": "VictorPoseZw",
+	"members": ["VictorPoseZw", "DevKing", "CodeQueen"],
 	"conversations": [
 	{
 	"chatId": 102,
 	"title": "Startup Ideas",
-	"author": "VictorPose",
+	"author": "VictorPoseZw",
 	"comments": [
 	{"user": "CodeQueen", "text": "AI is the future.", "timestamp": "2025-10-21T12:00:00Z"}
 	]
@@ -309,7 +314,7 @@ def get_all_clusters():
 	"id": 13,
 	"name": "Legal Minds",
 	"author": "LegalBoss",
-	"members": ["LegalBoss", "VictorPose", "Admin1"],
+	"members": ["LegalBoss", "VictorPoseZw", "Admin1"],
 	"conversations": [
 	{
 	"chatId": 103,
@@ -342,8 +347,8 @@ def get_all_clusters():
 	{
 	"id": 15,
 	"name": "Motivators",
-	"author": "ChrisVoiloe",
-	"members": ["ChrisVoiloe", "InspireZim", "ShineOn"],
+	"author": "ChrisVoiloe2",
+	"members": ["ChrisVoiloe2", "InspireZim", "ShineOn"],
 	"conversations": [
 	{
 	"chatId": 105,

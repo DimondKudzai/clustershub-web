@@ -25,12 +25,14 @@
  <h3 style="purple"> Team & Partnership building </h3>
 ,
  <a href="#form">
- <p style="background-color: ; padding: +15px;"><strong>Login</strong></p>
+ <p style="padding: +15px;"><strong>Login</strong></p>
  </a>
  ,
- <p style="background-color: ; width: ;">
- <a href="#">
- <strong>Create Account</strong>
+ <p style="">
+ 
+<a href="{{ url_for('register') }}" >
+<strong>Create Account</strong>
+</a>
  </a>
  <small> It's less than 2 minutes</small>
  </p>
@@ -40,10 +42,10 @@
  <br><br>
  <section class="create-cluster">
 <h2>Login</h2>
-<form id="form">
+<form id="form" action="" method="POST">
 <input type="text/number" placeholder="Username or Email"><br>
 <input type="text/number" placeholder="Password"><br>
-<button class="dashboardBtn" style="background-color: blue;">Login</button>
+<button class="dashboardBtn" style="background-color: blue;" type="submit">Login</button>
 </form>
 </section>
  

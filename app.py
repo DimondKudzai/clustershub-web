@@ -32,22 +32,21 @@ def startCluster():
 
 @app.route('/myProfile')
 def myProfile():
-    user = get_all_users()[0]
-    return render_template(
-        'profile.html',
-        name=user['name'],
-        description=user['description'],
-        location=user.get('location', ''),
-        email=user['email'],
-        website=user['website'],
-        skillA=user['skills'][0],
-        skillB=user['skills'][1],
-        skillC=user['skills'][2]
-    )
-
+    users = get_all_users()
+    if users:
+        user = users[0]
+        return render_template('profile.html', user=user)
+    else:
+        # Handle the case where no users are found
+        return 'No users found', 404
+        
 @app.route('/login')
 def login():
     return render_template('auth.html')
+
+@app.route('/register')
+def register():
+    return render_template('register.html')
 
 @app.route('/groupChat')
 def groupChat():
@@ -60,21 +59,14 @@ def users():
 @app.route("/users/<name>")
 def getUser(name):
 	users = get_all_users()
-	user = next((u for u in users if u['name'] == name), None)
+	user = next((u for u in users if str(u['name']) == str(name)), None)
 	if user:
-		return render_template(
-		'profile.html', 
-		name=user['name'], 
-		description=user.get('description', ''),
-	    location=user.get('location', ''), 
-		email=user.get('email', ''), 
-		website=user.get('website', ''),
-		skillA=user['skills'][0],
-		skillB=user['skills'][1],
-		skillC=user['skills'][2]
-		)
-	return jsonify({'error': 'User not found'}), 404
-
+   	    return render_template('profile.html', user=user)
+	else:
+	# Handle the case where no users are found
+	    return 'No users found', 404
+	    
+	    
 @app.route('/clusters')
 def clusters():
     cluster = get_all_clusters()
@@ -182,6 +174,10 @@ def recommended_clusters():
 
     return render_template('recommended.html', clusters=matched_clusters, user=current_user)
     
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -23,18 +23,18 @@
     <p class="about">{{ cluster.target }}</p>  
     
     <section>
-    <strong>Location: </strong> <span class="badge">{{ cluster.location }}</span>
+    <strong>Location </strong> <span class="badge">{{ cluster.location }}</span>
     </section>
     
+    <h3>Open Slots</h3>
     <section class="badges">
-    <strong>Open Slots: </strong>
     {% for tag in cluster.tags %}
     <span class="badge">{{ tag }}</span>
     {% endfor %}
     </section>
     
+     <h3>Members </h3>
     <section class="badges">
-      <strong>Members: </strong>
       {% for member in cluster.members %}
         <span class="badge" style="background-color: blue;color: white;link-color: inherit;">
         <a href="{{ url_for('getUser', name=member) }}" style="color: inherit">@{{ member }}</a>
@@ -42,8 +42,9 @@
       {% endfor %}
     </section>
     
-    <section class="about" style="padding:5px;">
     <h3>About Cluster</h3>
+    <section class="about" style="padding:5px;">
+    
     <p>{{ cluster.description }}</p>
     </section>
     
@@ -51,11 +52,11 @@
    <button class="dashboardBtn" style="background-color: ; width: 40%;"><strong>Open Cluster</strong></button>
    <button class="dashboardBtn" style="background-color: ; width: 40%;"><strong>Edit Cluster</strong></button>
    <button class="dashboardBtn" style="background-color: ; width: 40%;"><strong>Open Cluster</strong></button>
-   
+  
    </a>
    <br><br>
     <section class="extraText">
-      <ul>
+      <ul style="list-style: none;">
         <li>Author: <a href="{{ url_for('getUser', name=cluster.author) }}">@{{ cluster.author }}</a></li>
         <li>Date Created: {{ cluster.created }}</li>
       </ul>

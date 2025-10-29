@@ -30,7 +30,7 @@
    <section style="color: black">
    <section>
    <div class="thread">
-   <strong style="font-size:16px; color: green;">{{ thread.title }}</strong><span> by <a href="{{ url_for('getUser', name=member) }}" style="color: blue">@{{ thread.author }}</a></span>
+   <strong style="font-size:16px; color: green;">{{ thread.title }}</strong><span> by <a href="{{ url_for('getUser', name=thread.author) }}" style="color: blue">@{{ thread.author }}</a></span>
    <br>
    <p>{{ thread.body }}</p>
    <small>{{thread.created}}</small>
@@ -39,7 +39,7 @@
    <div class="comments">
    <h3>Commments</h3>
    {% for comment in thread.comments %}
-   <p><a href="{{ url_for('getUser', name=member) }}" style="color: blue">@{{ comment.user }}</a> {{ comment.text }} <br><small>{{ comment.timestamp }}</small></p>
+   <p><a href="{{ url_for('getUser', name=comment.user) }}" style="color: blue">@{{ comment.user }}</a> {{ comment.text }} <br><small>{{ comment.timestamp }}</small></p>
   
    {% endfor %}
    </div>

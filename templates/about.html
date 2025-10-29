@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cluster Dashboard</title>
+  <link rel="icon" type="image/jpg" href="{{url_for('static', filename='images/logo.jpg')}}">
+  <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}">
+  
+  <style>
+  body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f4f6f8;
+  color: #333;
+  margin: 0;
+  padding: 2rem;
+  }
+  
+  .container {
+  max-width: 500px;
+  margin: auto;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  text-align: center;
+  }
+  
+  h1 {
+  margin-bottom: 0.2rem;
+  color: #007bff;
+  }
+  
+  .subtitle {
+  color: #666;
+  margin-bottom: 1.5rem;
+  }
+  
+  .idea-form input,
+  .idea-form textarea {
+  width: 100%;
+  padding: 0.75rem;
+  margin: 0.5rem 0;
+  border: 1px solid green;
+  border-radius: 6px;
+  font-size: 1rem;
+  }
+  
+  .idea-form button {
+  width: 100%;
+  padding: 0.75rem;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  }
+  
+  .idea-form button:hover {
+  background: #0056b3;
+  }
+  
+  footer {
+  margin-top: 2rem;
+  font-size: 0.9rem;
+  color: #999;
+  }
+  </style>
+</head>
+<body>
+  
+    {% include 'partials/header.html' %}
+    <div class="container">
+    <p class="subtitle">Communicate. Collaborate. Build. </p>
+    <p>Create or join a cluster with people who have the skills you need.</p>
+    
+    
+    <div class="cluster-explainer" style="padding: 1.5rem; background: #f9f9f9; border-radius: 8px; border-left: 4px solid green; margin: 2rem 0; font-family: Arial, sans-serif; line-height: 1.6;">
+    <h2 style="margin-top: 0; color: #007bff;">Why Cluster Hub?</h2>
+    <p><strong>The Hustle:</strong> Most projects fail not because of bad ideas, but because it's hard to find the right people — developers, designers, marketers, or business minds — to build with.</p>
+    
+    <p><strong>Cluster Hub solves this:</strong></p>
+    <ul style="margin-left: 1rem;">
+    <li>✅ Matchmaking for creators, devs, designers & founders</li>
+    <li>✅ Join clusters by skill, interest, or project stage</li>
+    <li>✅ Tag your needs (e.g. “Looking for UI/UX, legal, Marketing, and Growth Hacker”)</li>
+    <li>✅ Build without company setup — just start collaborating</li>
+    <li>✅ Share updates & collaborate plus an interactive dashboard</li>
+    </ul>
+    
+    <p><strong>Why it matters:</strong> Team formation is broken. Cluster Hub fixes it by helping you build your dream team — faster and smarter.</p>
+    
+    <blockquote style="margin: 1rem 0; padding-left: 1rem; border-left: 3px solid #ccc; font-style: italic; color: #555;">
+     "Clusters Hub lets your team find you, and hit the ground running."
+    </blockquote>
+    </div>
+<p>As we try to build a perfect platiform that solves your problems, your input is impotant. Please tell us "What would you want Clusters Hub to do for you?"
+    
+    <form action="https://formsubmit.co/diamondkudzai70@gmail.com" method="POST" class="idea-form">
+      <input type="text" name="name" placeholder="Your name (optional)">
+      <input type="email" name="email" placeholder="Your email" required>
+      <textarea name="message" placeholder="What would you want Clusters Hub to do for you?" required></textarea>
+      <button type="submit">Submit</button>
+    </form>
+
+    <footer>
+      <p>© 2025 Clusters Hub </p>
+    </footer>
+  </div>
+</body>
+</html>
