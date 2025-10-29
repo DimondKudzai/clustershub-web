@@ -19,6 +19,7 @@ width: 100%;
 top: 0;
 z-index: 1000;
 animation: fadeIn 1s ease-in-out;
+
 }
 
 .logo {
@@ -79,7 +80,8 @@ section {
   background: #fff;
   padding: 1rem;
   border-radius: 8px;
-  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  border: 1px solid green;
 }
 .create-cluster{
 paddig: 25px;
@@ -105,8 +107,8 @@ height: 5rem;
 
 
 .circle {
-  width: 80px;
-  height: 80px;
+  width: 100px;
+  height: 100px;
   background: #ccc;
   border-radius: 50%;
   border: 1px solid green;
@@ -199,6 +201,7 @@ border-radius: 5px;
 padding: 10px;
 font-size: 14px;
 margin-top: +10px;
+box-shadow: 0 0 5px rgba(0,0,0,0.1);
 }
 .tags{
 margin-top: -10px;
@@ -278,8 +281,8 @@ color: white;
 }
 
 .avatar {
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   background-color: green;
   color: white;

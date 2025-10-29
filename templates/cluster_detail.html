@@ -15,15 +15,26 @@
   </main>
  
 <div class="container">
+
+<section style="padding: 5px;border: none;">
+    <center>
   <h2>Cluster Details</h2>
+  </center>
+</section>
+  <br><br>
+  
   <section class="profile" id="cluster">
+  
     <img src="{{ url_for('static', filename='cluster.jpg') }}" class="circle" id="">
-    
+    <button class="dashboardBtn" style="float: right;background-color: blue;" id="share-button">
+    🔗Copy cluster link
+    </button>
+
     <h3>{{ cluster.name }}</h3>
     <p class="about">{{ cluster.target }}</p>  
     
     <section>
-    <strong>Location </strong> <span class="badge">{{ cluster.location }}</span>
+    <strong>🌐 Location </strong> <span class="badge">{{ cluster.location }}</span>
     </section>
     
     <h3>Open Slots</h3>
@@ -33,7 +44,7 @@
     {% endfor %}
     </section>
     
-     <h3>Members </h3>
+     <h3>👥 Members </h3>
     <section class="badges">
       {% for member in cluster.members %}
         <span class="badge" style="background-color: blue;color: white;link-color: inherit;">
@@ -66,5 +77,26 @@
 </div>
  
 {% include 'partials/footer.html' %}
+
+<script type="text/javascript">
+// Get the button element
+const shareButton = document.getElementById('share-button');
+
+// Add an event listener to the button
+shareButton.addEventListener('click', async () => {
+  try {
+    // Get the current URL
+    const url = window.location.href;
+
+    // Copy the URL to the clipboard
+    await navigator.clipboard.writeText(url);
+
+    // Show a success message (optional)
+    alert('Link copied to clipboard!');
+  } catch (error) {
+    console.error('Error copying link to clipboard:', error);
+  }
+});
+</script>
 </body>
 </html>

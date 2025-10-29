@@ -15,6 +15,9 @@
  
  <section class="profile">
  
+ <button class="dashboardBtn" style="float: right;background-color: blue;" id="share-button">
+    🔗Copy Profile link
+    </button>
  
  <div class="avatar" id="avatar" style="background-color: green;color: white">                                                                    
  <script>
@@ -32,7 +35,7 @@
  <br>
  <strong style="border-right: 1px solid green;padding-right: 15px;color:black;">{{ user.full_name | e }} </strong><strong style="padding: 15px"> @{{ user.name | e }}</strong>
  
- 
+
  <p class="about">{{ user.description | e }}</p>
  
  <h3>Skills </h3>
@@ -42,10 +45,10 @@
  {% endfor %}
  </section>
  
- <strong>Location </strong><span class="badge">{{ user.location | e }}</span>
+ <strong>🌐 Location </strong><span class="badge">{{ user.location | e }}</span>
  
 
- <h3>Public links </h3>
+ <h3>Public links 🔗</h3>
  <section class="about_links" >
  
  <strong>
@@ -61,5 +64,26 @@
  
  
 {% include 'partials/footer.html' %}
+<script type="text/javascript">
+
+// Get the button element
+const shareButton = document.getElementById('share-button');
+
+// Add an event listener to the button
+shareButton.addEventListener('click', async () => {
+  try {
+    // Get the current URL
+    const url = window.location.href;
+
+    // Copy the URL to the clipboard
+    await navigator.clipboard.writeText(url);
+
+    // Show a success message (optional)
+    alert('Link copied to clipboard!');
+  } catch (error) {
+    console.error('Error copying link to clipboard:', error);
+  }
+});
+</script>
 </body>
 </html>

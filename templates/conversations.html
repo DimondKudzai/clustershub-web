@@ -18,26 +18,29 @@
 
   <div class="" style="width: 100%">
   
+  <section style="padding: 5px;border: none;">
+  <center>
   <h2>{{ cluster.name }}  💬 </h2>
   <p style="color: black">{{ cluster.target }} 
   <a href="#start-thread" >
-  <button class="dashboardBtn">Start Thread</button></p>
+  <button class="dashboardBtn">Start Thread 📢</button></p>
   </a>
-
+</center>
+</section>
   <br>
    {% for thread in cluster.conversations %}
    <div style=" ">
    <section style="color: black">
    <section>
    <div class="thread">
-   <strong style="font-size:16px; color: green;">{{ thread.title }}</strong><span> by <a href="{{ url_for('getUser', name=thread.author) }}" style="color: blue">@{{ thread.author }}</a></span>
+   <strong style="font-size:16px; color: green;"> ⛓️ {{ thread.title }}</strong><span> by <a href="{{ url_for('getUser', name=thread.author) }}" style="color: blue">@{{ thread.author }}</a></span>
    <br>
    <p>{{ thread.body }}</p>
    <small>{{thread.created}}</small>
    </section>
    
    <div class="comments">
-   <h3>Commments</h3>
+   <h3>🗣 ️Commments</h3>
    {% for comment in thread.comments %}
    <p><a href="{{ url_for('getUser', name=comment.user) }}" style="color: blue">@{{ comment.user }}</a> {{ comment.text }} <br><small>{{ comment.timestamp }}</small></p>
   
@@ -64,7 +67,7 @@
   <form id="new-thread-form">
   <input type="text" id="thread-title" placeholder="Thread title" required />
   <textarea type="text" name="text" placeholder="Message body" required></textarea><br>
-  <button type="submit" class="dashboardBtn">Post</button>
+  <button type="submit" class="dashboardBtn">Submit Thread ⛓️</button>
   <span id="start-thread"></span>
   </form>
   

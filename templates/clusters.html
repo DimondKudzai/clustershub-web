@@ -12,13 +12,17 @@
 {% include 'partials/header.html' %}
 
   <div class="container">
-  <h2 style="color: blue">{{clustersCount}} Clusters envolved </h2>
-  
+  <section style="padding: 5px;border: none;">
+  <center>
+  <h3 style="color: blue">Your 👤Account is involved in {{clustersCount}} Clusters</h3>
+  </center>
+  </section>
+  <br><br>
   {% for cluster in clusters %}
   
   <section class="profile" id="cluster" class="">
   <img src="{{ url_for('static', filename='cluster.jpg') }}" class="circle" id="">
-  <a href="{{ url_for('getCluster', id=cluster.id) }}"><button class="dashboardBtn" style="float: right;background-color: blue;">view</button></a>
+  <a href="{{ url_for('getCluster', id=cluster.id) }}"><button class="dashboardBtn" style="float: right;background-color: blue;">🔍 View Cluster</button></a>
   <h3>{{ cluster.name }}</h3>
   <p class="about">{{ cluster.target }}</p>      
   
