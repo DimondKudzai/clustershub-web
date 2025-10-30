@@ -4,15 +4,17 @@ def get_all_users():
     "id": 1,
     "name": "Dimond",
     "full_name": "Dimond Madechawo",
-    "description": "A well known dev.",
-    "website": "http://smartlearning.liveblog365.com/dimond",
+    "description": "A well known software dev.",
+    "website": "http://smartlearning.liveblog365.com",
     "email": "diamondkudzai70@gmail.com",
     "phone": "012 345 6789",
+    "password": "chimboza@1",
     "image" : "image1.png",
-    "skills": ["Developer","SmartLearning"],
+    "skills": ["Health","Finance","Farmer"],
     "clustersCount" : 7,
+    "clusters": [2,1,4,15,8],
     "notificationsCount" : 4,
-    "location": "Caribian",
+    "location": "Zimbabwe",
     "messages":["Doing great","We expect more","we will get there"]
     },
     {
@@ -23,11 +25,15 @@ def get_all_users():
     "website": "https://github.com/dimondkudzai",
     "email": "contact@secoggnduser.co.za",
     "phone": "+2712 345 6790",
+    "password": "chimboza@1",
     "image" : "image2.png",
     "skills": ["Designer","Creativity"],
     "clustersCount" : 0,
-    "location": "Jamaica",
     "notificationsCount" : 10,
+    "clusters": [1,2,3,12,8,9],
+    "location": "Zimbabwe",
+    "messages":["@said something","We expect more","we will get there"]
+    
     
     },
     {
@@ -38,10 +44,14 @@ def get_all_users():
     "website": "http://smartlearning.liveblog365.com/dimond/index.html",
     "email": "contact@seconduser.co.za",
     "phone": "+2712 345 6790",
+    "password": "chimboza@1",
     "image" : "image3.png",
     "skills": ["Public Speaking","Motivator","Counceling"],
     "clustersCount" : 9,
-    "notificationsCount" : 8
+    "notificationsCount" : 8,
+    "clusters": [3,4,5,6,7,8,15],
+    "location": "Jamaica",
+    "messages":["@said something","We expect more","we will get there"]
     
     },
     {
@@ -52,10 +62,15 @@ def get_all_users():
     "website": "www.sPruser.co.za",
     "email": "contact@seconfghduser.co.za",
     "phone": "012 345 6790",
+    "password": "chimboza@1",
     "image" : "image4.png",
     "skills": ["Real estate","Construction","Legal"],
-    "clustersCount" : 8,
+    "clustersCount": 0,
+    "clusters": [5,6,7,14,1,2,3],
     "notificationsCount" : 4,
+    "location": "USA",
+    "messages":["@Dimond said something","We expect more","we will get there"]
+    
     },
     {
     "id": 5,
@@ -65,10 +80,14 @@ def get_all_users():
     "website": "www.sgueconduser.co.za",
     "email": "contact@setcondghuser.co.za",
     "phone": "+26312 345 6790",
+    "password": "chimboza@1",
     "image" : "image5.png",
     "skills": ["Marketing","Business","Analysis"],
     "clustersCount" : 1,
+    "clusters": [10,6,7,2,4,5],
     "notificationsCount" : 3,
+    "location": "Toronto",
+    "messages":["@said something","We expect more","we will get there"]
     
     }
     ]
@@ -78,33 +97,33 @@ def get_all_clusters():
 	clusters = [
 	{
 	"id": 1,
-	"name": "Creative Writers",
-	"target": "Let's build Apps",
-	"author": "ChrisVoiloe2",
+	"name": "Brain Flow AI",
+	"target": "Building AI that solves health issues",
+	"author": "Dimond",
 	"created": "2025-10-22T10:05:00Z",
-	"location": "Harare",
-	"description": "Buiding Everything",
-	"tags": ["Legal", "Marketing", "Designer"],
-	"members": ["VictorPoseZw", "KnosiDubeSA", "Dimond"],
+	"location": "International",
+	"description": "Brain Flow AI is a project that aims to develop an AI tool that reads brain flow. This brain flow will be recorded, analyzed and used for medical treatment https://github.com/BrainFlowAi/BrainFlowAi.",
+	"tags": ["ML", "AI", "Neurology","health"],
+	"members": ["Dimond"],
 	"conversations": [
 	{
-	"chatId": 100,
-	"title": "Kickoff Meeting",
-	"author": "ChrisVoiloe2",
+	"chatId": 1,
+	"title": "Looking for early contributors",
+	"author": "Dimond",
 	"body": "Lets start working guys",
 	"created": "2025-10-22T10:05:00Z",
 	"comments": [
-	{"user": "VictorPoseZw", "text": "Excited to write!", "timestamp": "2025-10-22T10:00:00Z"},
+	{"user": "VictorPoseZw", "text": "Excited to contribute!", "timestamp": "2025-10-22T10:00:00Z"},
 	{"user": "KnosiDubeSA", "text": "Let's go!", "timestamp": "2025-10-22T10:05:00Z"}
 	]
 	},{
-	"chatId": 101,
+	"chatId": 2,
 	"title": "Kickoff Meeting",
 	"author": "ChrisVoiloe2",
 	"body": "Lets start working guys",
 	"created": "2025-10-22T10:05:00Z",
 	"comments": [
-	{"user": "VictorPoseZw", "text": "Excited to write!", "timestamp": "2025-10-22T10:00:00Z"},
+	{"user": "VictorPoseZw", "text": "Excited to start", "timestamp": "2025-10-22T10:00:00Z"},
 	{"user": "KnosiDubeSA", "text": "Let's go!", "timestamp": "2025-10-22T10:05:00Z"}
 	]
 	}
@@ -112,18 +131,24 @@ def get_all_clusters():
 	},
 	{
 	"id": 2,
-	"name": "Native buider",
-	"target": "Launching",
+	"name": "Fish Famers",
+	"target": "Produce Breams for sale",
+	"author": "Dimond",
+	"created": "2025-10-22T10:05:00Z",
+	"location": "Zimbabwe",
+	"members": ["Dimond"],
+	"description": "Fish production is cheap and there is market in Zimbabwe. With land and small capital much returns",
+	"tags": ["Farmer", "Marketing", "Finance"],
 	"conversations": [
 	{
-	"chatId": 106,
-	"title": "Kickoff Meeting",
-	"body": "Let's brainstorm the app structure.",
-	"author": "ChrisVoiloe2",
+	"chatId": 1,
+	"title": "Starting",
+	"body": "Let's find land with dam or pond.",
+	"author": "Dimond",
 	"comments": [
 	{
 	"user": "VictorPoseZw",
-	"text": "Excited to write!",
+	"text": "Yes sure",
 	"timestamp": "2025-10-22T10:00:00Z"
 	},
 	{
@@ -138,7 +163,10 @@ def get_all_clusters():
 	{
 	"id": 3,
 	"name": "Legal Minds",
-	"author": "LegalBoss",
+	"author": "ChrisVoiloe2",
+	"created": "2025-10-22T10:05:00Z",
+	"description": "Buiding Everything",
+	"tags": ["smartlearning", "developer", "Designer"],
 	"members": ["LegalBoss", "VictorPoseZw", "Admin1"],
 	"location": "International",
 	"conversations": [
@@ -156,8 +184,13 @@ def get_all_clusters():
 	{
 	"id": 4,
 	"name": "Design Lab",
-	"author": "AnnaSmith",
+	"location": "Panama",
+	"author": "ChrisVoiloe2",
+	"created": "2025-10-22T10:05:00Z",
 	"location": "Harare",
+	"description": "Buiding Everything",
+	"tags": ["Legal", "Co-founders", "DevOps"],
+	"target": "Let's Design Apps",
 	"members": ["AnnaSmith", "SketchMaster", "PixelHero"],
 	"conversations": [
 	{
@@ -175,7 +208,13 @@ def get_all_clusters():
 	"id": 5,
 	"name": "Motivators",
 	"author": "ChrisVoiloe2",
+	"created": "2025-10-22T10:05:00Z",
+	"location": "Harare",
+	"description": "Buiding Everything",
+	"tags": ["Legal", "Marketing", "Designer"],
 	"location": "International",
+	"target": "Let's build Apps",
+	"tags": ["smartlearning", "Marketing", "Developer"],
 	"members": ["ChrisVoiloe2", "InspireZim", "ShineOn"],
 	"conversations": [
 	{
@@ -193,6 +232,10 @@ def get_all_clusters():
 	"id": 6,
 	"name": "Creative Writers",
 	"author": "ChrisVoiloe2",
+	"created": "2025-10-22T10:05:00Z",
+	"location": "Harare",
+	"description": "Buiding Everything",
+	"tags": ["Legal", "Marketing", "Designer"],
 	"members": ["ChrisVoiloe2", "VictorPoseZw", "AnnaSmith"],
 	"conversations": [
 	{
@@ -211,6 +254,10 @@ def get_all_clusters():
 	"id": 7,
 	"name": "Tech Founders",
 	"author": "VictorPoseZw",
+	"created": "2025-10-22T10:05:00Z",
+	"location": "Harare",
+	"description": "Buiding Everything",
+	"tags": ["Marketing", "Designer"],
 	"members": ["VictorPoseZw", "DevKing", "CodeQueen"],
 	"conversations": [
 	{
@@ -227,7 +274,11 @@ def get_all_clusters():
 	{
 	"id": 8,
 	"name": "Legal Minds",
-	"author": "LegalBoss",
+	"author": "ChrisVoiloe2",
+	"created": "2025-10-22T10:05:00Z",
+	"location": "Harare",
+	"description": "Buiding Everything",
+	"tags": ["Legal", "Marketing", "Designer"],
 	"members": ["LegalBoss", "VictorPoseZw", "Admin1"],
 	"conversations": [
 	{
@@ -244,7 +295,11 @@ def get_all_clusters():
 	{
 	"id": 9,
 	"name": "Design Lab",
-	"author": "AnnaSmith",
+	"author": "ChrisVoiloe2",
+	"created": "2025-10-22T10:05:00Z",
+	"location": "Harare",
+	"description": "Buiding Everything",
+	"tags": ["Legal", "Marketing", "Designer"],
 	"members": ["AnnaSmith", "SketchMaster", "PixelHero"],
 	"conversations": [
 	{
@@ -262,6 +317,10 @@ def get_all_clusters():
 	"id": 10,
 	"name": "Motivators",
 	"author": "ChrisVoiloe2",
+	"created": "2025-10-22T10:05:00Z",
+	"location": "Harare",
+	"description": "Buiding Everything",
+	"tags": ["Legal", "Marketing", "Designer"],
 	"members": ["ChrisVoiloe2", "InspireZim", "ShineOn"],
 	"conversations": [
 	{
@@ -278,7 +337,10 @@ def get_all_clusters():
 	{
 	"id": 11,
 	"name": "Creative Writers",
-	"author": "ChrisVoiloe2",
+	"created": "2025-10-22T10:05:00Z",
+	"location": "Harare",
+	"description": "Buiding Everything",
+	"tags": ["Legal", "Marketing", "Designer"],
 	"members": ["ChrisVoiloe2", "VictorPoseZw", "AnnaSmith"],
 	"conversations": [
 	{
@@ -313,7 +375,11 @@ def get_all_clusters():
 	{
 	"id": 13,
 	"name": "Legal Minds",
-	"author": "LegalBoss",
+	"author": "ChrisVoiloe2",
+	"created": "2025-10-22T10:05:00Z",
+	"location": "Harare",
+	"description": "Buiding Everything",
+	"tags": ["Legal", "Marketing", "Designer"],
 	"members": ["LegalBoss", "VictorPoseZw", "Admin1"],
 	"conversations": [
 	{
@@ -330,7 +396,11 @@ def get_all_clusters():
 	{
 	"id": 14,
 	"name": "Design Lab",
-	"author": "AnnaSmith",
+	"author": "ChrisVoiloe2",
+	"created": "2025-10-22T10:05:00Z",
+	"location": "Harare",
+	"description": "Buiding Everything",
+	"tags": ["Legal", "Marketing", "Designer"],
 	"members": ["AnnaSmith", "SketchMaster", "PixelHero"],
 	"conversations": [
 	{
@@ -348,6 +418,10 @@ def get_all_clusters():
 	"id": 15,
 	"name": "Motivators",
 	"author": "ChrisVoiloe2",
+	"created": "2025-10-22T10:05:00Z",
+	"location": "Harare",
+	"description": "Buiding Everything",
+	"tags": ["Legal", "Marketing", "Designer"],
 	"members": ["ChrisVoiloe2", "InspireZim", "ShineOn"],
 	"conversations": [
 	{

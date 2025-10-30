@@ -2,18 +2,21 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="keywords" content="Exclusive, Hot picks, Recommended" />
+  <meta name="description" content="Here are recommended Clusters that matches your skills" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Clusters</title>
+  <title>Recommended Clusters</title>
   <link rel="icon" type="image/jpg" href="{{url_for('static', filename='logo.jpg')}}">
   <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}">
 </head>
 <body>
 
 {% include 'partials/header.html' %}
+
 <section style="padding: 5px;border: none;">
     <center>
     <h3 style="color: blue;">
-    Recommended Clusters for <a href="{{ url_for('getUser',name=user.name) }}">@{{ user.name }}</a>
+    Recommended Clusters for 👤 <a href="{{ url_for('getUser',name=user.name) }}">@{{ user.name }} </a>
     </h3>
     </center>
   </section>
@@ -24,7 +27,9 @@
     
     <section class="profile" id="cluster" class="">
     <img src="{{ url_for('static', filename='cluster.jpg') }}" class="circle" id="">
-    <a href="{{ url_for('getCluster', id=cluster.id) }}"><button class="dashboardBtn" style="float: right;background-color: blue;">view</button></a>
+    
+    <a href="{{ url_for('getCluster', id=cluster.id) }}"><button class="dashboardBtn" style="float: right;background-color: blue;">🔍 View Cluster</button></a>
+    
     <h3>{{ cluster.name }}</h3>
     <p class="about">{{ cluster.target }}</p>      
     

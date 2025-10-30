@@ -2,12 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="keywords" content="User profile, Users" />
+  <meta name="description" content="This is User profile on Clusters Hub" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cluster Dashboard</title>
-  <link rel="icon" type="image/jpg" href="{{url_for('static', filename='images/logo.jpg')}}">
+  <title>User Profile</title>
+  <link rel="icon" type="image/jpg" href="{{url_for('static', filename='logo.jpg')}}">
   <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}">
 </head>
 <body>
+
 {% include 'partials/header.html' %}
   
   
@@ -48,7 +51,7 @@
  <strong>🌐 Location </strong><span class="badge">{{ user.location | e }}</span>
  
 
- <h3>Public links 🔗</h3>
+ <h3> 🔗 Public links</h3>
  <section class="about_links" >
  
  <strong>

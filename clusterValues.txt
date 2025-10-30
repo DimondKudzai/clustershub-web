@@ -1,3 +1,0 @@
-notificationsNum
-clusterNum
-monster cluster

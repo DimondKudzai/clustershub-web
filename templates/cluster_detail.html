@@ -2,17 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="keywords" content="About, Cluster, Details" />
+  <meta name="description" content="Here is information about Cluster" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Clusters</title>
+  <title>Cluster Details</title>
   <link rel="icon" type="image/jpg" href="{{url_for('static', filename='logo.jpg')}}">
   <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}">
 </head>
 <body>
 
 {% include 'partials/header.html' %}
-  <main>
-    {% block content %}{% endblock %}
-  </main>
  
 <div class="container">
 
@@ -54,7 +53,7 @@
     </section>
     
     <h3>About Cluster</h3>
-    <section class="about" style="padding:5px;">
+    <section class="about" style="padding:15px;">
     
     <p>{{ cluster.description }}</p>
     </section>

@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="keywords" content="Cluster, Settings, Edit Cluster" />
+  <meta name="description" content="Change and add Account information " />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="keywords" content="Create Cluster" />
-  <meta name="description" content="Build or find your team. Create Cluster for Clusters Hub." />
-  <title>Create Cluster</title>
+  <title>Cluster Settings</title>
   <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}">
   <link rel="icon" type="image/jpg" href="{{url_for('static', filename='logo.jpg')}}">
   </head>
@@ -13,23 +13,22 @@
 
 {% include 'partials/header.html' %}
   
-
   <div class="container">
 
     <section class="create-cluster">
-      <h2>Create Cluster</h2>
+      <h2>🖊 Edit️ Create Cluster</h2>
       
       <form action="" method="POST">
       <strong class=""> Name</strong>
-      <input type="text" placeholder="Cluster Name" class="input"><br><br>
+      <input type="text" placeholder="Update Cluster Name" class="input"><br><br>
       <strong class=""> Description</strong>
-      <textarea placeholder="Description"></textarea><br><br>
+      <textarea placeholder=" Update Description"></textarea><br><br>
       
       <strong class="">Roles Needed</strong><br><br>
       
       <div class="tag-input-container">
       <ul id="tag-list"></ul>
-      <input type="text" id="tag-input" placeholder="Add skill or roles you need..." autocomplete="off" />
+      <input type="text" id="tag-input" placeholder="Update skill or roles you need..." autocomplete="off" />
       <ul id="suggestions"></ul>
       </div>
       
@@ -44,7 +43,7 @@
         </select>
         
         <br><strong class="">Current Target</strong>
-        <input type="text" placeholder="start typing.." class="input"><br>     
+        <input type="text" placeholder="update target.." class="input"><br>     
     
         <button class="dashboardBtn" type="submit"><span style="font-size: 16px;">Create Cluster</span></button>
     </form>
