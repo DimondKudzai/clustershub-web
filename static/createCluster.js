@@ -2,7 +2,7 @@ const input = document.getElementById('tag-input');
 const tagList = document.getElementById('tag-list');
 const suggestionsBox = document.getElementById('suggestions');
 
-const availableTags = ["Frontend", "Backend", "DevOps", "Marketing", "Finance"];
+//const availableTags = "{{ suggested_skills }}";
 const selectedTags = [];
 
 input.addEventListener('input', () => {

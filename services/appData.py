@@ -1,3 +1,7 @@
+def get_suggestions():
+    skills = ["Frontend", "Backend", "DevOps", "Marketing", "Finance"]
+    return skills
+
 def get_all_users():
     users = [
     {
@@ -10,7 +14,7 @@ def get_all_users():
     "phone": "012 345 6789",
     "password": "chimboza@1",
     "image" : "image1.png",
-    "skills": ["Health","Finance","Farmer"],
+    "skills": ["Health","Finance","Farmer","Software developer"],
     "clustersCount" : 7,
     "clusters": [2,1,4,15,8],
     "notificationsCount" : 4,

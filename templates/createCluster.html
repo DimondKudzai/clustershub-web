@@ -54,6 +54,11 @@
     
     {% include 'partials/footer.html' %}
     
+    <script>
+    const availableTags = {{ suggested_skills | tojson }};
+    </script>
+   
+    
     <script type="text/javascript" src="{{url_for('static', filename='createCluster.js')}}"></script>
     </body>
     </html>

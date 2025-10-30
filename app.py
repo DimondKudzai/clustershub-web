@@ -3,7 +3,7 @@ import os
 import sqlite3
 from datetime import datetime
 from flask import jsonify
-from services.appData import get_all_users, get_all_clusters
+from services.appData import get_all_users, get_all_clusters, get_suggestions
 
 app = Flask(__name__)
 
@@ -28,7 +28,8 @@ def home():
     
 @app.route('/startCluster')
 def startCluster():
-    return render_template('createCluster.html')
+    suggested = get_suggestions()
+    return render_template('createCluster.html', suggested_skills=suggested)
 
 @app.route('/myProfile')
 def myProfile():
