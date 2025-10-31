@@ -61,17 +61,23 @@
     <br>
     <section>
     <center>
+    
+    
    <a href="{{ url_for('show_cluster', cluster_id=cluster.id) }}">
-   <button class="dashboardBtn" style="background-color: ; width: 90%;"><strong> Open Cluster </strong></button>
+   <button class="dashboardBtn" style="background: ; width: 90%;"><strong> Open Cluster </strong></button>
    </a>
    
+   
    <a href="{{ url_for('requested', cluster_id=cluster.id) }}">
-   <button class="dashboardBtn" style="background-color: ; width: 90%;"><strong> Slot Member Requests </strong></button>
+   <button class="dashboardBtn" style="background: ; width: 90%;"><strong> Member Requests </strong></button>
    </a>
    
     <a href="{{ url_for('profile_settings') }}" >
-   <button class="dashboardBtn" style="background-color: ; width: 90%;"><strong> Settings </strong></button>
+   <button class="dashboardBtn" style="background: ; width: 90%;"><strong> Settings </strong></button>
    </a>
+   
+   
+   
    </center>
    </section>
    

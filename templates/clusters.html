@@ -16,10 +16,18 @@
   <div class="container">
   <section style="padding: 5px;border: none;">
   <center>
-  <h3 style="color: blue">Your 👤Account is involved in {{clustersCount}} Clusters</h3>
+  
+  
+  <h3 style="color:">Your Current Clusters</h3>
+  
+  <a href="{{ url_for('user_requests') }}">
+  <button class="dashboardBtn" style="background: ; width: 90%;"><strong> View sent requests</strong></button>
+  </a>
+  <br><br>
   </center>
   </section>
-  <br><br>
+  <br>
+  
   {% for cluster in clusters %}
   
   <section class="profile" id="cluster" class="">

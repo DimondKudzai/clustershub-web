@@ -22,18 +22,19 @@
 {% include 'partials/header.html' %}
 
   <div class="" style="width: 100%">
-  
-  <section style="padding: 1px;border: none;">
+  {% for cluster in cluster %}
+  <section style="padding: px;border: none;">
   <center>
-  <h2>{{ cluster.name }}  Requests </h2>
+  <h2>{{ cluster.name }}  Request </h2>
+  </center>
 
-</section>
+
   <br>
    {% for request in cluster.requests %}
    
    <div style=" ">
    <section style="color: black">
-   <section>
+
    <div class="thread">
    <strong style="font-size:16px; color: green;"> {{ request.title }}</strong><span> by <a href="{{ url_for('getUser', name=request.author) }}" style="color: blue">@{{ request.author }}</a></span>
    <br>
@@ -59,26 +60,27 @@
    <br><br>
    <section style="padding: 5px;border: none;">
    <center>
-   <button class="dashboardBtn" >Accept Request</button>
-   <button class="dashboardBtn" style="background: red;">Decline and Delete</button>
+   <button class="dashboardBtn" style="background: red;">Withdraw and Delete</button>
    </center>
    <br>
    </section>
    
    
    </div>
+     {% endfor %}
    </section>
-   
    </div>
    
    
    
    
-   </div><br>
-   
-  {% endfor %}
+   <br>
    
 
+  {% endfor %}
+  
+  
+ </div>
  
   {% include 'partials/footer.html' %} 
   

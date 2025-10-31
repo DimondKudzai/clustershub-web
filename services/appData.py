@@ -16,7 +16,8 @@ def get_all_users():
     "image" : "image1.png",
     "skills": ["Health","Finance","Farmer","Software developer"],
     "clustersCount" : 7,
-    "clusters": [2,1,4,15,8],
+    "created_clusters": [1,2,7,12,4,1],
+    "clusters_requests": [1,2,7,6,9,4,5],
     "notificationsCount" : 4,
     "location": "Zimbabwe",
     "messages":["Doing great","We expect more","we will get there"]
@@ -32,7 +33,8 @@ def get_all_users():
     "password": "chimboza@1",
     "image" : "image2.png",
     "skills": ["Designer","Creativity"],
-    "clustersCount" : 0,
+   "created_clusters": [13,6,7,12,14,1],
+   "clusters_requests": [10,6,7,6,9,4,5],
     "notificationsCount" : 10,
     "clusters": [1,2,3,12,8,9],
     "location": "Zimbabwe",
@@ -53,7 +55,8 @@ def get_all_users():
     "skills": ["Public Speaking","Motivator","Counceling"],
     "clustersCount" : 9,
     "notificationsCount" : 8,
-    "clusters": [3,4,5,6,7,8,15],
+    "created_clusters": [1,6,7,12,14,15],
+    "clusters_requests": [10,6,7,2,4,5],
     "location": "Jamaica",
     "messages":["@said something","We expect more","we will get there"]
     
@@ -70,7 +73,8 @@ def get_all_users():
     "image" : "image4.png",
     "skills": ["Real estate","Construction","Legal"],
     "clustersCount": 0,
-    "clusters": [5,6,7,14,1,2,3],
+    "created_clusters": [10,6,7,1,14,5],
+    "clusters_requests": [1,6,7,12,4,5],
     "notificationsCount" : 4,
     "location": "USA",
     "messages":["@Dimond said something","We expect more","we will get there"]
@@ -88,7 +92,8 @@ def get_all_users():
     "image" : "image5.png",
     "skills": ["Marketing","Business","Analysis"],
     "clustersCount" : 1,
-    "clusters": [10,6,7,2,4,5],
+    "created_clusters": [1,6,7,12,14,15],
+    "clusters_requests": [10,6,7,2,4,5],
     "notificationsCount" : 3,
     "location": "Toronto",
     "messages":["@said something","We expect more","we will get there"]
@@ -483,3 +488,4 @@ def get_all_clusters():
 	
 	]
 	return clusters
+	

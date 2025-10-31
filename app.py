@@ -7,9 +7,12 @@ from services.appData import get_all_users, get_all_clusters, get_suggestions
 
 app = Flask(__name__)
 
+clusters = get_all_clusters()
+users = get_all_users()
+
 @app.route('/')
 def index():
-    user = get_all_users()[4]
+    user = get_all_users()[3]
     return render_template(
         'dashboard.html',
         name=user['name'],
@@ -66,16 +69,27 @@ def getUser(name):
 	    
 @app.route('/clusters')
 def clusters():
-    cluster = get_all_clusters()
     user = get_all_users()[0]
-    return render_template(
-        'clusters.html',
-        clustersCount=user['clustersCount'],
-        clusters=cluster,
-        name=user['name'],
-        id=user['id']
-    )
-   
+    clusters = get_all_clusters()
+    
+    created_clusters = user.get("created_clusters", [])
+    requested_ids = user.get("clusters_requests", [])
+
+    total_clusters = created_clusters + requested_ids 
+    cluster_count = len(total_clusters)
+
+    requested_clusters = [c for c in clusters if c['id'] in total_clusters]
+
+    if requested_clusters:
+        return render_template(
+            'clusters.html',
+            user=user,
+            clusters=requested_clusters,
+            clustersCount=cluster_count
+        )
+    return "no clusters", 404
+
+
 @app.route("/clusters/<int:id>")
 def getCluster(id):
     user = get_all_users()[0]
@@ -95,19 +109,32 @@ def notifications():
     return render_template("notifications.html", messages=messages)
 
 
-clusters = get_all_clusters()
-
 @app.route('/clusters/requests/<int:cluster_id>')
 def requested(cluster_id):
+    clusters = get_all_clusters()
+    user = get_all_users()[0]
     cluster = next((c for c in clusters if c['id'] == cluster_id), None)
     if not cluster:
         return "Cluster not found", 404
     return render_template('requests.html', cluster=cluster)
    
-
+@app.route('/user_requests')
+def user_requests():
+    clusters = get_all_clusters()
+    users = get_all_users()
+    user = users[0]  # simulate logged-in user
+    requested_ids = user.get("clusters_requests", [])
+    requested_count = len(requested_ids)
+    requested_clusters = [c for c in clusters if c['id'] in requested_ids]
+    
+    if requested_clusters:
+        return render_template('user_request.html', user=user, cluster=requested_clusters, clustersCount=requested_count)
+    return "no requests",404
 
 @app.route('/clusters/chat/<int:cluster_id>')
 def show_cluster(cluster_id):
+    clusters = get_all_clusters()
+    user = get_all_users()[0]
     cluster = next((c for c in clusters if c['id'] == cluster_id), None)
     if not cluster:
         return "Cluster not found", 404
@@ -115,6 +142,8 @@ def show_cluster(cluster_id):
     
 @app.route('/clusters/<int:cluster_id>/threads/<int:thread_id>/comments', methods=['POST'])
 def post_comment(cluster_id, thread_id):
+    clusters = get_all_clusters()
+    user = get_all_users()[0]
     user = request.form['user']
     text = request.form['text']
     timestamp = datetime.utcnow().isoformat()
