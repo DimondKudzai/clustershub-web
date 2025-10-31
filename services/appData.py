@@ -131,6 +131,26 @@ def get_all_clusters():
 	{"user": "KnosiDubeSA", "text": "Let's go!", "timestamp": "2025-10-22T10:05:00Z"}
 	]
 	}
+	],
+	"requests": [
+	{
+	"chatId": 1,
+	"title": "known devloper",
+	"body": "Let me join i bring tidings.",
+	"author": "Dimond",
+	"comments": [
+	{
+	"user": "VictorPoseZw",
+	"text": "Yes sure",
+	"timestamp": "2025-10-22T10:00:00Z"
+	},
+	{
+	"user": "KnosiDubeSA",
+	"text": "Let's go!",
+	"timestamp": "2025-10-22T10:05:00Z"
+	}
+	]
+	}
 	]
 	},
 	{
@@ -162,7 +182,28 @@ def get_all_clusters():
 	}
 	]
 	}
+	],
+	"requests": [
+	{
+	"chatId": 1,
+	"title": "known devloper",
+	"body": "Let me join i bring tidings.",
+	"author": "Dimond",
+	"comments": [
+	{
+	"user": "VictorPoseZw",
+	"text": "Yes sure",
+	"timestamp": "2025-10-22T10:00:00Z"
+	},
+	{
+	"user": "KnosiDubeSA",
+	"text": "Let's go!",
+	"timestamp": "2025-10-22T10:05:00Z"
+	}
 	]
+	}
+	]
+	
 	},
 	{
 	"id": 3,

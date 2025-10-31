@@ -97,6 +97,15 @@ def notifications():
 
 clusters = get_all_clusters()
 
+@app.route('/clusters/requests/<int:cluster_id>')
+def requested(cluster_id):
+    cluster = next((c for c in clusters if c['id'] == cluster_id), None)
+    if not cluster:
+        return "Cluster not found", 404
+    return render_template('requests.html', cluster=cluster)
+   
+
+
 @app.route('/clusters/chat/<int:cluster_id>')
 def show_cluster(cluster_id):
     cluster = next((c for c in clusters if c['id'] == cluster_id), None)
