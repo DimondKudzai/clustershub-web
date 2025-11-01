@@ -202,6 +202,7 @@ padding: 10px;
 font-size: 14px;
 margin-top: +10px;
 box-shadow: 0 0 5px rgba(0,0,0,0.1);
+cursor: pointer;
 }
 .tags{
 margin-top: -10px;

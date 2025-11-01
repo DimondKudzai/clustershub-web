@@ -161,6 +161,7 @@ def get_all_clusters():
 	"title": "known devloper",
 	"body": "Let me join i bring tidings.",
 	"author": "Dimond",
+	"created": "2025-10-22T10:00:00Z",
 	"comments": [
 	{
 	"user": "VictorPoseZw",
@@ -212,6 +213,7 @@ def get_all_clusters():
 	"title": "known devloper",
 	"body": "Let me join i bring tidings.",
 	"author": "Dimond",
+	"created": "2025-10-22T10:00:00Z",
 	"comments": [
 	{
 	"user": "VictorPoseZw",
@@ -247,7 +249,7 @@ def get_all_clusters():
 	]
 	}
 	],
-	"created_at": "2025-10-15T14:45:00Z"
+	"created": "2025-10-15T14:45:00Z"
 	},
 	{
 	"id": 4,
@@ -270,7 +272,7 @@ def get_all_clusters():
 	]
 	}
 	],
-	"created_at": "2025-10-16T07:00:00Z"
+	"created": "2025-10-16T07:00:00Z"
 	},
 	{
 	"id": 5,
@@ -294,7 +296,7 @@ def get_all_clusters():
 	]
 	}
 	],
-	"created_at": "2025-10-17T08:15:00Z"
+	"created": "2025-10-17T08:15:00Z"
 	},
 	{
 	"id": 6,
@@ -316,7 +318,7 @@ def get_all_clusters():
 	]
 	}
 	],
-	"created_at": "2025-10-20T08:00:00Z"
+	"created": "2025-10-20T08:00:00Z"
 	},
 	{
 	"id": 7,
@@ -337,7 +339,7 @@ def get_all_clusters():
 	]
 	}
 	],
-	"created_at": "2025-10-19T13:20:00Z"
+	"created": "2025-10-19T13:20:00Z"
 	},
 	{
 	"id": 8,
@@ -358,7 +360,7 @@ def get_all_clusters():
 	]
 	}
 	],
-	"created_at": "2025-10-15T14:45:00Z"
+	"created": "2025-10-15T14:45:00Z"
 	},
 	{
 	"id": 9,
@@ -379,7 +381,7 @@ def get_all_clusters():
 	]
 	}
 	],
-	"created_at": "2025-10-16T07:00:00Z"
+	"created": "2025-10-16T07:00:00Z"
 	},
 	{
 	"id": 10,
@@ -400,7 +402,7 @@ def get_all_clusters():
 	]
 	}
 	],
-	"created_at": "2025-10-17T08:15:00Z"
+	"created": "2025-10-17T08:15:00Z"
 	},
 	{
 	"id": 11,
@@ -421,7 +423,7 @@ def get_all_clusters():
 	]
 	}
 	],
-	"created_at": "2025-10-20T08:00:00Z"
+	"created": "2025-10-20T08:00:00Z"
 	},
 	{
 	"id": 12,
@@ -438,7 +440,7 @@ def get_all_clusters():
 	]
 	}
 	],
-	"created_at": "2025-10-19T13:20:00Z"
+	"created": "2025-10-19T13:20:00Z"
 	},
 	{
 	"id": 13,
@@ -459,7 +461,7 @@ def get_all_clusters():
 	]
 	}
 	],
-	"created_at": "2025-10-15T14:45:00Z"
+	"created": "2025-10-15T14:45:00Z"
 	},
 	{
 	"id": 14,
@@ -480,7 +482,7 @@ def get_all_clusters():
 	]
 	}
 	],
-	"created_at": "2025-10-16T07:00:00Z"
+	"created": "2025-10-16T07:00:00Z"
 	},
 	{
 	"id": 15,
@@ -501,7 +503,7 @@ def get_all_clusters():
 	]
 	}
 	],
-	"created_at": "2025-10-17T08:15:00Z"
+	"created": "2025-10-17T08:15:00Z"
 	}
 	
 	]
