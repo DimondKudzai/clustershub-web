@@ -1,7 +1,6 @@
 def get_suggestions():
     skills = ["Frontend", "Backend", "DevOps", "Marketing", "Finance"]
     return skills
-
 def get_all_users():
     users = [
     {
@@ -20,7 +19,12 @@ def get_all_users():
     "clusters_requests": [1,2,7,6,9,4,5],
     "notificationsCount" : 4,
     "location": "Zimbabwe",
-    "messages":["Doing great","We expect more","we will get there"]
+    "messages":[{
+    "id": 1,
+    "body": "Your request to join 'Tech Builders' was accepted: 'Glad to have you!'",
+    "read": False,
+    "timestamp": "2025 09 12 566 UTC",
+    }]
     },
     {
     "id": 2,
@@ -38,8 +42,22 @@ def get_all_users():
     "notificationsCount" : 10,
     "clusters": [1,2,3,12,8,9],
     "location": "Zimbabwe",
-    "messages":["@said something","We expect more","we will get there"]
-    
+	"messages": [
+	    {
+	        "id": 1,
+	        "body": "Your request to join 'Tech Builders' was accepted.",
+	        "read": False,
+	        "timestamp": "2025-09-12 05:00 UTC",
+	        "url": "/clusters/chat/5"
+	    },
+	    {
+	        "id": 2,
+	        "body": "You have a new follower: @ChrisDev",
+	        "read": False,
+	        "timestamp": "2025-09-13 09:30 UTC",
+	        "url": "/users/Dimond"
+	    }
+	]
     
     },
     {

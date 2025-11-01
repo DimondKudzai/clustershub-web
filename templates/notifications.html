@@ -21,10 +21,28 @@
       </center>
       </section>
       <br>
-      
-       {% for message in messages %}
-       <section class="">{{ message }}</section><br>
-       {% endfor %}
+    
+    
+    
+    
+    {% for message in messages %}
+    
+    <section style="background-color: {% if not message.read %}#d4fdd4{% else %}transparent{% endif %};">
+    
+    {% if not message.read %}<a href="{{ url_for('mark_read', msg_id=message.id) }}">
+   <button class="dashboardBtn" style="background-color: blue;"> Mark as read</button>
+    {% endif %}
+    </a>
+    <br><br>
+  <p>
+   {{ message.body }} <a href="{{ message.url }}" style="text-decoration: none; color: black;"><b> View</b></a>
+  </p>
+    <br>
+    <small>{{ message.timestamp }}</small>
+    </section>
+    <br>
+    {% endfor %}
+   
         
       </div>
  </section>

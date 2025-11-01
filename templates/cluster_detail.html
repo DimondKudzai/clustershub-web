@@ -8,6 +8,35 @@
   <title>Cluster Details</title>
   <link rel="icon" type="image/jpg" href="{{url_for('static', filename='logo.jpg')}}">
   <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}">
+
+<style type="text/css">
+.modal {
+  display: none; 
+  position: fixed;
+  z-index: 10;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+  
+}
+.modal-content {
+  background-color: #fff;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid green;
+  width: 60%;
+  border-radius: 5px;
+}
+.close {
+  float: right;
+  font-size: 20px;
+  cursor: pointer;
+} 
+</style>
 </head>
 <body>
 
@@ -58,9 +87,42 @@
     <p>{{ cluster.description }}</p>
     </section>
     
+    <!-- Request Popup Modal -->
+    <section id="requestPopup" class="modal">
+    <section class="modal-content">
+    
+    <div class="create-cluster">
+    <span class="close" onclick="closeRequestPopup()">&times;</span>
+    <form method="POST" action="{{ url_for('send_cluster_request') }}">
+    <input type="hidden" name="cluster_id" id="popupClusterId">
+    <label for="message">Title</label><br>
+    <input name="message" required placeholder="Type title"><br><br>
+    <label for="message">Message</label><br>
+    <textarea name="message" rows="4" required placeholder="Start typing.."></textarea><br><br>
+    <button type="submit" class="dashboardBtn">Send Request</button>
+    </form>
+    </div>
+    
+    </section>
+    </section>
+    
+    <script>
+    function openRequestPopup(clusterId) {
+    document.getElementById("popupClusterId").value = clusterId;
+    document.getElementById("requestPopup").style.display = "block";
+    }
+    function closeRequestPopup() {
+    document.getElementById("requestPopup").style.display = "none";
+    }
+    </script> 
+    
+    
     <br>
     <section>
     <center>
+    
+  
+   <button onclick="openRequestPopup({{ cluster.id }})" class="dashboardBtn" style="background: ; width: 90%;"><strong> Request membership </strong></button>
     
     
    <a href="{{ url_for('show_cluster', cluster_id=cluster.id) }}">
