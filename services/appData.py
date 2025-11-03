@@ -193,6 +193,7 @@ def get_all_clusters():
 	"title": "Starting",
 	"body": "Let's find land with dam or pond.",
 	"author": "Dimond",
+	"created": "2025-10-22T10:00:00Z",
 	"comments": [
 	{
 	"user": "VictorPoseZw",
@@ -233,17 +234,18 @@ def get_all_clusters():
 	{
 	"id": 3,
 	"name": "Legal Minds",
-	"author": "ChrisVoiloe2",
+	"author": "Dimond",
 	"created": "2025-10-22T10:05:00Z",
-	"description": "Buiding Everything",
-	"tags": ["smartlearning", "developer", "Designer"],
-	"members": ["LegalBoss", "VictorPoseZw", "Admin1"],
-	"location": "International",
+	"description": "Legal Firm",
+	"tags": ["legal", "marketing"],
+	"members": ["Dimond", "VictorPoseZw"],
+	"location": "Zimbabwe",
 	"conversations": [
 	{
-	"chatId": 103,
-	"title": "Case Reviews",
-	"author": "LegalBoss",
+	"chatId": 1,
+	"title": "Welcome onboard",
+	"author": "Dimond",
+	"created": "2025-10-22T10:00:00Z",
 	"comments": [
 	{"user": "Admin1", "text": "We should meet next week.", "timestamp": "2025-10-20T09:00:00Z"}
 	]
@@ -264,9 +266,10 @@ def get_all_clusters():
 	"members": ["AnnaSmith", "SketchMaster", "PixelHero"],
 	"conversations": [
 	{
-	"chatId": 104,
+	"chatId": 1,
 	"title": "Color Theory",
 	"author": "AnnaSmith",
+	"created": "2025-10-22T10:00:00Z",
 	"comments": [
 	{"user": "SketchMaster", "text": "Love this topic!", "timestamp": "2025-10-18T11:30:00Z"}
 	]
@@ -288,9 +291,10 @@ def get_all_clusters():
 	"members": ["ChrisVoiloe2", "InspireZim", "ShineOn"],
 	"conversations": [
 	{
-	"chatId": 105,
+	"chatId": 1,
 	"title": "Daily Quotes",
 	"author": "InspireZim",
+	"created": "2025-10-22T10:00:00Z",
 	"comments": [
 	{"user": "ShineOn", "text": "Keep pushing!", "timestamp": "2025-10-21T15:00:00Z"}
 	]
@@ -309,9 +313,10 @@ def get_all_clusters():
 	"members": ["ChrisVoiloe2", "VictorPoseZw", "AnnaSmith"],
 	"conversations": [
 	{
-	"chatId": 101,
+	"chatId": 1,
 	"title": "Kickoff Meeting",
 	"author": "ChrisVoiloe2",
+	"created": "2025-10-22T10:00:00Z",
 	"comments": [
 	{"user": "VictorPoseZw", "text": "Excited to write!", "timestamp": "2025-10-22T10:00:00Z"},
 	{"user": "AnnaSmith", "text": "Let's go!", "timestamp": "2025-10-22T10:05:00Z"}
@@ -331,9 +336,10 @@ def get_all_clusters():
 	"members": ["VictorPoseZw", "DevKing", "CodeQueen"],
 	"conversations": [
 	{
-	"chatId": 102,
+	"chatId": 1,
 	"title": "Startup Ideas",
 	"author": "VictorPoseZw",
+	"created": "2025-10-22T10:00:00Z",
 	"comments": [
 	{"user": "CodeQueen", "text": "AI is the future.", "timestamp": "2025-10-21T12:00:00Z"}
 	]
@@ -352,9 +358,10 @@ def get_all_clusters():
 	"members": ["LegalBoss", "VictorPoseZw", "Admin1"],
 	"conversations": [
 	{
-	"chatId": 103,
+	"chatId": 1,
 	"title": "Case Reviews",
 	"author": "LegalBoss",
+	"created": "2025-10-22T10:00:00Z",
 	"comments": [
 	{"user": "Admin1", "text": "We should meet next week.", "timestamp": "2025-10-20T09:00:00Z"}
 	]
@@ -373,9 +380,10 @@ def get_all_clusters():
 	"members": ["AnnaSmith", "SketchMaster", "PixelHero"],
 	"conversations": [
 	{
-	"chatId": 104,
+	"chatId": 1,
 	"title": "Color Theory",
 	"author": "AnnaSmith",
+	"created": "2025-10-22T10:00:00Z",
 	"comments": [
 	{"user": "SketchMaster", "text": "Love this topic!", "timestamp": "2025-10-18T11:30:00Z"}
 	]
@@ -394,9 +402,10 @@ def get_all_clusters():
 	"members": ["ChrisVoiloe2", "InspireZim", "ShineOn"],
 	"conversations": [
 	{
-	"chatId": 105,
+	"chatId": 1,
 	"title": "Daily Quotes",
 	"author": "InspireZim",
+	"created": "2025-10-22T10:00:00Z",
 	"comments": [
 	{"user": "ShineOn", "text": "Keep pushing!", "timestamp": "2025-10-21T15:00:00Z"}
 	]
@@ -414,9 +423,10 @@ def get_all_clusters():
 	"members": ["ChrisVoiloe2", "VictorPoseZw", "AnnaSmith"],
 	"conversations": [
 	{
-	"chatId": 101,
+	"chatId": 1,
 	"title": "Kickoff Meeting",
 	"author": "ChrisVoiloe2",
+	"created": "2025-10-22T10:00:00Z",
 	"comments": [
 	{"user": "VictorPoseZw", "text": "Excited to write!", "timestamp": "2025-10-22T10:00:00Z"},
 	{"user": "AnnaSmith", "text": "Let's go!", "timestamp": "2025-10-22T10:05:00Z"}
@@ -432,9 +442,10 @@ def get_all_clusters():
 	"members": ["VictorPoseZw", "DevKing", "CodeQueen"],
 	"conversations": [
 	{
-	"chatId": 102,
+	"chatId": 1,
 	"title": "Startup Ideas",
 	"author": "VictorPoseZw",
+	"created": "2025-10-22T10:00:00Z",
 	"comments": [
 	{"user": "CodeQueen", "text": "AI is the future.", "timestamp": "2025-10-21T12:00:00Z"}
 	]
@@ -453,9 +464,10 @@ def get_all_clusters():
 	"members": ["LegalBoss", "VictorPoseZw", "Admin1"],
 	"conversations": [
 	{
-	"chatId": 103,
+	"chatId": 1,
 	"title": "Case Reviews",
 	"author": "LegalBoss",
+	"created": "2025-10-22T10:00:00Z",
 	"comments": [
 	{"user": "Admin1", "text": "We should meet next week.", "timestamp": "2025-10-20T09:00:00Z"}
 	]
@@ -474,9 +486,10 @@ def get_all_clusters():
 	"members": ["AnnaSmith", "SketchMaster", "PixelHero"],
 	"conversations": [
 	{
-	"chatId": 104,
+	"chatId": 1,
 	"title": "Color Theory",
 	"author": "AnnaSmith",
+	"created": "2025-10-22T10:00:00Z",
 	"comments": [
 	{"user": "SketchMaster", "text": "Love this topic!", "timestamp": "2025-10-18T11:30:00Z"}
 	]
@@ -495,9 +508,10 @@ def get_all_clusters():
 	"members": ["ChrisVoiloe2", "InspireZim", "ShineOn"],
 	"conversations": [
 	{
-	"chatId": 105,
+	"chatId": 1,
 	"title": "Daily Quotes",
 	"author": "InspireZim",
+	"created": "2025-10-22T10:00:00Z",
 	"comments": [
 	{"user": "ShineOn", "text": "Keep pushing!", "timestamp": "2025-10-21T15:00:00Z"}
 	]

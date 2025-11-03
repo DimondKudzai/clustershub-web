@@ -44,7 +44,12 @@
    <div class="comments">
    <h3>Replies</h3>
    {% for comment in request.comments %}
-   <p><a href="{{ url_for('getUser', name=comment.user) }}" style="color: blue">@{{ comment.user }}</a> {{ comment.text }} <br><small>{{ comment.timestamp }}</small></p>
+   <p>
+   <a href="{{ url_for('getUser', name=comment.user) }}" style="color: blue">@{{ comment.user }}</a> 
+   <span style="color: black;">{{ comment.text }} </span>
+    <br>
+    <small>{{ comment.timestamp }}</small>
+    </p>
   
    {% endfor %}
    </div>

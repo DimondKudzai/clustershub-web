@@ -8,6 +8,10 @@ body {
 h1,h2,h2,h3,h4{
 color: green;
 }
+
+p{
+color: black;
+}
 .navbar {
 display: flex;
 justify-content: space-between;
@@ -21,6 +25,7 @@ z-index: 1000;
 animation: fadeIn 1s ease-in-out;
 
 }
+
 
 .logo {
 width: 55%;

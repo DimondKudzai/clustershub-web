@@ -1,18 +1,29 @@
 from flask import Flask, request, redirect, url_for, render_template, send_from_directory
 import os
-import sqlite3
+
 from datetime import datetime
 from flask import jsonify
-from services.appData import get_all_users, get_all_clusters, get_suggestions
+#from services.appData import get_all_users, get_all_clusters, get_suggestions
+from models import db
+from config import Config
+from models import User, Cluster, Suggestion # Import models
+
+import sqlite3
+
 
 app = Flask(__name__)
+app.config.from_object(Config)
 
-clusters = get_all_clusters()
-users = get_all_users()
+db.init_app(app)
+
+with app.app_context():
+    db.create_all()  # Create tables
+
 
 @app.route('/')
 def index():
-    user = get_all_users()[3]
+    users = User.query.all()
+    user = users[0]
     return render_template(
         'dashboard.html',
         name=user['name'],
@@ -21,7 +32,8 @@ def index():
     )
 @app.route('/home')
 def home():
-    user = get_all_users()[1]
+    users = User.query.all()
+    user = users[0]
     created_clusters = user.get("created_clusters", [])
     cluster_count = len(created_clusters)
     messages = user.get("messages", [])
