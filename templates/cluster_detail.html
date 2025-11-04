@@ -67,14 +67,14 @@
     
     <h3>Open Slots</h3>
     <section class="badges">
-    {% for tag in cluster.tags %}
+    {% for tag in cluster.get_tags() %}
     <span class="badge">{{ tag }}</span>
     {% endfor %}
     </section>
     
      <h3>👥 Members </h3>
     <section class="badges">
-      {% for member in cluster.members %}
+      {% for member in cluster.get_members() %}
         <span class="badge" style="background-color: blue;color: white;link-color: inherit;">
         <a href="{{ url_for('getUser', name=member) }}" style="color: inherit">@{{ member }}</a>
         </span>

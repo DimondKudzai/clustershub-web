@@ -30,23 +30,21 @@ def index():
         clustersCount=user.clusters_count,
         notificationsCount=user.notifications_count
     )
+    
+    
 @app.route('/home')
 def home():
     users = User.query.all()
-    user = users[1]
+    user = users[0]
     created_clusters = user.get_created_clusters()
     cluster_count = len(created_clusters)
     messages = user.get_messages()
-    
     # Count unread
-    unread_count = sum(1 for m in messages if not m.get("read", False))
+    unread_count = sum(1 for m in messages if m["read"] == False)
+    return render_template('dashboard.html', name=user.name, clustersCount=cluster_count, notificationsCount=unread_count)
     
-    return render_template(
-        'dashboard.html',
-        name=user.name,
-        clustersCount=cluster_count,
-        notificationsCount=unread_count
-    )
+    
+    
     
 @app.route('/startCluster')
 def startCluster():
@@ -83,7 +81,7 @@ def users():
 @app.route("/users/<name>")
 def getUser(name):
 	users = User.query.all()
-	user = next((u for u in users if str(u['name']) == str(name)), None)
+	user = next((u for u in users if str(u.name) == str(name)), None)
 	if user:
    	    return render_template('profile.html', user=user)
 	else:
@@ -96,61 +94,51 @@ def getUser(name):
 def clusters():
     user = User.query.all()[0]
     clusters = Cluster.query.all()
-    
-    created_clusters = user.get("created_clusters", [])
-    requested_ids = user.get("clusters_requests", [])
-
-    total_clusters = created_clusters + requested_ids 
+    created_clusters = user.get_created_clusters()
+    requested_clusters = user.get_clusters_requests()
+    total_clusters = created_clusters + requested_clusters
     cluster_count = len(total_clusters)
-
-    requested_clusters = [c for c in clusters if c['id'] in total_clusters]
-
+    requested_clusters = [c for c in clusters if c.id in total_clusters]
     if requested_clusters:
-        return render_template(
-            'clusters.html',
-            user=user,
-            clusters=requested_clusters,
-            clustersCount=cluster_count
-        )
+        return render_template('clusters.html', user=user, clusters=requested_clusters, clustersCount=cluster_count)
     return "no clusters", 404
 
 
 @app.route("/clusters/<int:id>")
 def getCluster(id):
     user = User.query.all()[0]
-    clusters = Cluster.query.all()
-    cluster = next((c for c in clusters if c['id'] == id), None)
-
+    cluster = Cluster.query.get(id)
     if cluster:
         return render_template("cluster_detail.html", cluster=cluster)
-
     return jsonify({'error': 'Cluster not found'}), 404
         
 # Notifications        
         
 @app.route("/notifications")
 def notifications():
-    user = User.query.all()[1]
-    messages = user.get("messages", [])
+    user = User.query.all()[0]
+    messages = user.get_messages()
     return render_template("notifications.html", messages=messages)
-
+    
+    
 
 
 @app.route("/notifications/read/<int:msg_id>")
 def mark_read(msg_id):
     user = User.query.all()[0]
-    for msg in user.get("messages", []):
+    messages = user.get_messages()
+    for msg in messages:
         if msg.get("id") == msg_id:
             msg["read"] = True
+    user.set_messages(messages)
+    db.session.commit()
     return redirect(url_for("notifications"))
 
 # Requests
 
 @app.route('/clusters/requests/<int:cluster_id>')
 def requested(cluster_id):
-    clusters = Cluster.query.all()
-    user = User.query.all()[0]
-    cluster = next((c for c in clusters if c['id'] == cluster_id), None)
+    cluster = Cluster.query.get(cluster_id)
     if not cluster:
         return "Cluster not found", 404
     return render_template('requests.html', cluster=cluster)
@@ -160,13 +148,12 @@ def user_requests():
     clusters = Cluster.query.all()
     users = User.query.all()
     user = users[0]  # simulate logged-in user
-    requested_ids = user.get("clusters_requests", [])
+    requested_ids = user.get_clusters_requests()
     requested_count = len(requested_ids)
-    requested_clusters = [c for c in clusters if c['id'] in requested_ids]
-    
+    requested_clusters = [c for c in clusters if c.id in requested_ids]
     if requested_clusters:
-        return render_template('user_request.html', user=user, cluster=requested_clusters, clustersCount=requested_count)
-    return "no requests",404
+        return render_template('user_request.html', user=user, clusters=requested_clusters, clustersCount=requested_count)
+    return "no requests", 404
 
 
 @app.route('/send_cluster_request', methods=['POST'])
@@ -197,9 +184,7 @@ def send_cluster_request():
 
 @app.route('/clusters/chat/<int:cluster_id>')
 def show_cluster(cluster_id):
-    clusters = Cluster.query.all()
-    user = User.query.all()[0]
-    cluster = next((c for c in clusters if c['id'] == cluster_id), None)
+    cluster = Cluster.query.get(cluster_id)
     if not cluster:
         return "Cluster not found", 404
     return render_template('conversations.html', cluster=cluster)
@@ -236,46 +221,32 @@ def recommended_clusters():
     users = User.query.all()
     if not users:
         return "No users found", 404
-    
     current_user = users[0]
-    user_skills = set(current_user.get('skills', []))
-    user_desc_words = set(current_user.get('description', '').lower().split())
-    
+    user_skills = set(skill.lower() for skill in current_user.get_skills())
+    user_desc_words = set(current_user.description.lower().split())
     scored = []
     for cluster in clusters:
-	    score = 0
-	    
-	 
-	  # compare tags
-	    user_skills_lower = set(skill.lower() for skill in user_skills)
-	    tags_lower = set(tag.lower() for tag in cluster.get('tags', []))
-	  
-  	  # Tag match scoring
-	    score += 3 * len(user_skills_lower & tags_lower)
-
-	    
-	    # Skill in target string
-	    if any(skill.lower() in cluster.get('target', '').lower() for skill in user_skills):
-	        score += 2
-	    
-	    # Word match between skills and target
-	    target_words = cluster.get('target', '').lower().split()
-	    skill_matches = sum(1 for skill in user_skills if any(skill.lower() in word for word in target_words))
-	    score += skill_matches
-	    
-	    # Match user description with target
-	    desc_matches = sum(1 for word in user_desc_words if word in target_words)
-	    score += desc_matches
-	    
-	    # Fallback: more members = better
-	    score += 0.1 * len(cluster.get('members', []))
-	    
-	    scored.append((score, cluster))
-    
+        score = 0
+        # compare tags
+        tags_lower = set(tag.lower() for tag in cluster.get_tags())
+        # Tag match scoring
+        score += 3 * len(user_skills & tags_lower)
+        # Skill in target string
+        if any(skill in cluster.target.lower() for skill in user_skills):
+            score += 2
+        # Word match between skills and target
+        target_words = cluster.target.lower().split()
+        skill_matches = sum(1 for skill in user_skills if any(skill in word for word in target_words))
+        score += skill_matches
+        # Match user description with target
+        desc_matches = sum(1 for word in user_desc_words if word in target_words)
+        score += desc_matches
+        # Fallback: more members = better
+        score += 0.1 * len(cluster.members)
+        scored.append((score, cluster))
     #Sort by final score (descending)
     scored.sort(key=lambda x: x[0], reverse=True)
     matched_clusters = [c for score, c in scored if score > 0]
-    
     return render_template('recommended.html', clusters=matched_clusters, user=current_user)
     
     

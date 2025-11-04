@@ -38,7 +38,7 @@
   
   <section class="badges">
   <strong>Open Slots: </strong>
-  {% for tag in cluster.tags %}
+  {% for tag in user.get_skills() %}
   <span class="badge">{{ tag }}</span>
   {% endfor %}
   </section>
