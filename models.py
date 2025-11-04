@@ -126,10 +126,72 @@ def seed_users():
             )
             db.session.add(user)
     db.session.commit()
+    
+
+
+def seed_users():
+    users = get_all_users()
+    for user_data in users:
+        if not User.query.filter_by(email=user_data["email"]).first():
+            user = User(
+                name=user_data["name"],
+                full_name=user_data["full_name"],
+                description=user_data["description"],
+                website=user_data["website"],
+                email=user_data["email"],
+                phone=user_data["phone"],
+                password=user_data["password"],
+                image=user_data["image"],
+                skills=json.dumps(user_data["skills"]),
+                clusters_count=user_data["clusters_count"],
+                created_clusters=json.dumps(user_data["created_clusters"]),
+                clusters_requests=json.dumps(user_data["clusters_requests"]),
+                notifications_count=user_data["notifications_count"],
+                location=user_data["location"],
+                messages=json.dumps(user_data["messages"])
+            )
+            db.session.add(user)
+    db.session.commit()
+
+
+def seed_clusters():
+    clusters = get_all_clusters()
+    for cluster_data in clusters:
+        if not Cluster.query.filter_by(id=cluster_data["id"]).first():
+            cluster = Cluster(
+                id=cluster_data["id"],
+                name=cluster_data["name"],
+                target=cluster_data["target"],
+                author=cluster_data["author"],
+                created=datetime.strptime(cluster_data["created"], "%Y-%m-%dT%H:%M:%SZ"),
+                location=cluster_data["location"],
+                description=cluster_data["description"],
+                tags=json.dumps(cluster_data["tags"]),
+                members=json.dumps(cluster_data["members"]),
+                conversations=json.dumps(cluster_data["conversations"]),
+                requests=json.dumps(cluster_data["requests"])
+            )
+            db.session.add(cluster)
+    db.session.commit()
+    
+def seed_suggestions():
+    new_skills = get_suggestions()
+    existing_suggestion = Suggestion.query.first()
+    if existing_suggestion:
+        existing_skills = existing_suggestion.get_skills()
+        updated_skills = list(set(existing_skills + new_skills))
+        existing_suggestion.set_skills(updated_skills)
+    else:
+        suggestion = Suggestion()
+        suggestion.set_skills(new_skills)
+        db.session.add(suggestion)
+    db.session.commit()
 
 with app.app_context():
     db.create_all()
     seed_users()
+    seed_clusters()
+    seed_suggestions()
 
 if __name__ == '__main__':
     app.run(debug=True)

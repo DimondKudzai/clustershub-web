@@ -238,6 +238,7 @@ def get_all_clusters():
 	"author": "Dimond",
 	"created": "2025-10-22T10:05:00Z",
 	"description": "Legal Firm",
+	"target": "Fairness to everyone",
 	"tags": ["legal", "marketing"],
 	"members": ["Dimond", "VictorPoseZw"],
 	"location": "Zimbabwe",
@@ -252,7 +253,28 @@ def get_all_clusters():
 	]
 	}
 	],
-	"created": "2025-10-15T14:45:00Z"
+	"created": "2025-10-15T14:45:00Z",
+	"requests": [
+	{
+	"chatId": 1,
+	"title": "known devloper",
+	"body": "Let me join i bring tidings.",
+	"author": "Dimond",
+	"created": "2025-10-22T10:00:00Z",
+	"comments": [
+	{
+	"user": "VictorPoseZw",
+	"text": "Yes sure",
+	"timestamp": "2025-10-22T10:00:00Z"
+	},
+	{
+	"user": "KnosiDubeSA",
+	"text": "Let's go!",
+	"timestamp": "2025-10-22T10:05:00Z"
+	}
+	]
+	}
+	]
 	},
 	{
 	"id": 4,
@@ -276,250 +298,30 @@ def get_all_clusters():
 	]
 	}
 	],
-	"created": "2025-10-16T07:00:00Z"
-	},
-	{
-	"id": 5,
-	"name": "Motivators",
-	"author": "ChrisVoiloe2",
-	"created": "2025-10-22T10:05:00Z",
-	"location": "Harare",
-	"description": "Buiding Everything",
-	"tags": ["Legal", "Marketing", "Designer"],
-	"location": "International",
-	"target": "Let's build Apps",
-	"tags": ["smartlearning", "Marketing", "Developer"],
-	"members": ["ChrisVoiloe2", "InspireZim", "ShineOn"],
-	"conversations": [
+	"created": "2025-10-16T07:00:00Z",
+	"requests": [
 	{
 	"chatId": 1,
-	"title": "Daily Quotes",
-	"author": "InspireZim",
+	"title": "known devloper",
+	"body": "Let me join i bring tidings.",
+	"author": "Dimond",
 	"created": "2025-10-22T10:00:00Z",
 	"comments": [
-	{"user": "ShineOn", "text": "Keep pushing!", "timestamp": "2025-10-21T15:00:00Z"}
-	]
-	}
-	],
-	"created": "2025-10-17T08:15:00Z"
+	{
+	"user": "VictorPoseZw",
+	"text": "Yes sure",
+	"timestamp": "2025-10-22T10:00:00Z"
 	},
 	{
-	"id": 6,
-	"name": "Creative Writers",
-	"author": "ChrisVoiloe2",
-	"created": "2025-10-22T10:05:00Z",
-	"location": "Harare",
-	"description": "Buiding Everything",
-	"tags": ["Legal", "Marketing", "Designer"],
-	"members": ["ChrisVoiloe2", "VictorPoseZw", "AnnaSmith"],
-	"conversations": [
-	{
-	"chatId": 1,
-	"title": "Kickoff Meeting",
-	"author": "ChrisVoiloe2",
-	"created": "2025-10-22T10:00:00Z",
-	"comments": [
-	{"user": "VictorPoseZw", "text": "Excited to write!", "timestamp": "2025-10-22T10:00:00Z"},
-	{"user": "AnnaSmith", "text": "Let's go!", "timestamp": "2025-10-22T10:05:00Z"}
+	"user": "KnosiDubeSA",
+	"text": "Let's go!",
+	"timestamp": "2025-10-22T10:05:00Z"
+	}
 	]
 	}
-	],
-	"created": "2025-10-20T08:00:00Z"
+	]
 	},
-	{
-	"id": 7,
-	"name": "Tech Founders",
-	"author": "VictorPoseZw",
-	"created": "2025-10-22T10:05:00Z",
-	"location": "Harare",
-	"description": "Buiding Everything",
-	"tags": ["Marketing", "Designer"],
-	"members": ["VictorPoseZw", "DevKing", "CodeQueen"],
-	"conversations": [
-	{
-	"chatId": 1,
-	"title": "Startup Ideas",
-	"author": "VictorPoseZw",
-	"created": "2025-10-22T10:00:00Z",
-	"comments": [
-	{"user": "CodeQueen", "text": "AI is the future.", "timestamp": "2025-10-21T12:00:00Z"}
-	]
-	}
-	],
-	"created": "2025-10-19T13:20:00Z"
-	},
-	{
-	"id": 8,
-	"name": "Legal Minds",
-	"author": "ChrisVoiloe2",
-	"created": "2025-10-22T10:05:00Z",
-	"location": "Harare",
-	"description": "Buiding Everything",
-	"tags": ["Legal", "Marketing", "Designer"],
-	"members": ["LegalBoss", "VictorPoseZw", "Admin1"],
-	"conversations": [
-	{
-	"chatId": 1,
-	"title": "Case Reviews",
-	"author": "LegalBoss",
-	"created": "2025-10-22T10:00:00Z",
-	"comments": [
-	{"user": "Admin1", "text": "We should meet next week.", "timestamp": "2025-10-20T09:00:00Z"}
-	]
-	}
-	],
-	"created": "2025-10-15T14:45:00Z"
-	},
-	{
-	"id": 9,
-	"name": "Design Lab",
-	"author": "ChrisVoiloe2",
-	"created": "2025-10-22T10:05:00Z",
-	"location": "Harare",
-	"description": "Buiding Everything",
-	"tags": ["Legal", "Marketing", "Designer"],
-	"members": ["AnnaSmith", "SketchMaster", "PixelHero"],
-	"conversations": [
-	{
-	"chatId": 1,
-	"title": "Color Theory",
-	"author": "AnnaSmith",
-	"created": "2025-10-22T10:00:00Z",
-	"comments": [
-	{"user": "SketchMaster", "text": "Love this topic!", "timestamp": "2025-10-18T11:30:00Z"}
-	]
-	}
-	],
-	"created": "2025-10-16T07:00:00Z"
-	},
-	{
-	"id": 10,
-	"name": "Motivators",
-	"author": "ChrisVoiloe2",
-	"created": "2025-10-22T10:05:00Z",
-	"location": "Harare",
-	"description": "Buiding Everything",
-	"tags": ["Legal", "Marketing", "Designer"],
-	"members": ["ChrisVoiloe2", "InspireZim", "ShineOn"],
-	"conversations": [
-	{
-	"chatId": 1,
-	"title": "Daily Quotes",
-	"author": "InspireZim",
-	"created": "2025-10-22T10:00:00Z",
-	"comments": [
-	{"user": "ShineOn", "text": "Keep pushing!", "timestamp": "2025-10-21T15:00:00Z"}
-	]
-	}
-	],
-	"created": "2025-10-17T08:15:00Z"
-	},
-	{
-	"id": 11,
-	"name": "Creative Writers",
-	"created": "2025-10-22T10:05:00Z",
-	"location": "Harare",
-	"description": "Buiding Everything",
-	"tags": ["Legal", "Marketing", "Designer"],
-	"members": ["ChrisVoiloe2", "VictorPoseZw", "AnnaSmith"],
-	"conversations": [
-	{
-	"chatId": 1,
-	"title": "Kickoff Meeting",
-	"author": "ChrisVoiloe2",
-	"created": "2025-10-22T10:00:00Z",
-	"comments": [
-	{"user": "VictorPoseZw", "text": "Excited to write!", "timestamp": "2025-10-22T10:00:00Z"},
-	{"user": "AnnaSmith", "text": "Let's go!", "timestamp": "2025-10-22T10:05:00Z"}
-	]
-	}
-	],
-	"created": "2025-10-20T08:00:00Z"
-	},
-	{
-	"id": 12,
-	"name": "Tech Founders",
-	"author": "VictorPoseZw",
-	"members": ["VictorPoseZw", "DevKing", "CodeQueen"],
-	"conversations": [
-	{
-	"chatId": 1,
-	"title": "Startup Ideas",
-	"author": "VictorPoseZw",
-	"created": "2025-10-22T10:00:00Z",
-	"comments": [
-	{"user": "CodeQueen", "text": "AI is the future.", "timestamp": "2025-10-21T12:00:00Z"}
-	]
-	}
-	],
-	"created": "2025-10-19T13:20:00Z"
-	},
-	{
-	"id": 13,
-	"name": "Legal Minds",
-	"author": "ChrisVoiloe2",
-	"created": "2025-10-22T10:05:00Z",
-	"location": "Harare",
-	"description": "Buiding Everything",
-	"tags": ["Legal", "Marketing", "Designer"],
-	"members": ["LegalBoss", "VictorPoseZw", "Admin1"],
-	"conversations": [
-	{
-	"chatId": 1,
-	"title": "Case Reviews",
-	"author": "LegalBoss",
-	"created": "2025-10-22T10:00:00Z",
-	"comments": [
-	{"user": "Admin1", "text": "We should meet next week.", "timestamp": "2025-10-20T09:00:00Z"}
-	]
-	}
-	],
-	"created": "2025-10-15T14:45:00Z"
-	},
-	{
-	"id": 14,
-	"name": "Design Lab",
-	"author": "ChrisVoiloe2",
-	"created": "2025-10-22T10:05:00Z",
-	"location": "Harare",
-	"description": "Buiding Everything",
-	"tags": ["Legal", "Marketing", "Designer"],
-	"members": ["AnnaSmith", "SketchMaster", "PixelHero"],
-	"conversations": [
-	{
-	"chatId": 1,
-	"title": "Color Theory",
-	"author": "AnnaSmith",
-	"created": "2025-10-22T10:00:00Z",
-	"comments": [
-	{"user": "SketchMaster", "text": "Love this topic!", "timestamp": "2025-10-18T11:30:00Z"}
-	]
-	}
-	],
-	"created": "2025-10-16T07:00:00Z"
-	},
-	{
-	"id": 15,
-	"name": "Motivators",
-	"author": "ChrisVoiloe2",
-	"created": "2025-10-22T10:05:00Z",
-	"location": "Harare",
-	"description": "Buiding Everything",
-	"tags": ["Legal", "Marketing", "Designer"],
-	"members": ["ChrisVoiloe2", "InspireZim", "ShineOn"],
-	"conversations": [
-	{
-	"chatId": 1,
-	"title": "Daily Quotes",
-	"author": "InspireZim",
-	"created": "2025-10-22T10:00:00Z",
-	"comments": [
-	{"user": "ShineOn", "text": "Keep pushing!", "timestamp": "2025-10-21T15:00:00Z"}
-	]
-	}
-	],
-	"created": "2025-10-17T08:15:00Z"
-	}
+
 	
 	]
 	return clusters
