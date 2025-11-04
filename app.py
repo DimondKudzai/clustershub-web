@@ -72,10 +72,6 @@ def myProfile():
 
     return render_template('profile.html', user=user)
         
-@app.route('/login')
-def login():
-    return render_template('auth.html')
-
 
 @app.route('/login_handler', methods=['POST'])
 def login_handler():
@@ -83,7 +79,7 @@ def login_handler():
         username = request.form['username'].strip()
         password = request.form['password'].strip()
     except KeyError:
-        return redirect('/login')
+        return redirect(url_for('login'))
 
     users = User.query.all()
     user = next((u for u in users if (u.name.strip().lower() == username.lower() or u.email.strip().lower() == username.lower()) and u.password == password), None)
@@ -91,7 +87,13 @@ def login_handler():
         session['user_id'] = user.id
         return redirect('/home')
     else:
-        return redirect('/login')
+        session['notice'] = "Invalid login details, retry or create an account"
+        return redirect(url_for('login'))
+
+@app.route('/login')
+def login():
+    notice = session.pop('notice', None)
+    return render_template('auth.html', notice=notice)
 
 @app.route('/register')
 def register():
@@ -145,8 +147,13 @@ def getCluster(id):
 
     cluster = Cluster.query.get(id)
     if cluster:
-        return render_template("cluster_detail.html", cluster=cluster)
-    return jsonify({'error': 'Cluster not found'}), 404
+        is_author = cluster.author == user.name
+        is_member = user.id in cluster.get_members()
+        requested = id in user.get_clusters_requests()
+
+        return render_template("cluster_detail.html", cluster=cluster, is_author=is_author, is_member=is_member, requested=requested)
+    return jsonify({'error': 'Cluster not None, is_member=is_member'})
+   
         
 # Notifications        
         

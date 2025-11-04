@@ -1,6 +1,17 @@
 def get_suggestions():
-    skills = ["Frontend", "Backend", "DevOps", "Marketing", "Finance"]
+    skills = [
+    "Frontend", "Backend", "DevOps", "Marketing", "Finance", "Legal", "Real estate", "Bookkeeping", "Animation", "Video editing", "Data analysis",
+    "Teaching", "Nursing", "Medicine", "Sports Coaching", "Music Performance", "Graphic Design", "Photography", "Digital Art", "Illustration",
+    "Content Writing", "Copywriting", "Technical Writing", "Blogging", "Journalism", "Project Management", "Sales", "Customer Service", "Entrepreneurship",
+    "Cloud Computing", "Data Science", "Machine Learning", "Cybersecurity", "Network Administration", "Database Administration", "Web Development", "UI/UX Design",
+    "Yoga Instruction", "Dance", "Theater", "Painting", "Sculpture", "Event Planning", "Human Resources", "Recruitment", "Supply Chain Management", "Logistics",
+    "Agriculture", "Horticulture", "Veterinary Care", "Dentistry", "Pharmacy", "Physical Therapy", "Occupational Therapy", "Speech Therapy", "Nutrition",
+    "Culinary Arts", "Baking", "Pastry", "Interior Design", "Fashion Design", "Architecture", "Landscape Architecture", "Urban Planning", "Environmental Science",
+    "Biotechnology", "Chemistry", "Physics", "Mathematics", "Statistics", "Economics", "Business Administration", "Public Administration", "Non-Profit Management"
+    "Photography", "Videography", "Film Production", "Journalism", "Broadcasting", "Public Relations", "Communication", "Digital Marketing", "Social Media Management"
+    ]
     return skills
+    
 def get_all_users():
     users = [
     {
@@ -180,7 +191,7 @@ def get_all_clusters():
 	},
 	{
 	"id": 2,
-	"name": "Fish Famers",
+	"name": "Fish Farmers",
 	"target": "Produce Breams for sale",
 	"author": "Dimond",
 	"created": "2025-10-22T10:05:00Z",

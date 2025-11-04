@@ -189,8 +189,8 @@ def seed_suggestions():
 
 with app.app_context():
     db.create_all()
-    seed_users()
-    seed_clusters()
+    #seed_users()
+    #seed_clusters()
     seed_suggestions()
 
 if __name__ == '__main__':
