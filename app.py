@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, url_for, render_template, send_from_directory
+from flask import Flask, request, redirect, url_for, render_template, send_from_directory, session
 import os
 
 from datetime import datetime
@@ -10,9 +10,10 @@ from models import User, Cluster, Suggestion # Import models
 
 import sqlite3
 
-
 app = Flask(__name__)
 app.config.from_object(Config)
+app.config['SECRET_KEY'] = '24091996'
+
 
 db.init_app(app)
 
@@ -31,19 +32,22 @@ def index():
         notificationsCount=user.notifications_count
     )
     
-    
 @app.route('/home')
 def home():
-    users = User.query.all()
-    user = users[0]
+    user_id = session.get('user_id')
+    if user_id is None:
+        return redirect('/login')
+
+    user = User.query.get(user_id)
+    if user is None:
+        return redirect('/login')
+
     created_clusters = user.get_created_clusters()
     cluster_count = len(created_clusters)
     messages = user.get_messages()
     # Count unread
-    unread_count = sum(1 for m in messages if m["read"] == False)
+    unread_count = sum(1 for m in messages if not m.get("read", False))
     return render_template('dashboard.html', name=user.name, clustersCount=cluster_count, notificationsCount=unread_count)
-    
-    
     
     
 @app.route('/startCluster')
@@ -58,17 +62,36 @@ def startCluster():
     
 @app.route('/myProfile')
 def myProfile():
-    users = User.query.all()
-    if users:
-        user = users[0]
-        return render_template('profile.html', user=user)
-    else:
-        # Handle the case where no users are found
-        return 'No users found', 404
+    user_id = session.get('user_id')
+    if user_id is None:
+        return redirect('/login')
+
+    user = User.query.get(user_id)
+    if user is None:
+        return redirect('/login')
+
+    return render_template('profile.html', user=user)
         
 @app.route('/login')
 def login():
     return render_template('auth.html')
+
+
+@app.route('/login_handler', methods=['POST'])
+def login_handler():
+    try:
+        username = request.form['username'].strip()
+        password = request.form['password'].strip()
+    except KeyError:
+        return redirect('/login')
+
+    users = User.query.all()
+    user = next((u for u in users if (u.name.strip().lower() == username.lower() or u.email.strip().lower() == username.lower()) and u.password == password), None)
+    if user:
+        session['user_id'] = user.id
+        return redirect('/home')
+    else:
+        return redirect('/login')
 
 @app.route('/register')
 def register():
@@ -92,7 +115,14 @@ def getUser(name):
 	    
 @app.route('/clusters')
 def clusters():
-    user = User.query.all()[0]
+    user_id = session.get('user_id')
+    if user_id is None:
+        return redirect('/login')
+
+    user = User.query.get(user_id)
+    if user is None:
+        return redirect('/login')
+
     clusters = Cluster.query.all()
     created_clusters = user.get_created_clusters()
     requested_clusters = user.get_clusters_requests()
@@ -103,10 +133,16 @@ def clusters():
         return render_template('clusters.html', user=user, clusters=requested_clusters, clustersCount=cluster_count)
     return "no clusters", 404
 
-
 @app.route("/clusters/<int:id>")
 def getCluster(id):
-    user = User.query.all()[0]
+    user_id = session.get('user_id')
+    if user_id is None:
+        return redirect('/login')
+
+    user = User.query.get(user_id)
+    if user is None:
+        return redirect('/login')
+
     cluster = Cluster.query.get(id)
     if cluster:
         return render_template("cluster_detail.html", cluster=cluster)
@@ -116,16 +152,29 @@ def getCluster(id):
         
 @app.route("/notifications")
 def notifications():
-    user = User.query.all()[0]
+    user_id = session.get('user_id')
+    if user_id is None:
+        return redirect('/login')
+
+    user = User.query.get(user_id)
+    if user is None:
+        return redirect('/login')
+
     messages = user.get_messages()
     return render_template("notifications.html", messages=messages)
-    
     
 
 
 @app.route("/notifications/read/<int:msg_id>")
 def mark_read(msg_id):
-    user = User.query.all()[0]
+    user_id = session.get('user_id')
+    if user_id is None:
+        return redirect('/login')
+
+    user = User.query.get(user_id)
+    if user is None:
+        return redirect('/login')
+
     messages = user.get_messages()
     for msg in messages:
         if msg.get("id") == msg_id:
@@ -133,6 +182,8 @@ def mark_read(msg_id):
     user.set_messages(messages)
     db.session.commit()
     return redirect(url_for("notifications"))
+
+
 
 # Requests
 
@@ -143,11 +194,18 @@ def requested(cluster_id):
         return "Cluster not found", 404
     return render_template('requests.html', cluster=cluster)
    
+   
 @app.route('/user_requests')
 def user_requests():
+    user_id = session.get('user_id')
+    if user_id is None:
+        return redirect('/login')
+
+    user = User.query.get(user_id)
+    if user is None:
+        return redirect('/login')
+
     clusters = Cluster.query.all()
-    users = User.query.all()
-    user = users[0]  # simulate logged-in user
     requested_ids = user.get_clusters_requests()
     requested_count = len(requested_ids)
     requested_clusters = [c for c in clusters if c.id in requested_ids]
@@ -155,29 +213,33 @@ def user_requests():
         return render_template('user_request.html', user=user, clusters=requested_clusters, clustersCount=requested_count)
     return "no requests", 404
 
-
 @app.route('/send_cluster_request', methods=['POST'])
 def send_cluster_request():
-    user = User.query.all()[0]  # Simulate logged-in user
+    user_id = session.get('user_id')
+    if user_id is None:
+        return redirect('/login')
+
+    user = User.query.get(user_id)
+    if user is None:
+        return redirect('/login')
+
     cluster_id = int(request.form['cluster_id'])
     message = request.form['message']
-
-    cluster = next((c for c in get_all_clusters() if c['id'] == cluster_id), None)
+    cluster = Cluster.query.get(cluster_id)
     if not cluster:
         return "Cluster not found", 404
 
+    requests = cluster.get_requests()
     request_obj = {
-        "author": user["name"],
+        "author": user.name,
         "title": "Join Request",
         "body": message,
         "created": datetime.utcnow().isoformat(),
         "comments": []
     }
-
-    if "requests" not in cluster:
-        cluster["requests"] = []
-    cluster["requests"].append(request_obj)
-
+    requests.append(request_obj)
+    cluster.set_requests(_requests)
+    db.session.commit()
     return redirect(url_for('requested', cluster_id=cluster_id))
 
 #clusters
@@ -262,7 +324,7 @@ def terms():
     
 @app.route('/logout')
 def logout():
-    #session.clear()
+    session.clear()
     return redirect('/login')
 
 
