@@ -43,7 +43,7 @@
  
  <h3>Skills </h3>
  <section class="badges">
- {% for skill in user.skills %}
+ {% for skill in user.get_skills() %}
  <span class="badge">{{ skill | e }}</span>
  {% endfor %}
  </section>

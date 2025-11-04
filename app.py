@@ -50,12 +50,17 @@ def home():
     
 @app.route('/startCluster')
 def startCluster():
-    suggested = get_suggestions()
-    return render_template('createCluster.html', suggested_skills=suggested)
-
+    suggested = Suggestion.query.first()
+    if suggested:
+        suggested_skills = suggested.get_skills()
+    else:
+        suggested_skills = []
+    return render_template('createCluster.html', suggested_skills=suggested_skills)
+    
+    
 @app.route('/myProfile')
 def myProfile():
-    users = get_all_users()
+    users = User.query.all()
     if users:
         user = users[0]
         return render_template('profile.html', user=user)
@@ -73,11 +78,11 @@ def register():
 
 @app.route("/users")
 def users():
-    return jsonify(get_all_users())
+    return jsonify(User.query.all())
     
 @app.route("/users/<name>")
 def getUser(name):
-	users = get_all_users()
+	users = User.query.all()
 	user = next((u for u in users if str(u['name']) == str(name)), None)
 	if user:
    	    return render_template('profile.html', user=user)
@@ -89,8 +94,8 @@ def getUser(name):
 	    
 @app.route('/clusters')
 def clusters():
-    user = get_all_users()[0]
-    clusters = get_all_clusters()
+    user = User.query.all()[0]
+    clusters = Cluster.query.all()
     
     created_clusters = user.get("created_clusters", [])
     requested_ids = user.get("clusters_requests", [])
@@ -112,8 +117,8 @@ def clusters():
 
 @app.route("/clusters/<int:id>")
 def getCluster(id):
-    user = get_all_users()[0]
-    clusters = get_all_clusters()
+    user = User.query.all()[0]
+    clusters = Cluster.query.all()
     cluster = next((c for c in clusters if c['id'] == id), None)
 
     if cluster:
@@ -125,7 +130,7 @@ def getCluster(id):
         
 @app.route("/notifications")
 def notifications():
-    user = get_all_users()[1]
+    user = User.query.all()[1]
     messages = user.get("messages", [])
     return render_template("notifications.html", messages=messages)
 
@@ -133,7 +138,7 @@ def notifications():
 
 @app.route("/notifications/read/<int:msg_id>")
 def mark_read(msg_id):
-    user = get_all_users()[0]
+    user = User.query.all()[0]
     for msg in user.get("messages", []):
         if msg.get("id") == msg_id:
             msg["read"] = True
@@ -143,8 +148,8 @@ def mark_read(msg_id):
 
 @app.route('/clusters/requests/<int:cluster_id>')
 def requested(cluster_id):
-    clusters = get_all_clusters()
-    user = get_all_users()[0]
+    clusters = Cluster.query.all()
+    user = User.query.all()[0]
     cluster = next((c for c in clusters if c['id'] == cluster_id), None)
     if not cluster:
         return "Cluster not found", 404
@@ -152,8 +157,8 @@ def requested(cluster_id):
    
 @app.route('/user_requests')
 def user_requests():
-    clusters = get_all_clusters()
-    users = get_all_users()
+    clusters = Cluster.query.all()
+    users = User.query.all()
     user = users[0]  # simulate logged-in user
     requested_ids = user.get("clusters_requests", [])
     requested_count = len(requested_ids)
@@ -166,7 +171,7 @@ def user_requests():
 
 @app.route('/send_cluster_request', methods=['POST'])
 def send_cluster_request():
-    user = get_all_users()[0]  # Simulate logged-in user
+    user = User.query.all()[0]  # Simulate logged-in user
     cluster_id = int(request.form['cluster_id'])
     message = request.form['message']
 
@@ -192,8 +197,8 @@ def send_cluster_request():
 
 @app.route('/clusters/chat/<int:cluster_id>')
 def show_cluster(cluster_id):
-    clusters = get_all_clusters()
-    user = get_all_users()[0]
+    clusters = Cluster.query.all()
+    user = User.query.all()[0]
     cluster = next((c for c in clusters if c['id'] == cluster_id), None)
     if not cluster:
         return "Cluster not found", 404
@@ -201,8 +206,8 @@ def show_cluster(cluster_id):
     
 @app.route('/clusters/<int:cluster_id>/threads/<int:thread_id>/comments', methods=['POST'])
 def post_comment(cluster_id, thread_id):
-    clusters = get_all_clusters()
-    user = get_all_users()[0]
+    clusters = Cluster.query.all()
+    user = User.query.all()[0]
     user = request.form['user']
     text = request.form['text']
     timestamp = datetime.utcnow().isoformat()
@@ -227,8 +232,8 @@ def post_comment(cluster_id, thread_id):
 
 @app.route('/recommended_clusters')
 def recommended_clusters():
-    clusters = get_all_clusters()
-    users = get_all_users()
+    clusters = Cluster.query.all()
+    users = User.query.all()
     if not users:
         return "No users found", 404
     
