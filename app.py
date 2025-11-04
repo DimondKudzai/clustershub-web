@@ -253,63 +253,66 @@ def show_cluster(cluster_id):
     
 @app.route('/clusters/<int:cluster_id>/threads/<int:thread_id>/comments', methods=['POST'])
 def post_comment(cluster_id, thread_id):
-    clusters = Cluster.query.all()
-    user = User.query.all()[0]
-    user = request.form['user']
-    text = request.form['text']
-    timestamp = datetime.utcnow().isoformat()
+    user_id = session.get('user_id')
+    if user_id is None:
+        return redirect('/login')
 
-    cluster = next((c for c in clusters if c['id'] == cluster_id), None)
+    user = User.query.get(user_id)
+    if user is None:
+        return redirect('/login')
+
+    cluster = Cluster.query.get(cluster_id)
     if not cluster:
         return "Cluster not found", 404
 
-    thread = next((t for t in cluster['conversations'] if t['chatId'] == thread_id), None)
+    conversations = cluster.get_conversations()
+    thread = next((t for t in conversations if t['chatId'] == thread_id), None)
     if not thread:
         return "Thread not found", 404
 
+    text = request.form['text']
+    timestamp = datetime.utcnow().isoformat()
     thread['comments'].append({
-        "user": user,
+        "user": user.name,
         "text": text,
         "timestamp": timestamp
     })
-
+    cluster.set_conversations(conversations)
+    db.session.commit()
     return redirect(url_for('show_cluster', cluster_id=cluster_id))
 
-# App Algo
+# Recomended clusters - Algo
 
 @app.route('/recommended_clusters')
 def recommended_clusters():
+    user_id = session.get('user_id')
+    if user_id is None:
+        return redirect('/login')
+
+    user = User.query.get(user_id)
+    if user is None:
+        return redirect('/login')
+
     clusters = Cluster.query.all()
-    users = User.query.all()
-    if not users:
-        return "No users found", 404
-    current_user = users[0]
-    user_skills = set(skill.lower() for skill in current_user.get_skills())
-    user_desc_words = set(current_user.description.lower().split())
+    user_skills = set(skill.lower() for skill in user.get_skills())
+    user_desc_words = set(user.description.lower().split())
     scored = []
     for cluster in clusters:
-        score = 0
-        # compare tags
+        score = 0 
         tags_lower = set(tag.lower() for tag in cluster.get_tags())
-        # Tag match scoring
         score += 3 * len(user_skills & tags_lower)
-        # Skill in target string
         if any(skill in cluster.target.lower() for skill in user_skills):
-            score += 2
-        # Word match between skills and target
+            score += 2 
         target_words = cluster.target.lower().split()
         skill_matches = sum(1 for skill in user_skills if any(skill in word for word in target_words))
-        score += skill_matches
-        # Match user description with target
+        score += skill_matches 
         desc_matches = sum(1 for word in user_desc_words if word in target_words)
-        score += desc_matches
-        # Fallback: more members = better
-        score += 0.1 * len(cluster.members)
+        score += desc_matches 
+        score += 0.1 * len(cluster.get_members())
         scored.append((score, cluster))
-    #Sort by final score (descending)
     scored.sort(key=lambda x: x[0], reverse=True)
     matched_clusters = [c for score, c in scored if score > 0]
-    return render_template('recommended.html', clusters=matched_clusters, user=current_user)
+    return render_template('recommended.html', clusters=matched_clusters, user=user)
     
     
 #simple endpoints
