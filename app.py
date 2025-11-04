@@ -26,24 +26,24 @@ def index():
     user = users[0]
     return render_template(
         'dashboard.html',
-        name=user['name'],
-        clustersCount=user['clustersCount'],
-        notificationsCount=user['notificationsCount']
+        name=user.name,
+        clustersCount=user.clusters_count,
+        notificationsCount=user.notifications_count
     )
 @app.route('/home')
 def home():
     users = User.query.all()
-    user = users[0]
-    created_clusters = user.get("created_clusters", [])
+    user = users[1]
+    created_clusters = user.get_created_clusters()
     cluster_count = len(created_clusters)
-    messages = user.get("messages", [])
+    messages = user.get_messages()
     
     # Count unread
     unread_count = sum(1 for m in messages if not m.get("read", False))
     
     return render_template(
         'dashboard.html',
-        name=user['name'],
+        name=user.name,
         clustersCount=cluster_count,
         notificationsCount=unread_count
     )

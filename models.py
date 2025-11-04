@@ -1,12 +1,17 @@
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 import json
 from datetime import datetime
+from services.appData import get_all_users, get_all_clusters, get_suggestions
 
-db = SQLAlchemy()
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///clusters.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
 
 class User(db.Model):
-    _tablename_ = 'users'
-
+    __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     full_name = db.Column(db.String)
@@ -16,17 +21,14 @@ class User(db.Model):
     phone = db.Column(db.String)
     password = db.Column(db.String)
     image = db.Column(db.String)
-
     skills = db.Column(db.Text)  # JSON stringified list
     clusters_count = db.Column(db.Integer)
     created_clusters = db.Column(db.Text)  # JSON stringified list
     clusters_requests = db.Column(db.Text)  # JSON stringified list
     notifications_count = db.Column(db.Integer)
     location = db.Column(db.String)
-
     messages = db.Column(db.Text)  # JSON stringified list of objects
 
-    # helper methods
     def get_skills(self):
         return json.loads(self.skills or '[]')
 
@@ -39,10 +41,20 @@ class User(db.Model):
     def get_messages(self):
         return json.loads(self.messages or '[]')
 
+    def set_skills(self, skills):
+        self.skills = json.dumps(skills)
+
+    def set_created_clusters(self, clusters):
+        self.created_clusters = json.dumps(clusters)
+
+    def set_clusters_requests(self, requests):
+        self.clusters_requests = json.dumps(requests)
+
+    def set_messages(self, messages):
+        self.messages = json.dumps(messages)
 
 class Cluster(db.Model):
-    _tablename_ = 'clusters'
-
+    __tablename__ = 'clusters'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     target = db.Column(db.Text)
@@ -50,11 +62,10 @@ class Cluster(db.Model):
     created = db.Column(db.DateTime, default=datetime.utcnow)
     location = db.Column(db.String)
     description = db.Column(db.Text)
-
-    tags = db.Column(db.Text)       # JSON stringified list
-    members = db.Column(db.Text)    # JSON stringified list
+    tags = db.Column(db.Text)  # JSON stringified list
+    members = db.Column(db.Text)  # JSON stringified list
     conversations = db.Column(db.Text)  # JSON stringified list of objects
-    requests = db.Column(db.Text)       # JSON stringified list of objects
+    requests = db.Column(db.Text)  # JSON stringified list of objects
 
     def get_tags(self):
         return json.loads(self.tags or '[]')
@@ -68,13 +79,57 @@ class Cluster(db.Model):
     def get_requests(self):
         return json.loads(self.requests or '[]')
 
+    def set_tags(self, tags):
+        self.tags = json.dumps(tags)
+
+    def set_members(self, members):
+        self.members = json.dumps(members)
+
+    def set_conversations(self, conversations):
+        self.conversations = json.dumps(conversations)
+
+    def set_requests(self, requests):
+        self.requests = json.dumps(requests)
 
 class Suggestion(db.Model):
-    _tablename_ = 'suggestions'
-
+    __tablename__ = 'suggestions'
     id = db.Column(db.Integer, primary_key=True)
-    skills = db.Column(db.Text) # JSON stringified list of objects
-    
+    skills = db.Column(db.Text)  # JSON stringified list
+
     def get_skills(self):
         return json.loads(self.skills or '[]')
-    
+
+    def set_skills(self, skills):
+        self.skills = json.dumps(skills)
+
+
+def seed_users():
+    users = get_all_users()
+    for user_data in users:
+        if not User.query.filter_by(email=user_data["email"]).first():
+            user = User(
+                name=user_data["name"],
+                full_name=user_data["full_name"],
+                description=user_data["description"],
+                website=user_data["website"],
+                email=user_data["email"],
+                phone=user_data["phone"],
+                password=user_data["password"],
+                image=user_data["image"],
+                skills=json.dumps(user_data["skills"]),
+                clusters_count=user_data["clusters_count"],
+                created_clusters=json.dumps(user_data["created_clusters"]),
+                clusters_requests=json.dumps(user_data["clusters_requests"]),
+                notifications_count=user_data["notifications_count"],
+                location=user_data["location"],
+                messages=json.dumps(user_data["messages"])
+            )
+            db.session.add(user)
+    db.session.commit()
+
+with app.app_context():
+    db.create_all()
+    seed_users()
+
+if __name__ == '__main__':
+    app.run(debug=True)
