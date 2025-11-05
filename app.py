@@ -14,15 +14,13 @@ app = Flask(__name__)
 app.config.from_object(Config)
 app.config['SECRET_KEY'] = '24091996'
 
-
 db.init_app(app)
-
-with app.app_context():
-    db.create_all()  # Create tables
 
 
 @app.route('/')
 def index():
+    return redirect('/home')
+    
     users = User.query.all()
     user = users[0]
     return render_template(
