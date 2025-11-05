@@ -151,6 +151,12 @@ def register():
         if existing_user:
             session['notice'] = "Email already exists"
             return redirect('/register')
+            
+        existing_username = User.query.filter_by(username=username).first()
+        if existing_username:
+            session['notice'] = "Username already tacken"
+            return redirect('/register')
+            
 
         user = User(
             name=username,
