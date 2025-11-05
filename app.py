@@ -1,6 +1,6 @@
-from flask import Flask, request, redirect, url_for, render_template, send_from_directory, session
+from flask import Flask, request, redirect, url_for, render_template, send_from_directory, session,json
 import os
-
+from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from flask import jsonify
 #from services.appData import get_all_users, get_all_clusters, get_suggestions
@@ -73,8 +73,12 @@ def myProfile():
     return render_template('profile.html', user=user)
         
 
-@app.route('/login_handler', methods=['POST'])
-def login_handler():
+
+#Authentication
+
+# old handler
+@app.route('/old_login_handler', methods=['POST'])
+def old_login_handler():
     try:
         username = request.form['username'].strip()
         password = request.form['password'].strip()
@@ -89,15 +93,99 @@ def login_handler():
     else:
         session['notice'] = "Invalid login details, retry or create an account"
         return redirect(url_for('login'))
+        
+# handler       
+@app.route('/login_handler', methods=['POST'])
+def login_handler():
+    try:
+        username = request.form['username'].strip()
+        password = request.form['password'].strip()
+    except KeyError:
+        return redirect(url_for('login'))
+
+    user = User.query.filter((User.name == username) | (User.email == username)).first()
+    if user and check_password_hash(user.password, password):
+        session['user_id'] = user.id
+        return redirect('/home')
+    else:
+        session['notice'] = "Invalid login details, retry or create an account"
+        return redirect(url_for('login'))
+        
 
 @app.route('/login')
 def login():
     notice = session.pop('notice', None)
     return render_template('auth.html', notice=notice)
 
-@app.route('/register')
+
+@app.route('/register', methods=['GET', 'POST'])
 def register():
-    return render_template('register.html')
+    notice = session.pop('notice', None)
+    
+    suggested = Suggestion.query.first()
+    if suggested:
+        suggested_skills = suggested.get_skills()
+    else:
+        suggested_skills = []
+    
+    if request.method == 'POST':
+        try:
+            username = request.form['username'].strip()
+            full_name = request.form['full_name'].strip()
+            email = request.form['email'].strip()
+            location = request.form['location'].strip()
+            skills = json.loads(request.form['skills'])
+            password = request.form['password'].strip()
+            confirm_password = request.form['confirm_password'].strip()
+        except KeyError:
+            session['notice'] = "Please fill in all the fields"
+            return redirect('/register')
+
+        if password != confirm_password:
+            session['notice'] = "Passwords do not match"
+            return redirect('/register')
+
+        if len(skills) > 3:
+            session['notice'] = "You can add up to 3 skills only"
+            return redirect('/register')
+
+        existing_user = User.query.filter_by(email=email).first()
+        if existing_user:
+            session['notice'] = "Email already exists"
+            return redirect('/register')
+
+        user = User(
+            name=username,
+            full_name=full_name,
+            email=email,
+            location=location,
+            skills=json.dumps(skills),
+            password=generate_password_hash(password),
+            clusters_count=0,
+            created_clusters=json.dumps([]),
+            clusters_requests=json.dumps([]),
+            notifications_count=0,
+            messages=json.dumps([])
+        )
+        db.session.add(user)
+        db.session.commit()
+
+        suggestion = Suggestion.query.first()
+        if suggestion:
+            existing_skills = suggestion.get_skills()
+            suggestion.set_skills(list(set(existing_skills + skills)))
+        else:
+            suggestion = Suggestion(skills=json.dumps(skills))
+            db.session.add(suggestion)
+        db.session.commit()
+
+        session['user_id'] = user.id
+        return redirect('/home')
+
+    return render_template('register.html', suggested_skills=suggested_skills, notice=notice)
+
+
+# Users
 
 @app.route("/users")
 def users():
@@ -112,6 +200,7 @@ def getUser(name):
 	else:
 	# Handle the case where no users are found
 	    return 'No users found', 404
+	    
 	    
 # Clusters
 	    

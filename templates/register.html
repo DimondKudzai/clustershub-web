@@ -30,23 +30,23 @@
  <strong>Login</strong>
  </a>
  </p>
- 
- <!--
- ,
- <p style="">
- 
-<a href="{{ url_for('register') }}" >
-<strong>Create Account</strong>
-</a>
- 
- <small> It takes less than 2 minutes and it's free.</small>
- </p>
- -->
+
  </div>
  
- <br><br>
+ <br>
+ 
+ <center>
+ {% if notice %}
+ <section style="color: red; border: 1px solid red">
+ <i >{{ notice }}</i>
+ 
+ {% endif %}
+ </section>
+ </center>
+ <br>
+ 
+ 
  <section class="create-cluster">
-
 <h2>Create account</h2>
 <form action="/register" method="POST">
   <strong>Name</strong>
@@ -60,12 +60,11 @@
   
   <strong>Key Skills</strong>
   
-  <div class="tag-input-container">
-    <ul id="tag-list"></ul>
-    <input type="text" id="tag-input" placeholder="Add upto 3 of your skills" autocomplete="off" />
-    <ul id="suggestions"></ul>
-    <input type="hidden" name="skills" id="skills-input">
-  </div>
+ <div class="tag-input-container">
+     <ul id="tag-list"></ul>
+     <input type="text" id="tag-input" placeholder=" Add your skills offer" autocomplete="off" />
+     <ul id="suggestions"></ul>
+     </div>
   
   <br>
   <strong>Password</strong>
@@ -79,6 +78,11 @@
 
  
 {% include 'partials/footer.html' %}
+
+<script>
+   const availableTags = {{ suggested_skills | tojson }};
+   </script>
+  
 
 <script type="text/javascript" src="{{url_for('static', filename='createCluster.js')}}"></script>
 </body>

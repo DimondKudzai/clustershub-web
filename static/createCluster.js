@@ -2,7 +2,6 @@ const input = document.getElementById('tag-input');
 const tagList = document.getElementById('tag-list');
 const suggestionsBox = document.getElementById('suggestions');
 
-//const availableTags = "{{ suggested_skills }}";
 const selectedTags = [];
 
 input.addEventListener('input', () => {
@@ -42,24 +41,25 @@ input.addEventListener('keydown', function (e) {
 });
 
 function addTag(text) {
-  if (selectedTags.includes(text)) return;
-
-  selectedTags.push(text);
-
-  const tagItem = document.createElement('li');
-  tagItem.textContent = text;
-
-  const removeBtn = document.createElement('span');
-  removeBtn.textContent = '×';
-  removeBtn.onclick = () => {
-    tagItem.remove();
-    selectedTags.splice(selectedTags.indexOf(text), 1);
-  };
-
-  tagItem.appendChild(removeBtn);
-  tagList.appendChild(tagItem);
-
-  input.value = '';
-  suggestionsBox.innerHTML = '';
-  suggestionsBox.style.display = 'none'; // <-- hide after selection
+    if (selectedTags.length >= 3) {
+        alert('You can add up to 3 skills only');
+        return;
+    }
+    if (selectedTags.includes(text)) return;
+    selectedTags.push(text);
+    const tagItem = document.createElement('li');
+    tagItem.textContent = text;
+    const removeBtn = document.createElement('span');
+    removeBtn.textContent = '×';
+    removeBtn.onclick = () => {
+        tagItem.remove();
+        selectedTags.splice(selectedTags.indexOf(text), 1);
+        document.getElementById('skills-input').value = JSON.stringify(selectedTags);
+    };
+    tagItem.appendChild(removeBtn);
+    tagList.appendChild(tagItem);
+    input.value = '';
+    suggestionsBox.innerHTML = '';
+    suggestionsBox.style.display = 'none';
+    document.getElementById('skills-input').value = JSON.stringify(selectedTags);
 }

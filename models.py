@@ -17,6 +17,7 @@ class User(db.Model):
     full_name = db.Column(db.String)
     description = db.Column(db.Text)
     website = db.Column(db.String)
+    second_website = db.Column(db.String)
     email = db.Column(db.String, unique=True)
     phone = db.Column(db.String)
     password = db.Column(db.String)
@@ -112,6 +113,7 @@ def seed_users():
                 full_name=user_data["full_name"],
                 description=user_data["description"],
                 website=user_data["website"],
+                second_website=user_data["second_website"],
                 email=user_data["email"],
                 phone=user_data["phone"],
                 password=user_data["password"],
@@ -127,32 +129,6 @@ def seed_users():
             db.session.add(user)
     db.session.commit()
     
-
-
-def seed_users():
-    users = get_all_users()
-    for user_data in users:
-        if not User.query.filter_by(email=user_data["email"]).first():
-            user = User(
-                name=user_data["name"],
-                full_name=user_data["full_name"],
-                description=user_data["description"],
-                website=user_data["website"],
-                email=user_data["email"],
-                phone=user_data["phone"],
-                password=user_data["password"],
-                image=user_data["image"],
-                skills=json.dumps(user_data["skills"]),
-                clusters_count=user_data["clusters_count"],
-                created_clusters=json.dumps(user_data["created_clusters"]),
-                clusters_requests=json.dumps(user_data["clusters_requests"]),
-                notifications_count=user_data["notifications_count"],
-                location=user_data["location"],
-                messages=json.dumps(user_data["messages"])
-            )
-            db.session.add(user)
-    db.session.commit()
-
 
 def seed_clusters():
     clusters = get_all_clusters()
@@ -189,8 +165,8 @@ def seed_suggestions():
 
 with app.app_context():
     db.create_all()
-    #seed_users()
-    #seed_clusters()
+    seed_users()
+    seed_clusters()
     seed_suggestions()
 
 if __name__ == '__main__':
