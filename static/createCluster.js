@@ -4,6 +4,8 @@ const suggestionsBox = document.getElementById('suggestions');
 
 const selectedTags = [];
 
+document.getElementById('skills-input').value = JSON.stringify(selectedTags);
+
 input.addEventListener('input', () => {
   const value = input.value.toLowerCase();
   suggestionsBox.innerHTML = '';

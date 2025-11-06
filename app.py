@@ -7,6 +7,8 @@ from flask import jsonify
 from models import db
 from config import Config
 from models import User, Cluster, Suggestion # Import models
+from flask_admin import Admin
+from flask_admin.contrib.sqla import ModelView
 
 import sqlite3
 
@@ -15,6 +17,11 @@ app.config.from_object(Config)
 app.config['SECRET_KEY'] = '24091996'
 
 db.init_app(app)
+
+admin = Admin(app, name='Clusters Admin')
+admin.add_view(ModelView(User, db.session))
+admin.add_view(ModelView(Cluster, db.session))
+admin.add_view(ModelView(Suggestion, db.session))
 
 
 @app.route('/')
@@ -119,44 +126,65 @@ def login():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     notice = session.pop('notice', None)
-    
     suggested = Suggestion.query.first()
     if suggested:
         suggested_skills = suggested.get_skills()
     else:
         suggested_skills = []
-    
     if request.method == 'POST':
         try:
-            username = request.form['username'].strip()
-            full_name = request.form['full_name'].strip()
-            email = request.form['email'].strip()
-            location = request.form['location'].strip()
-            skills = json.loads(request.form['skills'])
-            password = request.form['password'].strip()
-            confirm_password = request.form['confirm_password'].strip()
-        except KeyError:
-            session['notice'] = "Please fill in all the fields"
+            username = request.form.get('username', '').strip()
+            full_name = request.form.get('full_name', '').strip()
+            email = request.form.get('email', '').strip()
+            location = request.form.get('location', '').strip()
+            skills = request.form.get('skills', '')
+            if skills:
+                try:
+                    skills = json.loads(skills)
+                except json.JSONDecodeError:
+                    skills = []
+            else:
+                skills = []
+            password = request.form.get('password', '').strip()
+            confirm_password = request.form.get('confirm_password', '').strip()
+        except Exception as e:
+            print(e)
+            session['notice'] = "An error occurred"
             return redirect('/register')
 
+        errors = []
+        if not username:
+            errors.append("Username is required")
+        if not full_name:
+            errors.append("Full name is required")
+        if not email:
+            errors.append("Email is required")
+        if not location:
+            errors.append("Location is required")
+        if not skills:
+            errors.append("At least one skill is required")
+        if not password:
+            errors.append("Password is required")
+        if not confirm_password:
+            errors.append("Confirm password is required")
         if password != confirm_password:
-            session['notice'] = "Passwords do not match"
-            return redirect('/register')
-
+            errors.append("Passwords do not match")
         if len(skills) > 3:
-            session['notice'] = "You can add up to 3 skills only"
+            errors.append("You can add up to 3 skills only")
+
+        if errors:
+            session['notice'] = ', '.join(errors)
             return redirect('/register')
 
         existing_user = User.query.filter_by(email=email).first()
         if existing_user:
             session['notice'] = "Email already exists"
             return redirect('/register')
-            
-        existing_username = User.query.filter_by(username=username).first()
+
+        existing_username = User.query.filter_by(name=username).first()
         if existing_username:
-            session['notice'] = "Username already tacken"
+            session['notice'] = "Username already taken"
             return redirect('/register')
-            
 
         user = User(
             name=username,
@@ -177,7 +205,7 @@ def register():
         suggestion = Suggestion.query.first()
         if suggestion:
             existing_skills = suggestion.get_skills()
-            suggestion.set_skills(list(set(existing_skills + skills)))
+            suggestion.skills = json.dumps(list(set(existing_skills + skills)))
         else:
             suggestion = Suggestion(skills=json.dumps(skills))
             db.session.add(suggestion)
@@ -185,9 +213,7 @@ def register():
 
         session['user_id'] = user.id
         return redirect('/home')
-
     return render_template('register.html', suggested_skills=suggested_skills, notice=notice)
-
 
 # Users
 

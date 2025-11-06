@@ -142,6 +142,7 @@ def get_all_clusters():
 	{
 	"id": 1,
 	"name": "Brain Flow AI",
+	"status": "Brain Flow AI",
 	"target": "Building AI that solves health issues",
 	"author": "Dimond",
 	"created": "2025-10-22T10:05:00Z",
@@ -198,6 +199,7 @@ def get_all_clusters():
 	"id": 2,
 	"name": "Fish Farmers",
 	"target": "Produce Breams for sale",
+	"status": "Brain Flow AI",
 	"author": "Dimond",
 	"created": "2025-10-22T10:05:00Z",
 	"location": "Zimbabwe",
@@ -251,6 +253,7 @@ def get_all_clusters():
 	{
 	"id": 3,
 	"name": "Legal Minds",
+	"status": "Brain Flow AI",
 	"author": "Dimond",
 	"created": "2025-10-22T10:05:00Z",
 	"description": "Legal Firm",
@@ -296,6 +299,7 @@ def get_all_clusters():
 	"id": 4,
 	"name": "Design Lab",
 	"location": "Panama",
+	"status": "Brain Flow AI",
 	"author": "ChrisVoiloe2",
 	"created": "2025-10-22T10:05:00Z",
 	"location": "Harare",

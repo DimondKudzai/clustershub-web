@@ -4,6 +4,8 @@ import json
 from datetime import datetime
 from services.appData import get_all_users, get_all_clusters, get_suggestions
 
+
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///clusters.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -59,6 +61,7 @@ class Cluster(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     target = db.Column(db.Text)
+    status = db.Column(db.Text)
     author = db.Column(db.String)
     created = db.Column(db.DateTime, default=datetime.utcnow)
     location = db.Column(db.String)
@@ -138,6 +141,7 @@ def seed_clusters():
                 id=cluster_data["id"],
                 name=cluster_data["name"],
                 target=cluster_data["target"],
+                status=cluster_data["status"],
                 author=cluster_data["author"],
                 created=datetime.strptime(cluster_data["created"], "%Y-%m-%dT%H:%M:%SZ"),
                 location=cluster_data["location"],
