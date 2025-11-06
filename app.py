@@ -55,15 +55,7 @@ def home():
     return render_template('dashboard.html', name=user.name, clustersCount=cluster_count, notificationsCount=unread_count)
     
     
-@app.route('/startCluster')
-def startCluster():
-    suggested = Suggestion.query.first()
-    if suggested:
-        suggested_skills = suggested.get_skills()
-    else:
-        suggested_skills = []
-    return render_template('createCluster.html', suggested_skills=suggested_skills)
-    
+
     
 @app.route('/myProfile')
 def myProfile():
@@ -233,7 +225,82 @@ def getUser(name):
 	    
 	    
 # Clusters
-	    
+
+@app.route('/startCluster', methods=['GET', 'POST'])
+def startCluster():
+    suggested = Suggestion.query.first()
+    if suggested:
+        suggested_skills = suggested.get_skills()
+    else:
+        suggested_skills = []
+    notice = session.pop('notice', None)
+    if request.method == 'POST':
+        try:
+            name = request.form.get('name', '').strip()
+            description = request.form.get('description', '').strip()
+            skills = request.form.get('skills', '')
+            if skills:
+                try:
+                    skills = json.loads(skills)
+                except json.JSONDecodeError:
+                    skills = []
+            else:
+                skills = []
+            location = request.form.get('location', '').strip()
+            status = request.form.get('status', '').strip()
+            target = request.form.get('target', '').strip()
+        except Exception as e:
+            print(e)
+            session['notice'] = "An error occurred"
+            return redirect('/startCluster')
+
+        errors = []
+        if not name:
+            errors.append("Cluster name is required")
+        if not location:
+            location = "International"
+        if not status:
+            errors.append("Product/service status is required")
+        if not description:
+            errors.append("Cluster description is required")
+        if not skills:
+            errors.append("At least one skill is required")
+        if len(skills) > 10:
+            errors.append("You can add up to 10 skills only")
+
+        if errors:
+            session['notice'] = ', '.join(errors)
+            return redirect('/startCluster')
+
+        # Get the user name from the session
+        user = User.query.get(session['user_id'])
+        author = user.name
+
+        # Create the cluster
+        cluster = Cluster(
+            name=name,
+            description=description,
+            tags=json.dumps(skills),
+            location=location,
+            status=status,
+            target=target,
+            members=json.dumps([author]),
+            author=author  # Store the user name as the author
+        )
+        db.session.add(cluster)
+        db.session.commit()
+
+        # Update the user's clusters
+        created_clusters = json.loads(user.created_clusters)
+        created_clusters.append(cluster.id)
+        user.created_clusters = json.dumps(created_clusters)
+        db.session.commit()
+
+        return redirect('/clusters')
+    return render_template('createCluster.html', suggested_skills=suggested_skills, notice=notice)
+        
+  
+
 @app.route('/clusters')
 def clusters():
     user_id = session.get('user_id')
@@ -267,7 +334,7 @@ def getCluster(id):
     cluster = Cluster.query.get(id)
     if cluster:
         is_author = cluster.author == user.name
-        is_member = user.id in cluster.get_members()
+        is_member = user.name in cluster.get_members()
         requested = id in user.get_clusters_requests()
 
         return render_template("cluster_detail.html", cluster=cluster, is_author=is_author, is_member=is_member, requested=requested)

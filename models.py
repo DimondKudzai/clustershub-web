@@ -21,6 +21,7 @@ class User(db.Model):
     website = db.Column(db.String)
     second_website = db.Column(db.String)
     email = db.Column(db.String, unique=True)
+    confirm_email = db.Column(db.Text)
     phone = db.Column(db.String)
     password = db.Column(db.String)
     image = db.Column(db.String)
@@ -118,6 +119,7 @@ def seed_users():
                 website=user_data["website"],
                 second_website=user_data["second_website"],
                 email=user_data["email"],
+                confirm_email=user_data["confirm_email"],
                 phone=user_data["phone"],
                 password=user_data["password"],
                 image=user_data["image"],

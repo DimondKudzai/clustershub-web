@@ -15,36 +15,44 @@
   
 
   <div class="container">
+<center>
+{% if notice %}
+<section style="color: red; border: 1px solid red">
+<i >{{ notice }}</i>
 
+{% endif %}
+</section>
+</center>
+<br>
     <section class="create-cluster">
       <h2>Create Cluster</h2>
       
-      <form action="" method="POST">
+      <form action="{{url_for('startCluster')}}" method="POST">
       <strong class=""> Name</strong>
-      <input type="text" placeholder="Cluster Name" class="input"><br><br>
+      <input name="name" type="text" placeholder="Cluster Name" class="input"><br><br>
       <strong class=""> Description</strong>
-      <textarea placeholder="Description"></textarea><br><br>
+      <textarea name="description" placeholder="Description"></textarea><br><br>
       
       <strong class="">Roles Needed</strong><br><br>
       
-      <div class="tag-input-container">
-      <ul id="tag-list"></ul>
-      <input type="text" id="tag-input" placeholder="Add skill or roles you need..." autocomplete="off" />
-      <ul id="suggestions"></ul>
-      </div>
+     
+     <div class="tag-input-container">
+     <ul id="tag-list"></ul>
+     <input type="text" id="tag-input" placeholder=" Add upto 3 skills you offer" autocomplete="off" />
+     <input type="hidden" name="skills" id="skills-input" />
+     <ul id="suggestions"></ul>
+     </div>
+     
       
      <br><strong class="">Location</strong><small> ( by leaving this empty your cluster will be international by deafault.)</small>
-     <input type="text" placeholder=" Locality" class="input">
+     <input type="text" name="location" placeholder=" Locality" class="input">
      <div class="bold_text">  
        <strong> Product/Service Status</strong>
-        <select class="projectStatus">
-          <option>Idea</option>
-          <option>In progress</option>
+        <input type="text/number" name="status" placeholder="Idea or In progress">
           </div>
-        </select>
         
         <br><strong class="">Current Target</strong>
-        <input type="text" placeholder="start typing.." class="input"><br>     
+        <input type="text" name="target" placeholder="start typing.." class="input"><br>     
     
         <button class="dashboardBtn" type="submit"><span style="font-size: 16px;">Create Cluster</span></button>
     </form>
