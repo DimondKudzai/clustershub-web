@@ -1,91 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="keywords" content="Cluster conversation, group chat" />
-  <meta name="description" content="This is the private Cluster chat" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cluster | Chat </title>
-  <link rel="icon" type="image/jpg" href="{{url_for('static', filename='logo.jpg')}}">
-  <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}">
-  <style>
-  small{
-  color: green;
-  }
-  section{
-  border: none;
-  }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="Cluster conversation, group chat" />
+    <meta name="description" content="This is the private Cluster chat" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cluster | Chat </title>
+    <link rel="icon" type="image/jpg" href="{{url_for('static', filename='logo.jpg')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}">
+    <style>
+        small{
+            color: green;
+        }
+        section{
+            border: none;
+        }
+    </style>
 </head>
 <body>
-
-{% include 'partials/header.html' %}
-
-  <div class="" style="width: 100%">
-  
-  <section style="padding: 1px;border: none;">
-  <center>
-  <h2>{{ cluster.name }}  Requests </h2>
-
-</section>
-  <br>
-   {% for request in cluster.get_requests() %}
-   
-   <div style=" ">
-   <section style="color: black">
-   <section>
-   <div class="thread">
-   <strong style="font-size:16px; color: green;"> {{ request.title }}</strong><span> by <a href="{{ url_for('getUser', name=request.author) }}" style="color: blue">@{{ request.author }}</a></span>
-   <br>
-   <p>{{ request.body }}</p>
-   <small>{{request.created}}</small>
-   </section>
-   
-   <div class="comments">
-   <h3>Replies</h3>
-   {% for comment in request.comments %}
-   <p>
-   <a href="{{ url_for('getUser', name=comment.user) }}" style="color: blue">@{{ comment.user }}</a> 
-   <span style="color: black;">{{ comment.text }} </span>
+    {% include 'partials/header.html' %}
+    <div class="" style="width: 100%">
+        <section style="padding: 1px;border: none;">
+            <center>
+                <h2>{{ cluster.name }} Requests </h2>
+        </section>
+        <br>
+        {% for request in cluster.get_requests() %}
+            <div>
+                <section style="color: black" class="create-cluster">
+                    <section>
+                        <div class="thread">
+                            <strong style="font-size:16px; color: green;"> {{ request.title }}</strong><span> by <a href="{{ url_for('getUser', name=request.author) }}" style="color: blue">@{{ request.author }}</a></span> <br>
+                            <p>{{ request.body }}</p>
+                            <small>{{request.created}}</small>
+                    </section>
+                    <div class="comments">
+                        <h3>Replies</h3>
+                        {% for comment in request.comments %}
+                            <p>
+                                <a href="{{ url_for('getUser', name=comment.user) }}" style="color: blue">@{{ comment.user }}</a>
+                                <span style="color: black;">{{ comment.text }} </span>
+                                <br>
+                                <small>{{ comment.timestamp }}</small>
+                            </p>
+                        {% endfor %}
+                    </div>
+                    <!-- Comment Form -->
+                    <form action="{{ url_for('requested_comment', cluster_id=cluster.id, chatId=request.chatId) }}" method="post">
+                        <textarea type="text" name="text" placeholder="Your comment" required></textarea><br>
+                        <button type="submit" class="dashboardBtn" style="background: blue;">Sent Reply</button>
+                    </form>
+                    <br><br>
+                    <section style="padding: 5px;border: none;">
+                        <center>
+                            <button class="dashboardBtn" >Accept Request</button>
+                            <button class="dashboardBtn" style="background: red;">Decline and Delete</button>
+                        </center>
+                        <br>
+                    </section>
+                </section>
+            </div>
+            <br>
+          </div>
+        {% endfor %}    
     <br>
-    <small>{{ comment.timestamp }}</small>
-    </p>
-  
-   {% endfor %}
-   </div>
-
-   <!-- Comment Form -->
-   <form method="POST" action="" class="create-cluster">
-   <textarea type="text" name="text" placeholder="Your comment" required></textarea><br>
-   <button type="submit" class="dashboardBtn" style="background: blue;">Sent Reply</button>
-   </form>
-   
-   
-   <br><br>
-   <section style="padding: 5px;border: none;">
-   <center>
-   <button class="dashboardBtn" >Accept Request</button>
-   <button class="dashboardBtn" style="background: red;">Decline and Delete</button>
-   </center>
-   <br>
-   </section>
-   
-   
-   </div>
-   </section>
-   
-   </div>
-   
-   
-   
-   
-   </div><br>
-   
-  {% endfor %}
-   
-
- 
-  {% include 'partials/footer.html' %} 
-  
+    {% include 'partials/footer.html' %}
 </body>
 </html>

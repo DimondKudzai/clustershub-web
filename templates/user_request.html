@@ -42,7 +42,7 @@
   <p><a href="{{ url_for('getUser', name=comment.user) }}" style="color: blue">@{{ comment.user }}</a> {{ comment.text }} <br><small>{{ comment.timestamp }}</small></p>
   {% endfor %}
   </div>
-  <form action="{{ url_for('requested_comment', chatId=request.chatId) }}" method="post">
+  <form action="{{ url_for('requested_comment', chatId=request.chatId, cluster_id=cluster.id)}}" method="post">
   <input type="hidden" name="chatId" value="{{ request.chatId }}">
   <textarea type="text" name="text" placeholder="Your comment" required></textarea><br>
   <button type="submit" class="dashboardBtn" style="background: blue;">Sent Reply</button>
