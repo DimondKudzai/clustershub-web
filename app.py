@@ -207,6 +207,93 @@ def register():
         return redirect('/home')
     return render_template('register.html', suggested_skills=suggested_skills, notice=notice)
 
+
+
+@app.route('/register_update', methods=['GET', 'POST'])
+def register_update():
+    notice = session.pop('notice', None)
+    suggested = Suggestion.query.first()
+    if suggested:
+        suggested_skills = suggested.get_skills()
+    else:
+        suggested_skills = []
+    if request.method == 'POST':
+        try:
+            username = request.form.get('username', '').strip()
+            full_name = request.form.get('full_name', '').strip()
+            email = request.form.get('email', '').strip()
+            location = request.form.get('location', '').strip()
+            website = request.form.get('website', '').strip()
+            second_website = request.form.get('second_website', '').strip()
+            skills = request.form.get('skills', '')
+            if skills:
+                try:
+                    skills = json.loads(skills)
+                except json.JSONDecodeError:
+                    skills = []
+            else:
+                skills = []
+            password = request.form.get('password', '').strip()
+            confirm_password = request.form.get('confirm_password', '').strip()
+        except Exception as e:
+            print(e)
+            session['notice'] = "An error occurred"
+            return redirect('/register_update')
+
+        errors = []
+        if password and password != confirm_password:
+            errors.append("Passwords do not match")
+        if len(skills) > 3:
+            errors.append("You can add up to 3 skills only")
+        if errors:
+            session['notice'] = ', '.join(errors)
+            return redirect('/register_update')
+
+        existing_user = User.query.filter_by(email=email).first()
+        if existing_user and existing_user.id != session['user_id']:
+            session['notice'] = "Email already exists"
+            return redirect('/register_update')
+
+        existing_username = User.query.filter_by(name=username).first()
+        if existing_username and existing_username.id != session['user_id']:
+            session['notice'] = "Username already taken"
+            return redirect('/register_update')
+
+        user = User.query.get(session['user_id'])
+        if user:
+            if username:
+                user.name = username
+            if full_name:
+                user.full_name = full_name
+            if email:
+                user.email = email
+            if location:
+                user.location = location
+            if website:
+                user.website = website
+            if second_website:
+                user.second_website = second_website
+            if skills:
+                user.skills = json.dumps(skills)
+            if password:
+                user.password = generate_password_hash(password)
+            db.session.commit()
+        else:
+            session['notice'] = "User not found"
+            return redirect('/register_update')
+
+        suggestion = Suggestion.query.first()
+        if suggestion:
+            existing_skills = suggestion.get_skills()
+            suggestion.skills = json.dumps(list(set(existing_skills + skills)))
+        else:
+            suggestion = Suggestion(skills=json.dumps(skills))
+            db.session.add(suggestion)
+        db.session.commit()
+        return redirect('/home')
+    return render_template('set_profile.html', suggested_skills=suggested_skills, notice=notice)
+
+
 # Users
 
 @app.route("/users")
@@ -316,9 +403,9 @@ def clusters():
     requested_clusters = user.get_clusters_requests()
     total_clusters = created_clusters + requested_clusters
     cluster_count = len(total_clusters)
-    requested_clusters = [c for c in clusters if c.id in total_clusters]
-    if requested_clusters:
-        return render_template('clusters.html', user=user, clusters=requested_clusters, clustersCount=cluster_count)
+    show_clusters = [c for c in clusters if c.id in total_clusters]
+    if show_clusters:
+        return render_template('clusters.html', user=user, clusters=show_clusters, clustersCount=cluster_count)
     return "no clusters", 404
 
 @app.route("/clusters/<int:id>")
@@ -339,6 +426,64 @@ def getCluster(id):
 
         return render_template("cluster_detail.html", cluster=cluster, is_author=is_author, is_member=is_member, requested=requested)
     return jsonify({'error': 'Cluster not None, is_member=is_member'})
+   
+   
+@app.route('/cluster_update/<int:id>', methods=['GET', 'POST'])
+def cluster_updater(id):
+    notice = session.pop('notice', None)
+    cluster = Cluster.query.get(id)
+    if not cluster:
+        return redirect('/clusters')
+    suggested = Suggestion.query.first()
+    if suggested:
+        suggested_skills = suggested.get_skills()
+    else:
+        suggested_skills = []
+    if request.method == 'POST':
+        try:
+            name = request.form.get('name', '').strip()
+            description = request.form.get('description', '').strip()
+            skills = request.form.get('skills', '')
+            if skills:
+                try:
+                    skills = json.loads(skills)
+                except json.JSONDecodeError:
+                    skills = []
+            else:
+                skills = []
+            location = request.form.get('location', '').strip()
+            status = request.form.get('status', '').strip()
+            target = request.form.get('target', '').strip()
+        except Exception as e:
+            print(e)
+            session['notice'] = "An error occurred"
+            return redirect('/cluster_update/' + str(id))
+        errors = []
+        if len(skills) > 10:
+            errors.append("You can add up to 10 skills only")
+        if errors:
+            session['notice'] = ', '.join(errors)
+            return redirect('/cluster_update/' + str(id))
+        if name:
+            cluster.name = name
+        if description:
+            cluster.description = description
+        if skills:
+            cluster.skills = json.dumps(skills)
+        if location:
+            cluster.location = location
+        if status:
+            cluster.status = status
+        if target:
+            cluster.target = target
+        db.session.commit()
+        return redirect('/clusters')
+    return render_template('cluster_settings.html', cluster=cluster, suggested_skills=suggested_skills, notice=notice)
+
+
+
+   
+   
    
         
 # Notifications        
@@ -522,17 +667,6 @@ def terms():
 def logout():
     session.clear()
     return redirect('/login')
-
-
-#settings
-@app.route('/profile_settings')
-def profile_settings():
-    return render_template('set_profile.html')
-
-@app.route('/cluster_settings')
-def cluster_settings():
-    return render_template('cluster_settings.html')
-    
     
 if __name__ == '__main__':
     app.run(debug=True)

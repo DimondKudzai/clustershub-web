@@ -2,52 +2,71 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="keywords" content="Account, Settings, Edit Account" />
-  <meta name="description" content="Change and add Account information " />
+  <meta name="keywords" content="Welcome, Register, Free Account" />
+  <meta name="description" content="Welcome, Join for Clusters Hub now " />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Profile Settings</title>
+  <title>Join Clusters Hub</title>
   <link rel="icon" type="image/jpg" href="{{url_for('static', filename='logo.jpg')}}">
   <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}">
 </head>
 <body>
 
 {% include 'partials/header.html' %}
-
+ </div>
+ 
  <br>
+ 
+ <center>
+ {% if notice %}
+ <section style="color: red; border: 1px solid red">
+ <i >{{ notice }}</i>
+ {% endif %}
+ </section>
+ </center>
+ <br>
+ 
+ 
  <section class="create-cluster">
-
-<h2>🖊️ Edit Account Details</h2>
-<form action="/profile_settings" method="POST">
-  <strong>Name</strong>
+<h2>Update account details</h2>
+<form action="{{ url_for('register_update') }}" method="POST">
+  <strong>Username</strong>
   <input type="text" name="username" placeholder="Preferred Username"><br>
-  <strong>Full Name</strong>
-  <input type="text" name="full_name" placeholder="Full Name"><br>
-  <strong>Email</strong>
+  <strong>Change Email</strong>
   <input type="email" name="email" placeholder="Email"><br>
   <strong>Location</strong>
   <input type="text" name="location" placeholder="Location"><br><br>
   
-  <strong>Key Skills</strong>
+  <strong>Public links</strong>
+  <input type="text" name="website" placeholder="website or Link"><br>
+  <input type="text" name="second_website" placeholder="Link 2 "><br><br>
   
-  <div class="tag-input-container">
-    <ul id="tag-list"></ul>
-    <input type="text" id="tag-input" placeholder="Add upto 3 of your skills" autocomplete="off" />
-    <ul id="suggestions"></ul>
-    <input type="hidden" name="skills" id="skills-input">
-  </div>
+  <strong>Update Skills</strong>
   
+ <div class="tag-input-container">
+ <ul id="tag-list"></ul>
+ <input type="text" id="tag-input" placeholder=" Add upto 3 skills you offer" autocomplete="off" />
+ <input type="hidden" name="skills" id="skills-input" />
+ <ul id="suggestions"></ul>
+ </div>
+ 
   <br>
-  <strong>New Password</strong>
+  <strong>Update Password</strong>
   <input type="password" name="password" placeholder="Password"><br>
   <strong>Confirm Password</strong>
   <input type="password" name="confirm_password" placeholder="Confirm Password"><br>
-  <button class="dashboardBtn" type="submit"> Register </button>
+  
+  <button class="dashboardBtn" type="submit"> Submit Updates</button>
 </form>
 
 </section>
 
  
 {% include 'partials/footer.html' %}
+
+<script>
+   const availableTags = {{ suggested_skills | tojson }};
+   </script>
+  
 
 <script type="text/javascript" src="{{url_for('static', filename='createCluster.js')}}"></script>
 </body>

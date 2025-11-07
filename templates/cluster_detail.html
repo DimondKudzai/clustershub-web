@@ -129,8 +129,8 @@
   <a href="{{ url_for('requested', cluster_id=cluster.id) }}"> 
   <button class="dashboardBtn" style="background: ; width: 90%;"><strong> Member Requests </strong></button>
   </a>
-  <a href="{{ url_for('profile_settings') }}" > 
-  <button class="dashboardBtn" style="background: ; width: 90%;"><strong> Settings </strong></button>
+  <a href="{{ url_for('cluster_updater', id=cluster.id) }}" > 
+  <button class="dashboardBtn" style="background: ; width: 90%;"><strong>⚙️ Cluster settings </strong></button>
   </a>
   {% elif is_member %}
   <a href="{{ url_for('show_cluster', cluster_id=cluster.id) }}"> 
@@ -159,7 +159,10 @@
       </ul>
     </section>
   </section>
- 
+  <br>
+ <section>
+ <button onclick="openRequestPopup({{ cluster.id }})" class="dashboardBtn" style="background: red; width: 90%;"><strong> Delete Cluster </strong></button>
+ </section>
 </div>
  
 {% include 'partials/footer.html' %}
