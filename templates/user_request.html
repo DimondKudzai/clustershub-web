@@ -21,52 +21,46 @@
 
 {% include 'partials/header.html' %}
 
-  <div  style="width: 100%"> 
-  {% for cluster in clusters %} 
-  <section class="create-cluster" style="padding: px;border: none;"> 
-  <center> 
-  <h2>{{ cluster.name }} Request </h2> 
-  </center> 
-  <br> 
-  {% for request in cluster.get_requests() %} 
-  <div style=" "> 
-  <section style="color: black"> 
-  <div class="thread"> 
-  <strong style="font-size:16px; color: green;"> {{ request.title }}</strong><span> by <a href="{{ url_for('getUser', name=request.author) }}" style="color: blue">@{{ request.author }}</a></span> 
-  <br> 
-  <p>{{ request.body }}</p> 
-  <small>{{request.created}}</small> 
-  </section> 
-  <div class="comments"> 
-  <h3>Replies</h3> 
-  {% for comment in request.comments %} 
-  <p><a href="{{ url_for('getUser', name=comment.user) }}" style="color: blue">@{{ comment.user }}</a> {{ comment.text }} <br><small>{{ comment.timestamp }}</small></p> 
-  {% endfor %} 
-  </div> 
-
-  <form>
-  <textarea type="text" name="text" placeholder="Your comment" required></textarea><br> 
-  <button type="submit" class="dashboardBtn" style="background: blue;">Sent Reply</button> 
-  </form> 
-  <br><br> 
-  <section style="padding: 5px;border: none;"> 
-  <center> 
-
-  <form>
-  <button type="submit" class="dashboardBtn" style="background: red;">Withdraw and Delete</button> 
-  </form> 
-  </center> 
-  <br> 
-  </section> 
-  </div> 
-  {% endfor %} 
-  </section>
+  <div style="width: 100%">
+  {% for cluster in clusters %}
+  <section class="create-cluster" style="padding: px;border: none;">
+  <center>
+  <h2>{{ cluster.name }} Request </h2>
+  </center>
   <br>
-  </div> 
+  {% for request in cluster.get_requests() %}
+  <div style=" ">
+  <section style="color: black">
+  <div class="thread">
+  <strong style="font-size:16px; color: green;"> {{ request.title }}</strong><span> by <a href="{{ url_for('getUser', name=request.author) }}" style="color: blue">@{{ request.author }}</a></span> <br>
+  <p>{{ request.body }}</p>
+  <small>{{request.created}}</small>
+  </section>
+  <div class="comments">
+  <h3>Replies</h3>
+  {% for comment in request.comments %}
+  <p><a href="{{ url_for('getUser', name=comment.user) }}" style="color: blue">@{{ comment.user }}</a> {{ comment.text }} <br><small>{{ comment.timestamp }}</small></p>
+  {% endfor %}
+  </div>
+  <form action="{{ url_for('requested_comment', chatId=request.chatId) }}" method="post">
+  <input type="hidden" name="chatId" value="{{ request.chatId }}">
+  <textarea type="text" name="text" placeholder="Your comment" required></textarea><br>
+  <button type="submit" class="dashboardBtn" style="background: blue;">Sent Reply</button>
+  </form>
+  </div>
+  
+  <br>  <br><br>
+  
   {% endfor %}
   
+  <br>
+  </section>
+   <br><br>
+  {% endfor %}
+
   </div>
- 
+  
+ </div>
  
   {% include 'partials/footer.html' %} 
   

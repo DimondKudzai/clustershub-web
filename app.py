@@ -550,14 +550,38 @@ def mark_read(msg_id):
 
 
 
-# Requests
+# Requests  
 
-@app.route('/clusters/requests/<int:cluster_id>')
+@app.route('/clusters/requests/<int:cluster_id>', methods=['GET', 'POST'])
 def requested(cluster_id):
     cluster = Cluster.query.get(cluster_id)
     if not cluster:
         return "Cluster not found", 404
-    return render_template('requests.html', cluster=cluster)
+    return render_template('requests.html', cluster=cluster)   
+   
+
+@app.route('/clusters/requests/comment/<chatId>', methods=['POST'])
+def requested_comment(chatId):
+    text = request.form.get('text')
+    user = User.query.get(session['user_id'])
+    if not user:
+        return redirect('/login')
+    
+    clusters = Cluster.query.all()
+    for cluster in clusters:
+        requests = cluster.get_requests()
+        for req in requests:
+            if str(req['chatId']) == chatId:
+                req['comments'].append({
+                    'user': user.name,
+                    'text': text,
+                    'timestamp': datetime.now(timezone.utc).isoformat()
+                })
+                cluster.requests = json.dumps(requests)
+                db.session.commit()
+                return redirect(url_for('requested', cluster_id=cluster.id))
+    return "Request not found", 404
+   
    
    
 @app.route('/user_requests')
