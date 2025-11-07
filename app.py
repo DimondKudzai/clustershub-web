@@ -1,7 +1,7 @@
 from flask import Flask, request, redirect, url_for, render_template, send_from_directory, session,json
 import os
 from werkzeug.security import generate_password_hash, check_password_hash
-from datetime import datetime
+from datetime import datetime, timezone
 from flask import jsonify
 #from services.appData import get_all_users, get_all_clusters, get_suggestions
 from models import db
@@ -386,7 +386,39 @@ def startCluster():
         return redirect('/clusters')
     return render_template('createCluster.html', suggested_skills=suggested_skills, notice=notice)
         
-  
+
+
+@app.route('/send_cluster_request/<cluster_id>', methods=['POST'])
+def sent_cluster_request(cluster_id):
+    title = request.form.get('title')
+    message = request.form.get('message')
+    cluster = Cluster.query.get(cluster_id)
+    if not cluster:
+        return redirect('/clusters')
+    user = User.query.get(session['user_id'])
+    if not user:
+        return redirect('/login')
+    requests = cluster.get_requests()
+    new_request = {
+        "chatId": len(requests) + 1,
+        "title": title,
+        "body": message,
+        "author": user.name,
+        "created": datetime.now(timezone.utc).isoformat(),
+        "comments": []
+    }
+    requests.append(new_request)
+    cluster.requests = json.dumps(requests)
+    
+    # Add cluster ID to user's clusters_requests
+    user_clusters_requests = user.get_clusters_requests()
+    user_clusters_requests.append(int(cluster_id))
+    user.clusters_requests = json.dumps(user_clusters_requests)
+    
+    db.session.commit()
+    return redirect(url_for('requested', cluster_id=cluster_id))
+
+
 
 @app.route('/clusters')
 def clusters():
@@ -479,12 +511,7 @@ def cluster_updater(id):
         db.session.commit()
         return redirect('/clusters')
     return render_template('cluster_settings.html', cluster=cluster, suggested_skills=suggested_skills, notice=notice)
-
-
-
-   
-   
-   
+  
         
 # Notifications        
         
@@ -551,34 +578,6 @@ def user_requests():
         return render_template('user_request.html', user=user, clusters=requested_clusters, clustersCount=requested_count)
     return "no requests", 404
 
-@app.route('/send_cluster_request', methods=['POST'])
-def send_cluster_request():
-    user_id = session.get('user_id')
-    if user_id is None:
-        return redirect('/login')
-
-    user = User.query.get(user_id)
-    if user is None:
-        return redirect('/login')
-
-    cluster_id = int(request.form['cluster_id'])
-    message = request.form['message']
-    cluster = Cluster.query.get(cluster_id)
-    if not cluster:
-        return "Cluster not found", 404
-
-    requests = cluster.get_requests()
-    request_obj = {
-        "author": user.name,
-        "title": "Join Request",
-        "body": message,
-        "created": datetime.utcnow().isoformat(),
-        "comments": []
-    }
-    requests.append(request_obj)
-    cluster.set_requests(_requests)
-    db.session.commit()
-    return redirect(url_for('requested', cluster_id=cluster_id))
 
 #clusters
 

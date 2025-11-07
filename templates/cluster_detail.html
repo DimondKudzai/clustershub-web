@@ -93,14 +93,15 @@
     
     <div class="create-cluster">
     <span class="close" onclick="closeRequestPopup()">&times;</span>
-    <form method="POST" action="{{ url_for('send_cluster_request') }}">
-    <input type="hidden" name="cluster_id" id="popupClusterId">
-    <label for="message">Title</label><br>
-    <input name="message" required placeholder="Type title"><br><br>
-    <label for="message">Message</label><br>
-    <textarea name="message" rows="4" required placeholder="Start typing.."></textarea><br><br>
-    <button type="submit" class="dashboardBtn">Send Request</button>
+    <form method="POST" action="{{ url_for('sent_cluster_request', cluster_id=cluster.id) }}"> 
+    <input type="hidden" name="cluster_id" id="popupClusterId"> 
+    <label for="title">Title</label><br> 
+    <input name="title" required placeholder="Type title"><br><br> 
+    <label for="message">Message</label><br> 
+    <textarea name="message" rows="4" required placeholder="Start typing.."></textarea><br><br> 
+    <button type="submit" class="dashboardBtn">Send Request</button> 
     </form>
+    
     </div>
     
     </section>
@@ -159,10 +160,7 @@
       </ul>
     </section>
   </section>
-  <br>
- <section>
- <button onclick="openRequestPopup({{ cluster.id }})" class="dashboardBtn" style="background: red; width: 90%;"><strong> Delete Cluster </strong></button>
- </section>
+ 
 </div>
  
 {% include 'partials/footer.html' %}
