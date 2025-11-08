@@ -602,6 +602,79 @@ def user_requests():
     return "no requests", 404
 
 
+@app.route('/clusters/<int:cluster_id>/requests/<int:request_id>/accept', methods=['POST'])
+def accept_request(cluster_id, request_id):
+    cluster = Cluster.query.get(cluster_id)
+    if not cluster:
+        return "Cluster not found", 404
+    
+    requests = cluster.get_requests()
+    request = next((r for r in requests if r['chatId'] == request_id), None)
+    if not request:
+        return "Request not found", 404
+    
+    # Add author to members
+    members = cluster.get_members()
+    members.append(request['author'])
+    cluster.set_members(members)
+    
+    # Remove request from cluster requests
+    requests.remove(request)
+    if requests:
+        cluster.set_requests(requests)
+    else:
+        cluster.set_requests([])
+    
+    # Send notification
+    user = User.query.filter_by(name=request['author']).first()
+    if user:
+        notification = {
+            "id": len(user.get_messages()) + 1,
+            "body": f"Your request to join {cluster.name} has been accepted.",
+            "read": False,
+            "url": "/clusters/chat/5",
+            "timestamp": datetime.utcnow().isoformat()
+        }
+        user.set_messages(user.get_messages() + [notification])
+        db.session.commit()
+    
+    return redirect(url_for('show_cluster', cluster_id=cluster_id))
+
+@app.route('/clusters/<int:cluster_id>/requests/<int:request_id>/decline', methods=['POST'])
+def decline_request(cluster_id, request_id):
+    cluster = Cluster.query.get(cluster_id)
+    if not cluster:
+        return "Cluster not found", 404
+    
+    requests = cluster.get_requests()
+    request = next((r for r in requests if r['chatId'] == request_id), None)
+    if not request:
+        return "Request not found", 404
+    
+    # Remove request from cluster requests
+    requests.remove(request)
+    if requests:
+        cluster.set_requests(requests)
+    else:
+        cluster.set_requests([])
+    
+    # Send notification
+    user = User.query.filter_by(name=request['author']).first()
+    if user:
+        notification = {
+            "id": len(user.get_messages()) + 1,
+            "body": f"Your request to join {cluster.name} has been declined.",
+            "read": False,
+            "url": "/clusters/chat/5",
+            "timestamp": datetime.utcnow().isoformat()
+        }
+        user.set_messages(user.get_messages() + [notification])
+        db.session.commit()
+    
+    return redirect(url_for('show_cluster', cluster_id=cluster_id))
+
+
+
 # clusters
 
 # conversations

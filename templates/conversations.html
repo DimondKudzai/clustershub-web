@@ -29,7 +29,7 @@
                 <section style="color: black">
                     <section>
                         <div class="thread">
-                            <strong style="font-size:16px; color: green;"> ⛓️ {{ thread.title }}</strong><span> by <a href="{{ url_for('getUser', name=thread.author) }}" style="color: blue">@{{ thread.author }}</a></span> <br>
+                            <strong style="font-size:20px; color: green;"> ⛓️ {{ thread.title }}</strong><span> by <a href="{{ url_for('getUser', name=thread.author) }}" style="color: blue">@{{ thread.author }}</a></span> <br>
                             <p>{{ thread.body }}</p>
                             <small>{{thread.created}}</small>
                         </section>
