@@ -30,7 +30,8 @@
                 <section style="color: black" class="create-cluster">
                     <section>
                         <div class="thread">
-                            <strong style="font-size:16px; color: green;"> {{ request.title }}</strong><span> by <a href="{{ url_for('getUser', name=request.author) }}" style="color: blue">@{{ request.author }}</a></span> <br>
+                            <strong style="font-size:20px; color: green;"> {{ request.title }}</strong><span> by <a href="{{ url_for('getUser', name=request.author) }}" style="color: blue">@{{ request.author }}</a></span>
+                             <br>
                             <p>{{ request.body }}</p>
                             <small>{{request.created}}</small>
                     </section>
@@ -51,22 +52,17 @@
                         <button type="submit" class="dashboardBtn" style="background: blue;">Sent Reply</button>
                     </form>
                     <br><br>
-                    <section style="padding: 5px;border: none;">
-                       <center>
-                       {% for request in cluster.get_requests() %}
-                       <h2>{{ request.title }}</h2>
-                       <p>{{ request.body }}</p>
-                       <form method="POST" action="{{ url_for('accept_request', cluster_id=cluster.id, request_id=request.chatId) }}">
-                       <button class="dashboardBtn" style="width: 100%">Accept Request</button>
-                       </form>
-                       <form method="POST" action="{{ url_for('decline_request', cluster_id=cluster.id, request_id=request.chatId) }}">
-                       <button class="dashboardBtn" style="background: red;width: 100% ">Decline and Delete</button>
-                       </form>
-                       {% endfor %}
-                       </center>
-                       
-                        <br>
-                    </section>
+                   <center>
+                   {% for request in cluster.get_requests() %}
+                   <form method="POST" action="{{ url_for('accept_request', cluster_id=cluster.id, request_id=request.chatId) }}">
+                   <button class="dashboardBtn" style="width: 100%">Accept Request</button>
+                   </form>
+                   <form method="POST" action="{{ url_for('decline_request', cluster_id=cluster.id, request_id=request.chatId) }}">
+                   <button class="dashboardBtn" style="background: red;width: 100% ">Decline and Delete</button>
+                   </form>
+                   {% endfor %}
+                   </center>
+                   
                 </section>
             </div>
             <br>

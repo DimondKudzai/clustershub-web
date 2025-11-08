@@ -32,7 +32,7 @@
   <div style=" ">
   <section style="color: black">
   <div class="thread">
-  <strong style="font-size:16px; color: green;"> {{ request.title }}</strong><span> by <a href="{{ url_for('getUser', name=request.author) }}" style="color: blue">@{{ request.author }}</a></span> <br>
+  <strong style="font-size:22px; color: green;"> {{ request.title }}</strong><span> by <a href="{{ url_for('getUser', name=request.author) }}" style="color: blue">@{{ request.author }}</a></span> <br>
   <p>{{ request.body }}</p>
   <small>{{request.created}}</small>
   </section>

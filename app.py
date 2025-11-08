@@ -11,6 +11,7 @@ from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 import uuid
 import sqlite3
+from sqlalchemy import func
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -95,12 +96,12 @@ def old_login_handler():
 @app.route('/login_handler', methods=['POST'])
 def login_handler():
     try:
-        username = request.form['username'].strip()
+        username = request.form['username'].strip().lower()
         password = request.form['password'].strip()
     except KeyError:
         return redirect(url_for('login'))
-
-    user = User.query.filter((User.name == username) | (User.email == username)).first()
+    
+    user = User.query.filter((func.lower(User.name) == username) | (func.lower(User.email) == username)).first()
     if user and check_password_hash(user.password, password):
         session['user_id'] = user.id
         return redirect('/home')
@@ -126,6 +127,7 @@ def register():
     if request.method == 'POST':
         try:
             username = request.form.get('username', '').strip()
+            description = request.form.get('description', '').strip()
             full_name = request.form.get('full_name', '').strip()
             email = request.form.get('email', '').strip()
             location = request.form.get('location', '').strip()
@@ -149,6 +151,8 @@ def register():
             errors.append("Username is required")
         if not full_name:
             errors.append("Full name is required")
+        if not description:
+            errors.append("Description is required")
         if not email:
             errors.append("Email is required")
         if not location:
@@ -182,6 +186,7 @@ def register():
             name=username,
             full_name=full_name,
             email=email,
+            description=description,
             location=location,
             skills=json.dumps(skills),
             password=generate_password_hash(password),
@@ -220,6 +225,7 @@ def register_update():
     if request.method == 'POST':
         try:
             username = request.form.get('username', '').strip()
+            description = request.form.get('description', '').strip()
             full_name = request.form.get('full_name', '').strip()
             email = request.form.get('email', '').strip()
             location = request.form.get('location', '').strip()
@@ -269,6 +275,9 @@ def register_update():
                 user.email = email
             if location:
                 user.location = location
+            if description:
+                user.description = description
+            
             if website:
                 user.website = website
             if second_website:
@@ -578,7 +587,7 @@ def requested_comment(cluster_id, chatId):
             })
             cluster.requests = json.dumps(requests)
             db.session.commit()
-            return redirect(url_for('requested', cluster_id=cluster_id))
+            return redirect(url_for('user_requests'))
     return "Request not found", 404
    
    
@@ -632,7 +641,7 @@ def accept_request(cluster_id, request_id):
             "id": len(user.get_messages()) + 1,
             "body": f"Your request to join {cluster.name} has been accepted.",
             "read": False,
-            "url": "/clusters/chat/5",
+            "url": "/clusters/chat/1",
             "timestamp": datetime.utcnow().isoformat()
         }
         user.set_messages(user.get_messages() + [notification])
@@ -665,7 +674,7 @@ def decline_request(cluster_id, request_id):
             "id": len(user.get_messages()) + 1,
             "body": f"Your request to join {cluster.name} has been declined.",
             "read": False,
-            "url": "/clusters/chat/5",
+            "url": "/clusters/chat/2",
             "timestamp": datetime.utcnow().isoformat()
         }
         user.set_messages(user.get_messages() + [notification])
