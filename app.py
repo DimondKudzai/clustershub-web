@@ -9,7 +9,7 @@ from config import Config
 from models import User, Cluster, Suggestion # Import models
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
-
+import uuid
 import sqlite3
 
 app = Flask(__name__)
@@ -71,7 +71,7 @@ def myProfile():
         
 
 
-#Authentication
+# Authentication
 
 # old handler
 @app.route('/old_login_handler', methods=['POST'])
@@ -602,7 +602,9 @@ def user_requests():
     return "no requests", 404
 
 
-#clusters
+# clusters
+
+# conversations
 
 @app.route('/clusters/chat/<int:cluster_id>')
 def show_cluster(cluster_id):
@@ -611,25 +613,22 @@ def show_cluster(cluster_id):
         return "Cluster not found", 404
     return render_template('conversations.html', cluster=cluster)
     
+    
 @app.route('/clusters/<int:cluster_id>/threads/<int:thread_id>/comments', methods=['POST'])
 def post_comment(cluster_id, thread_id):
     user_id = session.get('user_id')
     if user_id is None:
         return redirect('/login')
-
     user = User.query.get(user_id)
     if user is None:
         return redirect('/login')
-
     cluster = Cluster.query.get(cluster_id)
     if not cluster:
         return "Cluster not found", 404
-
     conversations = cluster.get_conversations()
     thread = next((t for t in conversations if t['chatId'] == thread_id), None)
     if not thread:
         return "Thread not found", 404
-
     text = request.form['text']
     timestamp = datetime.utcnow().isoformat()
     thread['comments'].append({
@@ -637,6 +636,36 @@ def post_comment(cluster_id, thread_id):
         "text": text,
         "timestamp": timestamp
     })
+    cluster.set_conversations(conversations)
+    db.session.commit()
+    return redirect(url_for('show_cluster', cluster_id=cluster_id))
+    
+    
+
+@app.route('/clusters/<int:cluster_id>/threads', methods=['POST'])
+def create_thread(cluster_id):
+    user_id = session.get('user_id')
+    if user_id is None:
+        return redirect('/login')
+    user = User.query.get(user_id)
+    if user is None:
+        return redirect('/login')
+    cluster = Cluster.query.get(cluster_id)
+    if not cluster:
+        return "Cluster not found", 404
+    title = request.form['title']
+    body = request.form['text']
+    timestamp = datetime.utcnow().isoformat()
+    conversations = cluster.get_conversations()
+    new_thread = {
+        "title": title,
+        "body": body,
+        "author": user.name,
+        "chatId": len(conversations) + 1,
+        "created": timestamp,
+        "comments": []
+    }
+    conversations.append(new_thread)
     cluster.set_conversations(conversations)
     db.session.commit()
     return redirect(url_for('show_cluster', cluster_id=cluster_id))

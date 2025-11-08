@@ -79,7 +79,7 @@ class Cluster(db.Model):
         return json.loads(self.members or '[]')
 
     def get_conversations(self):
-        return json.loads(self.conversations or '[]')
+        return json.loads(self.conversations or '[]') 
 
     def get_requests(self):
         return json.loads(self.requests or '[]')
@@ -95,6 +95,7 @@ class Cluster(db.Model):
 
     def set_requests(self, requests):
         self.requests = json.dumps(requests)
+        
 
 class Suggestion(db.Model):
     __tablename__ = 'suggestions'
