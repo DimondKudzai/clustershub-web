@@ -53,14 +53,14 @@
                     </form>
                     <br><br>
                    <center>
-                   {% for request in cluster.get_requests() %}
+                 
                    <form method="POST" action="{{ url_for('accept_request', cluster_id=cluster.id, request_id=request.chatId) }}">
                    <button class="dashboardBtn" style="width: 100%">Accept Request</button>
                    </form>
                    <form method="POST" action="{{ url_for('decline_request', cluster_id=cluster.id, request_id=request.chatId) }}">
                    <button class="dashboardBtn" style="background: red;width: 100% ">Decline and Delete</button>
                    </form>
-                   {% endfor %}
+                   
                    </center>
                    
                 </section>

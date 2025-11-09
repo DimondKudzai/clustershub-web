@@ -425,7 +425,7 @@ def sent_cluster_request(cluster_id):
     user.clusters_requests = json.dumps(user_clusters_requests)
     
     db.session.commit()
-    return redirect(url_for('requested', cluster_id=cluster_id))
+    return redirect(url_for('user_requests'))
 
 
 
@@ -563,9 +563,17 @@ def mark_read(msg_id):
 
 @app.route('/clusters/requests/<int:cluster_id>', methods=['GET'])
 def requested(cluster_id):
+    if 'user_id' not in session:
+        return redirect('/home')
+    
+    user_id = session['user_id']
     cluster = Cluster.query.get(cluster_id)
     if not cluster:
         return "Cluster not found", 404
+    
+    if cluster.author != User.query.get(user_id).name:
+        return redirect('/home')
+    
     return render_template('requests.html', cluster=cluster)
 
 @app.route('/clusters/requests/<int:cluster_id>/comment/<chatId>', methods=['POST'])
@@ -591,23 +599,30 @@ def requested_comment(cluster_id, chatId):
     return "Request not found", 404
    
    
-   
 @app.route('/user_requests')
 def user_requests():
     user_id = session.get('user_id')
     if user_id is None:
         return redirect('/login')
-
     user = User.query.get(user_id)
     if user is None:
         return redirect('/login')
-
     clusters = Cluster.query.all()
     requested_ids = user.get_clusters_requests()
-    requested_count = len(requested_ids)
-    requested_clusters = [c for c in clusters if c.id in requested_ids]
+    requested_clusters = []
+    for c in clusters:
+        if c.id in requested_ids:
+            if isinstance(c.requests, str):
+                requests = json.loads(c.requests or '[]')
+            else:
+                requests = c.requests or []
+            user_requests = [r for r in requests if r['author'] == user.name]
+            if user_requests:
+                cluster_data = c
+                cluster_data.user_requests = user_requests
+                requested_clusters.append(cluster_data)
     if requested_clusters:
-        return render_template('user_request.html', user=user, clusters=requested_clusters, clustersCount=requested_count)
+        return render_template('user_request.html', user=user, clusters=requested_clusters, clustersCount=len(requested_clusters))
     return "no requests", 404
 
 
@@ -647,7 +662,7 @@ def accept_request(cluster_id, request_id):
         user.set_messages(user.get_messages() + [notification])
         db.session.commit()
     
-    return redirect(url_for('show_cluster', cluster_id=cluster_id))
+    return redirect(url_for('requested', cluster_id=cluster_id))
 
 @app.route('/clusters/<int:cluster_id>/requests/<int:request_id>/decline', methods=['POST'])
 def decline_request(cluster_id, request_id):
@@ -680,7 +695,7 @@ def decline_request(cluster_id, request_id):
         user.set_messages(user.get_messages() + [notification])
         db.session.commit()
     
-    return redirect(url_for('show_cluster', cluster_id=cluster_id))
+    return redirect(url_for('requested', cluster_id=cluster_id))
 
 
 
@@ -688,11 +703,20 @@ def decline_request(cluster_id, request_id):
 
 # conversations
 
-@app.route('/clusters/chat/<int:cluster_id>')
+@app.route('/clusters/<int:cluster_id>/chat', methods=['GET'])
 def show_cluster(cluster_id):
+    if 'user_id' not in session:
+        return redirect('/login')
+    
+    user_id = session['user_id']
     cluster = Cluster.query.get(cluster_id)
     if not cluster:
         return "Cluster not found", 404
+    
+    members = cluster.get_members()
+    if user_id not in [User.query.filter_by(name=member).first().id for member in members]:
+        return redirect('/home')
+    
     return render_template('conversations.html', cluster=cluster)
     
     
