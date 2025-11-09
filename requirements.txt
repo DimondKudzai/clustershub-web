@@ -2,3 +2,5 @@ flask
 gunicorn
 psycopg2-binary
 Flask-SQLAlchemy
+flask_admin
+humanize
