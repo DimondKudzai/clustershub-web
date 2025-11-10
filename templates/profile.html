@@ -87,6 +87,14 @@ shareButton.addEventListener('click', async () => {
     console.error('Error copying link to clipboard:', error);
   }
 });
+
+       const playSoundButton = document.getElementById('share-button');
+       const audio = new Audio('{{ url_for('static', filename='ztink.wav') }}');
+
+       playSoundButton.addEventListener('click', () => {
+           audio.play();
+       });
+ 
 </script>
 </body>
 </html>

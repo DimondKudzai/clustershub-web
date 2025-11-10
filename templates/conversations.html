@@ -43,7 +43,7 @@
                             <!-- Comment Form -->
                             <form method="POST" action="{{ url_for('post_comment', cluster_id=cluster.id, thread_id=thread.chatId)}}" class="create-cluster">
                                 <textarea type="text" name="text" placeholder="Your comment" required></textarea><br>
-                                <button type="submit" class="dashboardBtn">Post Comment</button>
+                                <button id="clicked" type="submit" class="dashboardBtn">Post Comment</button>
                             </form>
                            
                         </div>
@@ -57,11 +57,20 @@
             <form id="new-thread-form" method="POST" action="{{ url_for('create_thread', cluster_id=cluster.id) }}">
                 <input type="text" name="title" placeholder="Thread title" required />
                 <textarea id="thread-body" name="text" placeholder="Message body" required></textarea><br>
-                <button type="submit" class="dashboardBtn">Submit Thread ⛓️</button>
+                <button id="clicked" type="submit" class="dashboardBtn">Submit Thread ⛓️</button>
                 <span id="start-thread"></span>
             </form>
         </section>
     </div>
     {% include 'partials/footer.html' %}
 </body>
+
+<script>
+       const playSoundButton = document.getElementById('clicked');
+       const audio = new Audio('{{ url_for('static', filename='ztink.wav') }}');
+
+       playSoundButton.addEventListener('click', () => {
+           audio.play();
+       });
+   </script>
 </html>

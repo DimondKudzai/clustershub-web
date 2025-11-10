@@ -24,7 +24,8 @@
   
   <section class="profile" id="cluster" class="">
   <img src="{{ url_for('static', filename='cluster.jpg') }}" class="circle" id="">
-  <a href="{{ url_for('getCluster', id=cluster.id) }}"><button class="dashboardBtn" style="float: right;background-color: blue;">🔍 View Cluster</button></a>
+  <a href="{{ url_for('getCluster', id=cluster.id) }}">
+  <button class="dashboardBtn" style="float: right;background-color: blue;">🔍 View Cluster</button></a>
   <h3>{{ cluster.name }}</h3>
   <p class="about">{{ cluster.target }}</p>      
   
@@ -50,9 +51,16 @@
   <br>
   </section>
   </div>
-  
-  
-  
+ 
 {% include 'partials/footer.html' %}
+<script>
+  const audio = new Audio('{{ url_for('static', filename='ztink.wav') }}');
+  
+  document.addEventListener('click', (event) => {
+  if (event.target.classList.contains('dashboardBtn')) {
+  audio.play();
+  }
+  });
+   </script>
 </body>
 </html>

@@ -8,6 +8,15 @@
   <title>Recommended Clusters</title>
   <link rel="icon" type="image/jpg" href="{{url_for('static', filename='logo.jpg')}}">
   <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}">
+
+    <script type="text/javascript">
+    document.addEventListener('click', (event) => {
+    if (event.target.classList.contains('dashboardBtn')) {
+    const audio = new Audio('{{ url_for('static', filename='ztink.wav') }}');
+    audio.play();
+    }
+    });
+    </script>
 </head>
 <body>
 
@@ -51,5 +60,6 @@
     </div>
     </section>
     {% include 'partials/footer.html' %}
+    
 </body>
 </html>

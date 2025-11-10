@@ -57,5 +57,14 @@
     </div> 
 </div> 
 {% include 'partials/footer.html' %} 
+<script>
+  const audio = new Audio('{{ url_for('static', filename='ztink.wav') }}');
+  
+  document.addEventListener('click', (event) => {
+  if (event.target.classList.contains('dashboardBtn')) {
+  audio.play();
+  }
+  });
+   </script>
 </body> 
 </html>

@@ -54,10 +54,13 @@
   <section class="profile" id="cluster">
   
     <img src="{{ url_for('static', filename='cluster.jpg') }}" class="circle" id="">
+    
+    <span id="button_click">
     <button class="dashboardBtn" style="float: right;background-color: blue;" id="share-button">
     🔗Copy cluster link
     </button>
-
+    </span>
+    
     <h3>{{ cluster.name }}</h3>
     <p class="about">{{ cluster.target }}</p>  
     
@@ -143,7 +146,7 @@
   <button class="dashboardBtn" style="background: ; width: 90%;"><strong> View sent request</strong></button>
   </a>
   {% else %}
-  <button onclick="openRequestPopup({{ cluster.id }})" class="dashboardBtn" style="background: ; width: 90%;"><strong> Request membership </strong></button>
+  <button onclick="openRequestPopup({{ cluster.id }})" class="dashboardBtn" style="background: ; width: 90%;" id="button_click"><strong> Request membership </strong></button>
   {% endif %}
   {% endif %}
   
@@ -185,6 +188,14 @@ shareButton.addEventListener('click', async () => {
   } catch (error) {
     console.error('Error copying link to clipboard:', error);
   }
+});
+
+
+document.addEventListener('click', (event) => {
+    if (event.target.classList.contains('dashboardBtn')) {
+        const audio = new Audio('{{ url_for('static', filename='ztink.wav') }}');
+        audio.play();
+    }
 });
 </script>
 </body>
