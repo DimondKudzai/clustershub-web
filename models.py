@@ -22,6 +22,7 @@ class User(db.Model):
     second_website = db.Column(db.String)
     email = db.Column(db.String, unique=True)
     confirm_email = db.Column(db.Text)
+    joined = db.Column(db.DateTime, default=datetime.utcnow)
     phone = db.Column(db.String)
     password = db.Column(db.String)
     image = db.Column(db.String)
@@ -124,7 +125,7 @@ def seed_users():
                 phone=user_data["phone"],
                 password=user_data["password"],
                 image=user_data["image"],
-                joined= datetime.strptime(cluster_data["created"].replace('Z', ''), "%Y-%m-%dT%H:%M:%S.%f"),
+                joined= datetime.strptime(user_data["joined"].replace('Z', ''), "%Y-%m-%dT%H:%M:%S.%f"),
                 skills=json.dumps(user_data["skills"]),
                 clusters_count=user_data["clusters_count"],
                 created_clusters=json.dumps(user_data["created_clusters"]),

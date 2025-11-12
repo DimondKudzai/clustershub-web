@@ -33,7 +33,10 @@ app.jinja_env.filters['naturaltime'] = naturaltime
 
 @app.template_filter('naturaltime')
 def naturaltime_filter(timestamp):
-    dt = datetime.fromisoformat(timestamp.replace('Z', '+00:00'))
+    if isinstance(timestamp, str):
+        dt = datetime.fromisoformat(timestamp.replace('Z', '+00:00'))
+    else:
+        dt = timestamp
     return humanize.naturaltime(dt)
     
 # HOME
@@ -66,7 +69,7 @@ def home():
     messages = user.get_messages()
     # Count unread
     unread_count = sum(1 for m in messages if not m.get("read", False))
-    return render_template('dashboard.html', name=user.name, clustersCount=cluster_count, notificationsCount=unread_count)
+    return render_template('dashboard.html',id=user.id, name=user.name, clustersCount=cluster_count, notificationsCount=unread_count)
     
     
 # PROFILE
@@ -204,6 +207,7 @@ def register():
             skills=json.dumps(skills),
             password=generate_password_hash(password),
             clusters_count=0,
+            joined= datetime.utcnow().isoformat() + 'Z',
             created_clusters=json.dumps([]),
             clusters_requests=json.dumps([]),
             notifications_count=0,
@@ -322,16 +326,15 @@ def register_update():
 def users():
     return jsonify(User.query.all())
     
-@app.route("/users/<name>")
-def getUser(name):
-	users = User.query.all()
-	user = next((u for u in users if str(u.name) == str(name)), None)
-	if user:
-   	    return render_template('profile.html', user=user)
-	else:
-	# Handle the case where no users are found
-	    error = 'No user found'
-	    return render_template('error.html', error=error)
+@app.route("/users/<int:user_id>")
+def getUser(user_id):
+    user = User.query.get(user_id)
+    if user:
+        return render_template('profile.html', user=user)
+    else:
+        error = 'No user found'
+        return render_template('error.html', error=error)
+	    	    
 	    
 	    
 # Clusters
@@ -469,19 +472,26 @@ def getCluster(id):
     user_id = session.get('user_id')
     if user_id is None:
         return redirect('/login')
-
     user = User.query.get(user_id)
     if user is None:
         return redirect('/login')
-
     cluster = Cluster.query.get(id)
     if cluster:
-        is_author = cluster.author == user.name
-        is_member = user.name in cluster.get_members()
+        is_author = cluster.author == str(user.id)
+        is_member = user.id in cluster.get_members()
         requested = id in user.get_clusters_requests()
-
-        return render_template("cluster_detail.html", cluster=cluster, is_author=is_author, is_member=is_member, requested=requested)
-    return jsonify({'error': 'Cluster not None, is_member=is_member'})
+        
+        # Fetch the author user object
+        author = User.query.get(cluster.author)
+        
+        # Fetch the member user objects
+        members = [User.query.get(member_id) for member_id in cluster.get_members()]
+        
+        return render_template("cluster_detail.html", cluster=cluster, is_author=is_author, is_member=is_member, requested=requested, author=author, members=members)
+    error = "Cluster not found"
+    return render_template('error.html', error=error)
+    
+    
    
    
 @app.route('/cluster_update/<int:id>', methods=['GET', 'POST'])
@@ -587,7 +597,7 @@ def requested(cluster_id):
         error = "Cluster not found"
         return render_template('error.html', error=error)
     
-    if cluster.author != User.query.get(user_id).name:
+    if cluster.author != str(User.query.get(user_id).id):
         return redirect('/home')
     
     return render_template('requests.html', cluster=cluster)
@@ -734,7 +744,7 @@ def show_cluster(cluster_id):
         return render_template('error.html', error=error)
     
     members = cluster.get_members()
-    if user_id not in [User.query.filter_by(name=member).first().id for member in members]:
+    if user_id not in [User.query.filter_by(id=member).first().id for member in members]:
         return redirect('/home')
     
     return render_template('conversations.html', cluster=cluster)

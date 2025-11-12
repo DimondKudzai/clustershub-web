@@ -30,7 +30,7 @@
                 <section style="color: black" class="create-cluster">
                     <section>
                         <div class="thread">
-                            <strong style="font-size:20px; color: green;"> {{ request.title }}</strong><span> by <a href="{{ url_for('getUser', name=request.author) }}" style="color: blue">@{{ request.author }}</a></span>
+                            <strong style="font-size:20px; color: green;"> {{ request.title }}</strong><span> by <a href="{{ url_for('getUser', user_id=request.author) }}" style="color: blue">@{{ request.author }}</a></span>
                              <br>
                             <p>{{ request.body }}</p>
                             <small>{{request.created}}</small>
@@ -39,7 +39,7 @@
                         <h3>Replies</h3>
                         {% for comment in request.comments %}
                             <p>
-                                <a href="{{ url_for('getUser', name=comment.user) }}" style="color: blue">@{{ comment.user }}</a>
+                                <a href="{{ url_for('getUser', user_id=comment.user) }}" style="color: blue">@{{ comment.user }}</a>
                                 <span style="color: black;">{{ comment.text }} </span>
                                 <br>
                                 <small>{{ comment.timestamp }}</small>

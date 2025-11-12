@@ -40,6 +40,7 @@
  
 
  <p class="about">{{ user.description | e }}</p>
+ <strong> Joined </strong><span class="badge">{{ user.joined | naturaltime }}</span>
  
  <h3>Skills </h3>
  <section class="badges">
@@ -48,7 +49,8 @@
  {% endfor %}
  </section>
  
- <strong>🌐 Location </strong><span class="badge">{{ user.location | e }}</span>
+ <strong>🌐 Location </strong><span class="badge">{{ user.location | e }}</span><br>
+ 
  
 
  <h3> 🔗 Public links</h3>
