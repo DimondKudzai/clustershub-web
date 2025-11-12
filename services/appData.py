@@ -26,6 +26,7 @@ def get_all_users():
     "phone": "012 345 6789",
     "password": "chimboza@1",
     "image" : "image1.png",
+    "joined": "2025-09-12T14:30:00.000000",
     "skills": ["Health","Finance","Farmer","Software developer"],
     "clusters_count" : 7,
     "created_clusters": [1,2,7,12,4,1],
@@ -36,7 +37,7 @@ def get_all_users():
     "id": 1,
     "body": "Your request to join 'Tech Builders' was accepted: 'Glad to have you!'",
     "read": False,
-    "timestamp": "2025 09 12 566 UTC",
+    "timestamp": "2025-09-12T14:30:00.000000",
     }]
     },
     {
@@ -47,6 +48,7 @@ def get_all_users():
     "website": "diamondkudzai70@gmail.com",
     "second_website": "github.com/dimondkudzai",
     "email": "contact@secoggnduser.co.za",
+    "joined": "2025-09-12T14:30:00.000000",
     "confirm_email": True,
     "phone": "+2712 345 6790",
     "password": "chimboza@1",
@@ -63,7 +65,7 @@ def get_all_users():
 	        "id": 1,
 	        "body": "Your request to join 'Tech Builders' was accepted.",
 	        "read": False,
-	        "timestamp": "2025-09-12 05:00 UTC",
+	        "timestamp": "2025-09-12T14:30:00.000000",
 	        "url": "/clusters/chat/5"
 	    },
 	    {
@@ -86,6 +88,7 @@ def get_all_users():
     "email": "contact@seconduser.co.za",
     "confirm_email": True,
     "phone": "+2712 345 6790",
+    "joined": "2025-09-12T14:30:00.000000",
     "password": "chimboza@1",
     "image" : "image3.png",
     "skills": ["Public Speaking","Motivator","Counceling"],
@@ -107,6 +110,7 @@ def get_all_users():
     "email": "contact@seconfghduser.co.za",
     "confirm_email": True,
     "phone": "012 345 6790",
+    "joined": "2025-09-12T14:30:00.000000",
     "password": "chimboza@1",
     "image" : "image4.png",
     "skills": ["Real estate","Construction","Legal"],
@@ -128,6 +132,7 @@ def get_all_users():
     "email": "contact@setcondghuser.co.za",
     "confirm_email": True,
     "phone": "+26312 345 6790",
+    "joined": "2025-09-12T14:30:00.000000",
     "password": "chimboza@1",
     "image" : "image5.png",
     "skills": ["Marketing","Business","Analysis"],
@@ -149,32 +154,32 @@ def get_all_clusters():
 	"name": "Brain Flow AI",
 	"status": "Brain Flow AI",
 	"target": "Building AI that solves health issues",
-	"author": "Dimond",
-	"created": "2025-10-22T10:05:00Z",
+	"author": 1,
+	"created": "2025-09-12T14:30:00.000000",
 	"location": "International",
 	"description": "Brain Flow AI is a project that aims to develop an AI tool that reads brain flow. This brain flow will be recorded, analyzed and used for medical treatment https://github.com/BrainFlowAi/BrainFlowAi.",
 	"tags": ["ML", "AI", "Neurology","health"],
-	"members": ["Dimond"],
+	"members": [1],
 	"conversations": [
 	{
 	"chatId": 1,
 	"title": "Looking for early contributors",
-	"author": "Dimond",
+	"author": 1,
 	"body": "Lets start working guys",
-	"created": "2025-10-22T10:05:00Z",
+	"created": "2025-09-12T14:30:00.000000",
 	"comments": [
-	{"user": "VictorPoseZw", "text": "Excited to contribute!", "timestamp": "2025-10-22T10:00:00Z"},
-	{"user": "KnosiDubeSA", "text": "Let's go!", "timestamp": "2025-10-22T10:05:00Z"}
+	{"user": 1, "text": "Excited to contribute!", "timestamp": "2025-09-12T14:30:00.000000"},
+	{"user": 2, "text": "Let's go!", "timestamp": "2025-09-12T14:30:00.000000"}
 	]
 	},{
 	"chatId": 2,
 	"title": "Kickoff Meeting",
-	"author": "ChrisVoiloe2",
+	"author": 2,
 	"body": "Lets start working guys",
-	"created": "2025-10-22T10:05:00Z",
+	"created": "2025-09-12T14:30:00.000000",
 	"comments": [
-	{"user": "VictorPoseZw", "text": "Excited to start", "timestamp": "2025-10-22T10:00:00Z"},
-	{"user": "KnosiDubeSA", "text": "Let's go!", "timestamp": "2025-10-22T10:05:00Z"}
+	{"user": 1, "text": "Excited to start", "timestamp": "2025-09-12T14:30:00.000000"},
+	{"user": 2, "text": "Let's go!", "timestamp": "2025-09-12T14:30:00.000000"}
 	]
 	}
 	],
@@ -183,18 +188,18 @@ def get_all_clusters():
 	"chatId": 1,
 	"title": "known devloper",
 	"body": "Let me join i bring tidings.",
-	"author": "Dimond",
-	"created": "2025-10-22T10:00:00Z",
+	"author": 1,
+	"created": "2025-09-12T14:30:00.000000",
 	"comments": [
 	{
-	"user": "VictorPoseZw",
+	"user": 2,
 	"text": "Yes sure",
-	"timestamp": "2025-10-22T10:00:00Z"
+	"timestamp": "2025-09-12T14:30:00.000000"
 	},
 	{
-	"user": "KnosiDubeSA",
+	"user": 2,
 	"text": "Let's go!",
-	"timestamp": "2025-10-22T10:05:00Z"
+	"timestamp": "2025-09-12T14:30:00.000000"
 	}
 	]
 	}
@@ -205,10 +210,10 @@ def get_all_clusters():
 	"name": "Fish Farmers",
 	"target": "Produce Breams for sale",
 	"status": "Brain Flow AI",
-	"author": "Dimond",
-	"created": "2025-10-22T10:05:00Z",
+	"author": 1,
+	"created": "2025-09-12T14:30:00.000000",
 	"location": "Zimbabwe",
-	"members": ["Dimond"],
+	"members": [1],
 	"description": "Fish production is cheap and there is market in Zimbabwe. With land and small capital much returns",
 	"tags": ["Farmer", "Marketing", "Finance"],
 	"conversations": [
@@ -216,18 +221,18 @@ def get_all_clusters():
 	"chatId": 1,
 	"title": "Starting",
 	"body": "Let's find land with dam or pond.",
-	"author": "Dimond",
-	"created": "2025-10-22T10:00:00Z",
+	"author": 1,
+	"created": "2025-09-12T14:30:00.000000",
 	"comments": [
 	{
-	"user": "VictorPoseZw",
+	"user": 2,
 	"text": "Yes sure",
-	"timestamp": "2025-10-22T10:00:00Z"
+	"timestamp": "2025-09-12T14:30:00.000000"
 	},
 	{
-	"user": "KnosiDubeSA",
+	"user": 1,
 	"text": "Let's go!",
-	"timestamp": "2025-10-22T10:05:00Z"
+	"timestamp": "2025-09-12T14:30:00.000000"
 	}
 	]
 	}
@@ -237,18 +242,18 @@ def get_all_clusters():
 	"chatId": 1,
 	"title": "known devloper",
 	"body": "Let me join i bring tidings.",
-	"author": "Dimond",
-	"created": "2025-10-22T10:00:00Z",
+	"author": 1,
+	"created": "2025-09-12T14:30:00.000000",
 	"comments": [
 	{
-	"user": "VictorPoseZw",
+	"user": 3,
 	"text": "Yes sure",
-	"timestamp": "2025-10-22T10:00:00Z"
+	"timestamp": "2025-09-12T14:30:00.000000"
 	},
 	{
-	"user": "KnosiDubeSA",
+	"user": 2,
 	"text": "Let's go!",
-	"timestamp": "2025-10-22T10:05:00Z"
+	"timestamp": "2025-09-12T14:30:00.000000"
 	}
 	]
 	}
@@ -259,42 +264,42 @@ def get_all_clusters():
 	"id": 3,
 	"name": "Legal Minds",
 	"status": "Brain Flow AI",
-	"author": "Dimond",
-	"created": "2025-10-22T10:05:00Z",
+	"author": 1,
+	"created": "2025-09-12T14:30:00.000000",
 	"description": "Legal Firm",
 	"target": "Fairness to everyone",
 	"tags": ["legal", "marketing"],
-	"members": ["Dimond", "VictorPoseZw"],
+	"members": [1,2],
 	"location": "Zimbabwe",
 	"conversations": [
 	{
 	"chatId": 1,
 	"title": "Welcome onboard",
-	"author": "Dimond",
-	"created": "2025-10-22T10:00:00Z",
+	"author": 1,
+	"created": "2025-09-12T14:30:00.000000",
 	"comments": [
-	{"user": "Admin1", "text": "We should meet next week.", "timestamp": "2025-10-20T09:00:00Z"}
+	{"user": 1, "text": "We should meet next week.", "timestamp": "2025-09-12T14:30:00.000000"}
 	]
 	}
 	],
-	"created": "2025-10-15T14:45:00Z",
+	"created": "2025-09-12T14:30:00.000000",
 	"requests": [
 	{
 	"chatId": 1,
 	"title": "known devloper",
 	"body": "Let me join i bring tidings.",
-	"author": "Dimond",
-	"created": "2025-10-22T10:00:00Z",
+	"author": 1,
+	"created": "2025-09-12T14:30:00.000000",
 	"comments": [
 	{
-	"user": "VictorPoseZw",
+	"user": 3,
 	"text": "Yes sure",
-	"timestamp": "2025-10-22T10:00:00Z"
+	"timestamp": "2025-09-12T14:30:00.000000"
 	},
 	{
-	"user": "KnosiDubeSA",
+	"user": 2,
 	"text": "Let's go!",
-	"timestamp": "2025-10-22T10:05:00Z"
+	"timestamp": "2025-09-12T14:30:00.000000"
 	}
 	]
 	}
@@ -305,42 +310,42 @@ def get_all_clusters():
 	"name": "Design Lab",
 	"location": "Panama",
 	"status": "Brain Flow AI",
-	"author": "ChrisVoiloe2",
-	"created": "2025-10-22T10:05:00Z",
+	"author": 2,
+	"created": "2025-09-12T14:30:00.000000",
 	"location": "Harare",
 	"description": "Buiding Everything",
 	"tags": ["Legal", "Co-founders", "DevOps"],
 	"target": "Let's Design Apps",
-	"members": ["AnnaSmith", "SketchMaster", "PixelHero"],
+	"members": [1,2,3],
 	"conversations": [
 	{
 	"chatId": 1,
 	"title": "Color Theory",
-	"author": "AnnaSmith",
-	"created": "2025-10-22T10:00:00Z",
+	"author": 1,
+	"created": "2025-09-12T14:30:00.000000",
 	"comments": [
-	{"user": "SketchMaster", "text": "Love this topic!", "timestamp": "2025-10-18T11:30:00Z"}
+	{"user": 1, "text": "Love this topic!", "timestamp": "2025-09-12T14:30:00.000000"}
 	]
 	}
 	],
-	"created": "2025-10-16T07:00:00Z",
+	"created": "2025-09-12T14:30:00.000000",
 	"requests": [
 	{
 	"chatId": 1,
 	"title": "known devloper",
 	"body": "Let me join i bring tidings.",
-	"author": "Dimond",
-	"created": "2025-10-22T10:00:00Z",
+	"author": 1,
+	"created": "2025-09-12T14:30:00.000000",
 	"comments": [
 	{
-	"user": "VictorPoseZw",
+	"user": 2,
 	"text": "Yes sure",
-	"timestamp": "2025-10-22T10:00:00Z"
+	"timestamp": "2025-09-12T14:30:00.000000"
 	},
 	{
-	"user": "KnosiDubeSA",
+	"user": 1,
 	"text": "Let's go!",
-	"timestamp": "2025-10-22T10:05:00Z"
+	"timestamp": "2025-09-12T14:30:00.000000"
 	}
 	]
 	}

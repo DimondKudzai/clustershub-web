@@ -12,6 +12,10 @@ from flask_admin.contrib.sqla import ModelView
 import uuid
 import sqlite3
 from sqlalchemy import func
+from datetime import datetime
+
+import humanize
+from humanize import naturaltime
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -24,7 +28,14 @@ admin.add_view(ModelView(User, db.session))
 admin.add_view(ModelView(Cluster, db.session))
 admin.add_view(ModelView(Suggestion, db.session))
 
+app.jinja_env.filters['naturaltime'] = naturaltime
 
+
+@app.template_filter('naturaltime')
+def naturaltime_filter(timestamp):
+    dt = datetime.fromisoformat(timestamp.replace('Z', '+00:00'))
+    return humanize.naturaltime(dt)
+    
 # HOME
 
 @app.route('/')
@@ -416,7 +427,7 @@ def sent_cluster_request(cluster_id):
         "title": title,
         "body": message,
         "author": user.name,
-        "created": datetime.now(timezone.utc).isoformat(),
+        "created": datetime.utcnow().isoformat() + 'Z',
         "comments": []
     }
     requests.append(new_request)
@@ -597,7 +608,7 @@ def requested_comment(cluster_id, chatId):
             req['comments'].append({
                 'user': user.name,
                 'text': text,
-                'timestamp': datetime.now(timezone.utc).isoformat()
+                'timestamp': datetime.utcnow().isoformat() + 'Z'
             })
             cluster.requests = json.dumps(requests)
             db.session.commit()
@@ -667,7 +678,7 @@ def accept_request(cluster_id, request_id):
             "body": f"Your request to join {cluster.name} has been accepted.",
             "read": False,
             "url": f"/clusters/chat/{cluster.id}/chat",
-            "timestamp": datetime.utcnow().isoformat()
+            "timestamp": datetime.utcnow().isoformat() + 'Z'
         }
         user.set_messages(user.get_messages() + [notification])
         db.session.commit()
@@ -702,7 +713,7 @@ def decline_request(cluster_id, request_id):
             "body": f"Your request to join {cluster.name} has been declined. Here are your recommended Clusters",
             "read": False,
             "url": f"/recommended_clusters",
-            "timestamp": datetime.utcnow().isoformat()
+            "timestamp": datetime.utcnow().isoformat() + 'Z'
         }
         user.set_messages(user.get_messages() + [notification])
         db.session.commit()
@@ -748,7 +759,7 @@ def post_comment(cluster_id, thread_id):
         error = "Thread not found"
         return render_template('error.html', error=error)
     text = request.form['text']
-    timestamp = datetime.utcnow().isoformat()
+    timestamp = datetime.utcnow().isoformat() + 'Z'
     thread['comments'].append({
         "user": user.name,
         "text": text,
@@ -774,7 +785,7 @@ def create_thread(cluster_id):
         return render_template('error.html', error=error)
     title = request.form['title']
     body = request.form['text']
-    timestamp = datetime.utcnow().isoformat()
+    timestamp = datetime.utcnow().isoformat() + 'Z'
     conversations = cluster.get_conversations()
     new_thread = {
         "title": title,

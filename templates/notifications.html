@@ -40,7 +40,8 @@
    {{ message.body }} <a href="{{message.url}}" style="text-decoration: none; color: black;"> -<b> View</b></a>
   </p>
     <br>
-    <small>{{ message.timestamp }}</small>
+    <small>{{ message.timestamp | naturaltime }}</small>
+    
     </section>
     <br>
     {% endfor %}
