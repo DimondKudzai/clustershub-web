@@ -30,7 +30,7 @@
                     <div style=" "> 
                         <section style="color: black"> 
                             <div class="thread"> 
-                                <strong style="font-size:22px; color: green;"> {{ request.title }}</strong><span> by <a href="{{ url_for('getUser', name=request.author) }}" style="color: blue">@{{ request.author }}</a></span> 
+                                <strong style="font-size:22px; color: green;"> {{ request.title }}</strong><span> by <a href="{{ url_for('getUser', user_id=request.author) }}" style="color: blue">@{{ request.author }}</a></span> 
                                 <br> 
                                 <p>{{ request.body }}</p> 
                                 <small>{{request.created}}</small> 
@@ -38,7 +38,7 @@
                         <div class="comments"> 
                             <h3>Replies</h3> 
                             {% for comment in request.comments %} 
-                                <p><a href="{{ url_for('getUser', name=comment.user) }}" style="color: blue">@{{ comment.user }}</a> {{ comment.text }} <br><small>{{ comment.timestamp }}</small></p> 
+                                <p><a href="{{ url_for('getUser', user_id=comment.user) }}" style="color: blue">@{{ comment.user }}</a> {{ comment.text }} <br><small>{{ comment.timestamp }}</small></p> 
                             {% endfor %} 
                         </div> 
                         <form action="{{ url_for('requested_comment', chatId=request.chatId, cluster_id=cluster.id)}}" method="post"> 

@@ -168,8 +168,8 @@ def get_all_clusters():
 	"body": "Lets start working guys",
 	"created": "2025-09-12T14:30:00.000000",
 	"comments": [
-	{"user": 1, "text": "Excited to contribute!", "timestamp": "2025-09-12T14:30:00.000000"},
-	{"user": 2, "text": "Let's go!", "timestamp": "2025-09-12T14:30:00.000000"}
+	{"user": 1, "comment_id": 1, "text": "Excited to contribute!", "timestamp": "2025-09-12T14:30:00.000000"},
+	{"user": 2,"comment_id": 2, "text": "Let's go!", "timestamp": "2025-09-12T14:30:00.000000"}
 	]
 	},{
 	"chatId": 2,
@@ -178,8 +178,8 @@ def get_all_clusters():
 	"body": "Lets start working guys",
 	"created": "2025-09-12T14:30:00.000000",
 	"comments": [
-	{"user": 1, "text": "Excited to start", "timestamp": "2025-09-12T14:30:00.000000"},
-	{"user": 2, "text": "Let's go!", "timestamp": "2025-09-12T14:30:00.000000"}
+	{"user": 1, "comment_id": 1,"text": "Excited to start", "timestamp": "2025-09-12T14:30:00.000000"},
+	{"user": 2, "comment_id": 2, "text": "Let's go!", "timestamp": "2025-09-12T14:30:00.000000"}
 	]
 	}
 	],
@@ -193,11 +193,13 @@ def get_all_clusters():
 	"comments": [
 	{
 	"user": 2,
+	"comment_id": 1,
 	"text": "Yes sure",
 	"timestamp": "2025-09-12T14:30:00.000000"
 	},
 	{
 	"user": 2,
+	"comment_id": 2,
 	"text": "Let's go!",
 	"timestamp": "2025-09-12T14:30:00.000000"
 	}
@@ -226,12 +228,14 @@ def get_all_clusters():
 	"comments": [
 	{
 	"user": 2,
+	"comment_id": 2,
 	"text": "Yes sure",
 	"timestamp": "2025-09-12T14:30:00.000000"
 	},
 	{
 	"user": 1,
 	"text": "Let's go!",
+	"comment_id": 2,
 	"timestamp": "2025-09-12T14:30:00.000000"
 	}
 	]
@@ -248,12 +252,14 @@ def get_all_clusters():
 	{
 	"user": 3,
 	"text": "Yes sure",
-	"timestamp": "2025-09-12T14:30:00.000000"
+	"timestamp": "2025-09-12T14:30:00.000000",
+	"comment_id": 2,
 	},
 	{
 	"user": 2,
 	"text": "Let's go!",
-	"timestamp": "2025-09-12T14:30:00.000000"
+	"timestamp": "2025-09-12T14:30:00.000000",
+	"comment_id": 2,
 	}
 	]
 	}
@@ -278,7 +284,7 @@ def get_all_clusters():
 	"author": 1,
 	"created": "2025-09-12T14:30:00.000000",
 	"comments": [
-	{"user": 1, "text": "We should meet next week.", "timestamp": "2025-09-12T14:30:00.000000"}
+	{"user": 1, "comment_id": 2,"text": "We should meet next week.", "timestamp": "2025-09-12T14:30:00.000000"}
 	]
 	}
 	],
@@ -293,12 +299,14 @@ def get_all_clusters():
 	"comments": [
 	{
 	"user": 3,
+	"comment_id": 2,
 	"text": "Yes sure",
 	"timestamp": "2025-09-12T14:30:00.000000"
 	},
 	{
 	"user": 2,
 	"text": "Let's go!",
+	"comment_id": 2,
 	"timestamp": "2025-09-12T14:30:00.000000"
 	}
 	]
@@ -324,7 +332,7 @@ def get_all_clusters():
 	"author": 1,
 	"created": "2025-09-12T14:30:00.000000",
 	"comments": [
-	{"user": 1, "text": "Love this topic!", "timestamp": "2025-09-12T14:30:00.000000"}
+	{"user": 1, "comment_id": 2,"text": "Love this topic!", "timestamp": "2025-09-12T14:30:00.000000"}
 	]
 	}
 	],
@@ -339,12 +347,14 @@ def get_all_clusters():
 	"comments": [
 	{
 	"user": 2,
+	"comment_id": 2,
 	"text": "Yes sure",
 	"timestamp": "2025-09-12T14:30:00.000000"
 	},
 	{
 	"user": 1,
 	"text": "Let's go!",
+	"comment_id": 2,
 	"timestamp": "2025-09-12T14:30:00.000000"
 	}
 	]

@@ -25,49 +25,46 @@
                 <h2>{{ cluster.name }} Requests </h2>
         </section>
         <br>
-        {% for request in cluster.get_requests() %}
-            <div>
-                <section style="color: black" class="create-cluster">
-                    <section>
-                        <div class="thread">
-                            <strong style="font-size:20px; color: green;"> {{ request.title }}</strong><span> by <a href="{{ url_for('getUser', user_id=request.author) }}" style="color: blue">@{{ request.author }}</a></span>
-                             <br>
-                            <p>{{ request.body }}</p>
-                            <small>{{request.created}}</small>
-                    </section>
-                    <div class="comments">
-                        <h3>Replies</h3>
-                        {% for comment in request.comments %}
-                            <p>
-                                <a href="{{ url_for('getUser', user_id=comment.user) }}" style="color: blue">@{{ comment.user }}</a>
-                                <span style="color: black;">{{ comment.text }} </span>
-                                <br>
-                                <small>{{ comment.timestamp }}</small>
-                            </p>
-                        {% endfor %}
-                    </div>
-                    <!-- Comment Form -->
-                    <form action="{{ url_for('requested_comment', cluster_id=cluster.id, chatId=request.chatId) }}" method="post">
-                        <textarea type="text" name="text" placeholder="Your comment" required></textarea><br>
-                        <button type="submit" class="dashboardBtn" style="background: blue;">Sent Reply</button>
-                    </form>
-                    <br><br>
-                   <center>
-                 
-                   <form method="POST" action="{{ url_for('accept_request', cluster_id=cluster.id, request_id=request.chatId) }}">
-                   <button class="dashboardBtn" style="width: 100%">Accept Request</button>
-                   </form>
-                   <form method="POST" action="{{ url_for('decline_request', cluster_id=cluster.id, request_id=request.chatId) }}">
-                   <button class="dashboardBtn" style="background: red;width: 100% ">Decline and Delete</button>
-                   </form>
-                   
-                   </center>
-                   
-                </section>
-            </div>
-            <br>
-          </div>
-        {% endfor %}    
+ {% for request in requests %}
+ <div style=" ">
+ <section style="color: black">
+ <section>
+ <div class="thread">
+ <strong style="font-size:20px; color: green;"> {{ request.title }}</strong>
+ <span> by 
+ <a href="{{ url_for('getUser', user_id=request.author.id) }}" style="color: blue">@{{ request.author.name }}</a>
+ </span>
+ <br>
+ <p>{{ request.body }}</p>
+ <small>{{ request.created | naturaltime }}</small>
+ </section>
+ <div class="comments">
+ <h3>🗣 ️Commments</h3>
+ {% for comment in request.comments %}
+ <p>
+ {% if comment.user %}
+ <a href="{{ url_for('getUser', user_id=comment.user.id) }}" style="color: blue">@{{ comment.user.name }}</a> 
+ {{ comment.text }} 
+ <br>
+ <small>{{ comment.timestamp | naturaltime }}</small>
+ {% else %}
+ <span style="color: red;">Comment deleted</span>
+ {% endif %}
+ </p>
+ {% endfor %}
+ <!-- Comment Form -->
+ <form method="POST" action="{{ url_for('post_comment', cluster_id=cluster.id, thread_id=request.chatId)}}" class="create-cluster">
+ <textarea type="text" name="text" placeholder="Your comment" required></textarea><br>
+ <button id="clicked" type="submit" class="dashboardBtn">Post Comment</button>
+ </form>
+ </div>
+ </div>
+ </section>
+ </div>
+ <br>
+ {% endfor %}
+ 
+  
     <br>
     {% include 'partials/footer.html' %}
     

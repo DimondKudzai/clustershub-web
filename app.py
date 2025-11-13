@@ -366,7 +366,6 @@ def startCluster():
             print(e)
             session['notice'] = "An error occurred"
             return redirect('/startCluster')
-
         errors = []
         if not name:
             errors.append("Cluster name is required")
@@ -380,15 +379,11 @@ def startCluster():
             errors.append("At least one skill is required")
         if len(skills) > 10:
             errors.append("You can add up to 10 skills only")
-
         if errors:
             session['notice'] = ', '.join(errors)
             return redirect('/startCluster')
-
-        # Get the user name from the session
-        user = User.query.get(session['user_id'])
-        author = user.name
-
+        # Get the user ID from the session
+        user_id = session['user_id']
         # Create the cluster
         cluster = Cluster(
             name=name,
@@ -397,18 +392,17 @@ def startCluster():
             location=location,
             status=status,
             target=target,
-            members=json.dumps([author]),
-            author=author  # Store the user name as the author
+            members=json.dumps([user_id]),
+            author=user_id # Store the user ID as the author
         )
         db.session.add(cluster)
         db.session.commit()
-
         # Update the user's clusters
+        user = User.query.get(user_id)
         created_clusters = json.loads(user.created_clusters)
         created_clusters.append(cluster.id)
         user.created_clusters = json.dumps(created_clusters)
         db.session.commit()
-
         return redirect('/clusters')
     return render_template('createCluster.html', suggested_skills=suggested_skills, notice=notice)
         
@@ -590,17 +584,35 @@ def mark_read(msg_id):
 def requested(cluster_id):
     if 'user_id' not in session:
         return redirect('/home')
-    
     user_id = session['user_id']
     cluster = Cluster.query.get(cluster_id)
     if not cluster:
         error = "Cluster not found"
         return render_template('error.html', error=error)
-    
     if cluster.author != str(User.query.get(user_id).id):
         return redirect('/home')
     
-    return render_template('requests.html', cluster=cluster)
+    requests = []
+    for request in cluster.get_requests():
+        author = User.query.get(request['author'])
+        comments = []
+        for comment in request['comments']:
+            user = User.query.get(comment['user'])
+            comments.append({
+                'text': comment['text'],
+                'user': user,
+                'timestamp': comment['timestamp']
+            })
+        requests.append({
+            'title': request['title'],
+            'body': request['body'],
+            'author': author,
+            'comments': comments,
+            'chatId': request['chatId'],
+            'created': request['created']
+        })
+    
+    return render_template('requests.html', cluster=cluster, requests=requests)
 
 @app.route('/clusters/requests/<int:cluster_id>/comment/<chatId>', methods=['POST'])
 def requested_comment(cluster_id, chatId):
@@ -736,20 +748,25 @@ def decline_request(cluster_id, request_id):
 def show_cluster(cluster_id):
     if 'user_id' not in session:
         return redirect('/login')
-    
     user_id = session['user_id']
     cluster = Cluster.query.get(cluster_id)
     if not cluster:
         error = "Cluster not found"
         return render_template('error.html', error=error)
-    
     members = cluster.get_members()
     if user_id not in [User.query.filter_by(id=member).first().id for member in members]:
         return redirect('/home')
     
-    return render_template('conversations.html', cluster=cluster)
+    conversations = cluster.get_conversations()
+    for conversation in conversations:
+        author = User.query.get(conversation['author'])
+        conversation['author_id'] = conversation['author']
+        conversation['author_name'] = author.name if author else 'Unknown Author'
+        for comment in conversation['comments']:
+            comment['user'] = User.query.get(comment['user'])
     
-    
+    return render_template('conversations.html', cluster=cluster, conversations=conversations)
+
 @app.route('/clusters/<int:cluster_id>/threads/<int:thread_id>/comments', methods=['POST'])
 def post_comment(cluster_id, thread_id):
     user_id = session.get('user_id')
@@ -762,7 +779,6 @@ def post_comment(cluster_id, thread_id):
     if not cluster:
         error = "Cluster not found"
         return render_template('error.html', error=error)
-        
     conversations = cluster.get_conversations()
     thread = next((t for t in conversations if t['chatId'] == thread_id), None)
     if not thread:
@@ -771,15 +787,13 @@ def post_comment(cluster_id, thread_id):
     text = request.form['text']
     timestamp = datetime.utcnow().isoformat() + 'Z'
     thread['comments'].append({
-        "user": user.name,
+        "user": user_id,  # Store the user ID instead of the name
         "text": text,
         "timestamp": timestamp
     })
     cluster.set_conversations(conversations)
     db.session.commit()
-    return redirect(url_for('show_cluster', cluster_id=cluster_id))
-    
-    
+    return redirect(url_for('user_requests'))
 
 @app.route('/clusters/<int:cluster_id>/threads', methods=['POST'])
 def create_thread(cluster_id):
@@ -800,7 +814,7 @@ def create_thread(cluster_id):
     new_thread = {
         "title": title,
         "body": body,
-        "author": user.name,
+        "author": user_id,  # Store the user ID instead of the name
         "chatId": len(conversations) + 1,
         "created": timestamp,
         "comments": []
