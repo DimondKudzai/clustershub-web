@@ -32,7 +32,7 @@
  <div class="thread">
  <strong style="font-size:20px; color: green;"> {{ request.title }}</strong>
  <span> by 
- <a href="{{ url_for('getUser', user_id=request.author.id) }}" style="color: blue">@{{ request.author.name }}</a>
+ <a href="{{ url_for('getUser', user_id=request.author_id) }}" style="color: blue">@{{ request.author_name }}</a>
  </span>
  <br>
  <p>{{ request.body }}</p>
@@ -53,7 +53,7 @@
  </p>
  {% endfor %}
  <!-- Comment Form -->
- <form method="POST" action="{{ url_for('post_comment', cluster_id=cluster.id, thread_id=request.chatId)}}" class="create-cluster">
+ <form method="POST" action="{{ url_for('requested_comment', cluster_id=cluster.id, chatId=request.chatId)}}" class="create-cluster">
  <textarea type="text" name="text" placeholder="Your comment" required></textarea><br>
  <button id="clicked" type="submit" class="dashboardBtn">Post Comment</button>
  </form>

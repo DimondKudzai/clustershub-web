@@ -207,7 +207,7 @@ def register():
             skills=json.dumps(skills),
             password=generate_password_hash(password),
             clusters_count=0,
-            joined= datetime.utcnow().isoformat() + 'Z',
+           joined = datetime.utcnow(),
             created_clusters=json.dumps([]),
             clusters_requests=json.dumps([]),
             notifications_count=0,
@@ -588,11 +588,12 @@ def requested(cluster_id):
     if not cluster:
         error = "Cluster not found"
         return render_template('error.html', error=error)
-    if cluster.author != user_id:
+    if int(cluster.author) != user_id:
         return redirect('/home')
     requests = cluster.get_requests()
     for request in requests:
         author = User.query.get(request['author'])
+        request['author_id'] = request['author']  # Add author's ID
         request['author_name'] = author.name if author else 'Unknown Author'
         for comment in request['comments']:
             comment['user'] = User.query.get(comment['user'])
@@ -619,7 +620,7 @@ def requested_comment(cluster_id, chatId):
             })
             cluster.requests = json.dumps(requests)
             db.session.commit()
-            return redirect(url_for('user_requests'))
+            return redirect(url_for('requested', cluster_id=cluster_id))
     error = "Request not found"
     return render_template('error.html', error=error)
 
