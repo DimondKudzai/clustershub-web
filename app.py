@@ -677,9 +677,13 @@ def accept_request(cluster_id, request_id):
         cluster.set_requests(requests)
     else:
         cluster.set_requests([])
-    # Send notification
+    # Remove request from user's clusters_requests
     user = User.query.get(request['author'])
     if user:
+        user_clusters_requests = user.get_clusters_requests()
+        user_clusters_requests.remove(cluster_id)
+        user.clusters_requests = json.dumps(user_clusters_requests)
+        # Send notification
         notification = {
             "id": len(user.get_messages()) + 1,
             "body": f"Your request to join {cluster.name} has been accepted.",
@@ -690,6 +694,7 @@ def accept_request(cluster_id, request_id):
         user.set_messages(user.get_messages() + [notification])
     db.session.commit()
     return redirect(url_for('requested', cluster_id=cluster_id))
+    
 
 @app.route('/clusters/<int:cluster_id>/requests/<int:request_id>/decline', methods=['POST'])
 def decline_request(cluster_id, request_id):
@@ -708,9 +713,13 @@ def decline_request(cluster_id, request_id):
         cluster.set_requests(requests)
     else:
         cluster.set_requests([])
-    # Send notification
+    # Remove request from user's clusters_requests
     user = User.query.get(request['author'])
     if user:
+        user_clusters_requests = user.get_clusters_requests()
+        user_clusters_requests.remove(cluster_id)
+        user.clusters_requests = json.dumps(user_clusters_requests)
+        # Send notification
         notification = {
             "id": len(user.get_messages()) + 1,
             "body": f"Your request to join {cluster.name} has been declined. Here are your recommended Clusters",
