@@ -408,35 +408,7 @@ def startCluster():
         
 
 
-@app.route('/send_cluster_request/<cluster_id>', methods=['POST'])
-def sent_cluster_request(cluster_id):
-    title = request.form.get('title')
-    message = request.form.get('message')
-    cluster = Cluster.query.get(cluster_id)
-    if not cluster:
-        return redirect('/clusters')
-    user = User.query.get(session['user_id'])
-    if not user:
-        return redirect('/login')
-    requests = cluster.get_requests()
-    new_request = {
-        "chatId": len(requests) + 1,
-        "title": title,
-        "body": message,
-        "author": user.name,
-        "created": datetime.utcnow().isoformat() + 'Z',
-        "comments": []
-    }
-    requests.append(new_request)
-    cluster.requests = json.dumps(requests)
-    
-    # Add cluster ID to user's clusters_requests
-    user_clusters_requests = user.get_clusters_requests()
-    user_clusters_requests.append(int(cluster_id))
-    user.clusters_requests = json.dumps(user_clusters_requests)
-    
-    db.session.commit()
-    return redirect(url_for('user_requests'))
+
 
 
 
@@ -576,9 +548,36 @@ def mark_read(msg_id):
     db.session.commit()
     return redirect(url_for("notifications"))
 
+# Requests
 
-
-# Requests    
+@app.route('/send_cluster_request/<cluster_id>', methods=['POST'])
+def sent_cluster_request(cluster_id):
+    title = request.form.get('title')
+    message = request.form.get('message')
+    cluster = Cluster.query.get(cluster_id)
+    if not cluster:
+        return redirect('/clusters')
+    user_id = session['user_id']
+    user = User.query.get(user_id)
+    if not user:
+        return redirect('/login')
+    requests = cluster.get_requests()
+    new_request = {
+        "chatId": len(requests) + 1,
+        "title": title,
+        "body": message,
+        "author": user_id,
+        "created": datetime.utcnow().isoformat() + 'Z',
+        "comments": []
+    }
+    requests.append(new_request)
+    cluster.requests = json.dumps(requests)
+    # Add cluster ID to user's clusters_requests
+    user_clusters_requests = user.get_clusters_requests()
+    user_clusters_requests.append(int(cluster_id))
+    user.clusters_requests = json.dumps(user_clusters_requests)
+    db.session.commit()
+    return redirect(url_for('user_requests'))
 
 @app.route('/clusters/requests/<int:cluster_id>', methods=['GET'])
 def requested(cluster_id):
@@ -589,35 +588,21 @@ def requested(cluster_id):
     if not cluster:
         error = "Cluster not found"
         return render_template('error.html', error=error)
-    if cluster.author != str(User.query.get(user_id).id):
+    if cluster.author != user_id:
         return redirect('/home')
-    
-    requests = []
-    for request in cluster.get_requests():
+    requests = cluster.get_requests()
+    for request in requests:
         author = User.query.get(request['author'])
-        comments = []
+        request['author_name'] = author.name if author else 'Unknown Author'
         for comment in request['comments']:
-            user = User.query.get(comment['user'])
-            comments.append({
-                'text': comment['text'],
-                'user': user,
-                'timestamp': comment['timestamp']
-            })
-        requests.append({
-            'title': request['title'],
-            'body': request['body'],
-            'author': author,
-            'comments': comments,
-            'chatId': request['chatId'],
-            'created': request['created']
-        })
-    
+            comment['user'] = User.query.get(comment['user'])
     return render_template('requests.html', cluster=cluster, requests=requests)
 
 @app.route('/clusters/requests/<int:cluster_id>/comment/<chatId>', methods=['POST'])
 def requested_comment(cluster_id, chatId):
     text = request.form.get('text')
-    user = User.query.get(session['user_id'])
+    user_id = session['user_id']
+    user = User.query.get(user_id)
     if not user:
         return redirect('/login')
     cluster = Cluster.query.get(cluster_id)
@@ -628,7 +613,7 @@ def requested_comment(cluster_id, chatId):
     for req in requests:
         if str(req['chatId']) == chatId:
             req['comments'].append({
-                'user': user.name,
+                'user': user_id,
                 'text': text,
                 'timestamp': datetime.utcnow().isoformat() + 'Z'
             })
@@ -637,8 +622,7 @@ def requested_comment(cluster_id, chatId):
             return redirect(url_for('user_requests'))
     error = "Request not found"
     return render_template('error.html', error=error)
-   
-   
+
 @app.route('/user_requests')
 def user_requests():
     user_id = session.get('user_id')
@@ -656,8 +640,13 @@ def user_requests():
                 requests = json.loads(c.requests or '[]')
             else:
                 requests = c.requests or []
-            user_requests = [r for r in requests if r['author'] == user.name]
+            user_requests = [r for r in requests if r['author'] == user_id]
             if user_requests:
+                for request in user_requests:
+                    author = User.query.get(request['author'])
+                    request['author_name'] = author.name if author else 'Unknown Author'
+                    for comment in request['comments']:
+                        comment['user'] = User.query.get(comment['user'])
                 cluster_data = c
                 cluster_data.user_requests = user_requests
                 requested_clusters.append(cluster_data)
@@ -666,34 +655,29 @@ def user_requests():
     error = "Request not found"
     return render_template('error.html', error=error)
 
-
 @app.route('/clusters/<int:cluster_id>/requests/<int:request_id>/accept', methods=['POST'])
 def accept_request(cluster_id, request_id):
     cluster = Cluster.query.get(cluster_id)
     if not cluster:
         error = "Cluster not found"
         return render_template('error.html', error=error)
-    
     requests = cluster.get_requests()
     request = next((r for r in requests if r['chatId'] == request_id), None)
     if not request:
         error = "Request not found"
         return render_template('error.html', error=error)
-    
     # Add author to members
     members = cluster.get_members()
     members.append(request['author'])
     cluster.set_members(members)
-    
     # Remove request from cluster requests
     requests.remove(request)
     if requests:
         cluster.set_requests(requests)
     else:
         cluster.set_requests([])
-    
     # Send notification
-    user = User.query.filter_by(name=request['author']).first()
+    user = User.query.get(request['author'])
     if user:
         notification = {
             "id": len(user.get_messages()) + 1,
@@ -703,8 +687,7 @@ def accept_request(cluster_id, request_id):
             "timestamp": datetime.utcnow().isoformat() + 'Z'
         }
         user.set_messages(user.get_messages() + [notification])
-        db.session.commit()
-    
+    db.session.commit()
     return redirect(url_for('requested', cluster_id=cluster_id))
 
 @app.route('/clusters/<int:cluster_id>/requests/<int:request_id>/decline', methods=['POST'])
@@ -713,22 +696,19 @@ def decline_request(cluster_id, request_id):
     if not cluster:
         error = "Cluster not found"
         return render_template('error.html', error=error)
-    
     requests = cluster.get_requests()
     request = next((r for r in requests if r['chatId'] == request_id), None)
     if not request:
         error = "Request not found"
         return render_template('error.html', error=error)
-    
     # Remove request from cluster requests
     requests.remove(request)
     if requests:
         cluster.set_requests(requests)
     else:
         cluster.set_requests([])
-    
     # Send notification
-    user = User.query.filter_by(name=request['author']).first()
+    user = User.query.get(request['author'])
     if user:
         notification = {
             "id": len(user.get_messages()) + 1,
@@ -738,8 +718,7 @@ def decline_request(cluster_id, request_id):
             "timestamp": datetime.utcnow().isoformat() + 'Z'
         }
         user.set_messages(user.get_messages() + [notification])
-        db.session.commit()
-    
+    db.session.commit()
     return redirect(url_for('requested', cluster_id=cluster_id))
 
 # conversations

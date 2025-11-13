@@ -1,70 +1,69 @@
-<!DOCTYPE html> 
-<html lang="en"> 
-<head> 
-    <meta charset="UTF-8"> 
-    <meta name="keywords" content="Cluster conversation, group chat" /> 
-    <meta name="description" content="This is the private Cluster chat" /> 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    <title>Cluster | Chat </title> 
-    <link rel="icon" type="image/jpg" href="{{url_for('static', filename='logo.jpg')}}"> 
-    <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}"> 
-    <style> 
-        small{ 
-            color: green; 
-        } 
-        section{ 
-            border: none; 
-        } 
-    </style> 
-</head> 
-<body> 
-    {% include 'partials/header.html' %} 
-    <div style="width: 100%"> 
-        {% for cluster in clusters %} 
-            <section class="create-cluster" style="padding: px;border: none;"> 
-                <center> 
-                    <h2>{{ cluster.name }} Request </h2> 
-                </center> 
-                <br> 
-                {% for request in cluster.user_requests %} 
-                    <div style=" "> 
-                        <section style="color: black"> 
-                            <div class="thread"> 
-                                <strong style="font-size:22px; color: green;"> {{ request.title }}</strong><span> by <a href="{{ url_for('getUser', user_id=request.author) }}" style="color: blue">@{{ request.author }}</a></span> 
-                                <br> 
-                                <p>{{ request.body }}</p> 
-                                <small>{{request.created}}</small> 
-                        </section> 
-                        <div class="comments"> 
-                            <h3>Replies</h3> 
-                            {% for comment in request.comments %} 
-                                <p><a href="{{ url_for('getUser', user_id=comment.user) }}" style="color: blue">@{{ comment.user }}</a> {{ comment.text }} <br><small>{{ comment.timestamp }}</small></p> 
-                            {% endfor %} 
-                        </div> 
-                        <form action="{{ url_for('requested_comment', chatId=request.chatId, cluster_id=cluster.id)}}" method="post"> 
-                            <input type="hidden" name="chatId" value="{{ request.chatId }}"> 
-                            <textarea type="text" name="text" placeholder="Your comment" required></textarea><br> 
-                            <button type="submit" class="dashboardBtn" style="background: blue;">Sent Reply</button> 
-                        </form> 
-                    </div> 
-                    <br> 
-                    <br><br> 
-                {% endfor %} 
-                <br> 
-            </section> 
-            <br><br> 
-        {% endfor %} 
-    </div> 
-</div> 
-{% include 'partials/footer.html' %} 
-<script>
-  const audio = new Audio('{{ url_for('static', filename='ztink.wav') }}');
-  
-  document.addEventListener('click', (event) => {
-  if (event.target.classList.contains('dashboardBtn')) {
-  audio.play();
-  }
-  });
-   </script>
-</body> 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="Cluster conversation, group chat" />
+    <meta name="description" content="This is the private Cluster chat" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cluster | Chat </title>
+    <link rel="icon" type="image/jpg" href="{{url_for('static', filename='logo.jpg')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}">
+    <style>
+        small{
+            color: green;
+        }
+        section{
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    {% include 'partials/header.html' %}
+    <div style="width: 100%">
+        {% for cluster in clusters %}
+        <section class="create-cluster" style="padding: px;border: none;">
+            <center>
+                <h2>{{ cluster.name }} Request </h2>
+            </center>
+            <br>
+            {% for request in cluster.user_requests %}
+            <div style=" ">
+                <section style="color: black">
+                    <div class="thread">
+                        <strong style="font-size:22px; color: green;"> {{ request.title }}</strong><span> by <a href="{{ url_for('getUser', user_id=request.author) }}" style="color: blue">@{{ request.author_name }}</a></span>
+                        <br>
+                        <p>{{ request.body }}</p>
+                        <small>{{request.created | naturaltime }}</small>
+                    </section>
+                    <div class="comments">
+                        <h3>Replies</h3>
+                        {% for comment in request.comments %}
+                        <p><a href="{{ url_for('getUser', user_id=comment.user.id) }}" style="color: blue">@{{ comment.user.name }}</a> {{ comment.text }} <br><small>{{ comment.timestamp | naturaltime }}</small></p>
+                        {% endfor %}
+                    </div>
+                    <form action="{{ url_for('requested_comment', chatId=request.chatId, cluster_id=cluster.id)}}" method="post">
+                        <input type="hidden" name="chatId" value="{{ request.chatId }}">
+                        <textarea type="text" name="text" placeholder="Your comment" required></textarea><br>
+                        <button type="submit" class="dashboardBtn" style="background: blue;">Sent Reply</button>
+                    </form>
+                </div>
+                <br>
+                <br><br>
+            {% endfor %}
+            <br>
+        </section>
+        <br><br>
+        {% endfor %}
+    </div>
+    </div>
+    {% include 'partials/footer.html' %}
+    <script>
+        const audio = new Audio('{{ url_for('static', filename='ztink.wav') }}');
+        document.addEventListener('click', (event) => {
+            if (event.target.classList.contains('dashboardBtn')) {
+                audio.play();
+            }
+        });
+    </script>
+</body>
 </html>
