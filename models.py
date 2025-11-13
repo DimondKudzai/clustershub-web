@@ -72,6 +72,8 @@ class Cluster(db.Model):
     members = db.Column(db.Text)  # JSON stringified list
     conversations = db.Column(db.Text)  # JSON stringified list of objects
     requests = db.Column(db.Text)  # JSON stringified list of objects
+    updates = db.Column(db.Text)  # JSON stringified list of objects
+    
 
     def get_tags(self):
         return json.loads(self.tags or '[]')
@@ -81,7 +83,10 @@ class Cluster(db.Model):
 
     def get_conversations(self):
         return json.loads(self.conversations or '[]') 
-
+    
+    def get_updates(self):
+        return json.loads(self.updates or '[]') 
+    
     def get_requests(self):
         return json.loads(self.requests or '[]')
 
@@ -93,7 +98,10 @@ class Cluster(db.Model):
 
     def set_conversations(self, conversations):
         self.conversations = json.dumps(conversations)
-
+     
+    def set_updates(self, updates):
+        self.updates = json.dumps(updates)
+     
     def set_requests(self, requests):
         self.requests = json.dumps(requests)
         
@@ -154,6 +162,7 @@ def seed_clusters():
                 tags=json.dumps(cluster_data["tags"]),
                 members=json.dumps(cluster_data["members"]),
                 conversations=json.dumps(cluster_data["conversations"]),
+                updates=json.dumps(cluster_data["updates"]),
                 requests=json.dumps(cluster_data["requests"])
             )
             db.session.add(cluster)

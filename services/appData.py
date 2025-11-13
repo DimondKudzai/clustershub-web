@@ -72,7 +72,7 @@ def get_all_users():
 	        "id": 2,
 	        "body": "You have a new follower: @ChrisDev",
 	        "read": False,
-	        "timestamp": "2025-09-13 09:30 UTC",
+	        "timestamp": "2025-09-12T14:30:00.000000",
 	        "url": "/users/Dimond"
 	    }
 	]
@@ -160,6 +160,15 @@ def get_all_clusters():
 	"description": "Brain Flow AI is a project that aims to develop an AI tool that reads brain flow. This brain flow will be recorded, analyzed and used for medical treatment https://github.com/BrainFlowAi/BrainFlowAi.",
 	"tags": ["ML", "AI", "Neurology","health"],
 	"members": [1],
+	"updates": [{
+	"message": "Thank you for joining",
+	"timestamp": "2025-09-12T14:30:00.000000"
+	},
+	{
+	"message": "You know good on you is for joining",
+	"timestamp": "2025-09-12T14:30:00.000000"
+	}
+	],
 	"conversations": [
 	{
 	"chatId": 1,
@@ -216,6 +225,15 @@ def get_all_clusters():
 	"created": "2025-09-12T14:30:00.000000",
 	"location": "Zimbabwe",
 	"members": [1],
+	"updates": [{
+	"message": "Thank you for joining",
+	"timestamp": "2025-09-12T14:30:00.000000"
+	},
+	{
+	"message": "You know good on you is for joining",
+	"timestamp": "2025-09-12T14:30:00.000000"
+	}
+	],
 	"description": "Fish production is cheap and there is market in Zimbabwe. With land and small capital much returns",
 	"tags": ["Farmer", "Marketing", "Finance"],
 	"conversations": [
@@ -276,6 +294,15 @@ def get_all_clusters():
 	"target": "Fairness to everyone",
 	"tags": ["legal", "marketing"],
 	"members": [1,2],
+	"updates": [{
+	"message": "Thank you for joining",
+	"timestamp": "2025-09-12T14:30:00.000000"
+	},
+	{
+	"message": "You know good on you is for joining",
+	"timestamp": "2025-09-12T14:30:00.000000"
+	}
+	],
 	"location": "Zimbabwe",
 	"conversations": [
 	{
@@ -325,6 +352,15 @@ def get_all_clusters():
 	"tags": ["Legal", "Co-founders", "DevOps"],
 	"target": "Let's Design Apps",
 	"members": [1,2,3],
+	"updates": [{
+	"message": "Thank you for joining",
+	"timestamp": "2025-09-12T14:30:00.000000"
+	},
+	{
+	"message": "You know good on you is for joining",
+	"timestamp": "2025-09-12T14:30:00.000000"
+	}
+	],
 	"conversations": [
 	{
 	"chatId": 1,

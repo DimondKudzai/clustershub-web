@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="keywords" content="Cluster, Updates, Page" />
+  <meta name="description" content=" Here are your Cluster Updates" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Updates | Clusters Hub</title>
+  <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}">
+  <link rel="icon" type="image/jpg" href="{{url_for('static', filename='logo.jpg')}}">
+  </head>
+<body>
+
+{% include 'partials/header.html' %}
+  <center>
+  <h2>{{ cluster.name }} updates</h2>
+  </center>
+{% for update in updates %}
+  <div class="container">
+
+    <section class="create-cluster">
+    <h3>From Clusters Hub</h3>
+  <p> {{ update.message }}</p>
+   {{ update.timestamp | naturaltime }}
+       
+    </section>
+    </div>
+    {% endfor %}
+    
+    {% include 'partials/footer.html' %}
+    
+   </body>
+ </html>

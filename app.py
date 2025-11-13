@@ -620,7 +620,7 @@ def requested_comment(cluster_id, chatId):
             })
             cluster.requests = json.dumps(requests)
             db.session.commit()
-            return redirect(url_for('requested', cluster_id=cluster_id))
+            return redirect(url_for('user_requests'))
     error = "Request not found"
     return render_template('error.html', error=error)
 
@@ -812,6 +812,23 @@ def create_thread(cluster_id):
     cluster.set_conversations(conversations)
     db.session.commit()
     return redirect(url_for('show_cluster', cluster_id=cluster_id))
+
+
+@app.route('/clusters/<int:cluster_id>/updates', methods=['GET'])
+def cluster_updates(cluster_id):
+    if 'user_id' not in session:
+        return redirect('/login')
+    user_id = session['user_id']
+    cluster = Cluster.query.get(cluster_id)
+    if not cluster:
+        error = "Cluster not found"
+        return render_template('error.html', error=error)
+    members = cluster.get_members()
+    if user_id not in members:
+        return redirect('/home')
+    updates = cluster.get_updates()
+    return render_template('updates.html', cluster=cluster, updates=updates)
+       
 
 # Recomended clusters - Algo
 

@@ -136,9 +136,15 @@
   <a href="{{ url_for('cluster_updater', id=cluster.id) }}" > 
   <button class="dashboardBtn" style="background: ; width: 90%;"><strong>⚙️ Cluster settings </strong></button>
   </a>
+  <a href="{{ url_for('cluster_updates', cluster_id=cluster.id) }}"> 
+  <button class="dashboardBtn" style="background: ; width: 90%;"><strong> Open Cluster Updates </strong></button>
+  </a>
   {% elif is_member %}
   <a href="{{ url_for('show_cluster', cluster_id=cluster.id) }}"> 
   <button class="dashboardBtn" style="background: ; width: 90%;"><strong> Open Cluster </strong></button>
+  </a>
+  <a href="{{ url_for('cluster_updates', cluster_id=cluster.id) }}"> 
+  <button class="dashboardBtn" style="background: ; width: 90%;"><strong> Open Cluster Updates </strong></button>
   </a>
   {% else %}
   {% if requested %}
