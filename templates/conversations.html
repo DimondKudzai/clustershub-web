@@ -20,10 +20,18 @@
         <section style="padding: 5px;border: none;" class="create-cluster">
             <center>
                 <h2>{{ cluster.name }} 💬 </h2>
-                <p style="color: black">{{ cluster.target }}</p>
+                <p style="color: black">{{ cluster.target }} 
+                <a href="#start-thread" >
+                <button class="dashboardBtn">Jumb to Start Thread 📢</button></p>
+                </a>
+                </p>
             </center>
         </section>
         <br>
+        <a href="#start-thread" >
+        <p>Jumb to Bottom</p>
+        
+        </a>
    {% for thread in conversations %}
    <div style=" ">
    <section style="color: black">

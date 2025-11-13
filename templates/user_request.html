@@ -20,6 +20,10 @@
 <body>
     {% include 'partials/header.html' %}
     <div style="width: 100%">
+    <a href="#bottom" >
+    <p>Jumb to Bottom</p>
+    
+    </a>
         {% for cluster in clusters %}
         <section class="create-cluster" style="padding: px;border: none;">
             <center>
@@ -56,6 +60,7 @@
         {% endfor %}
     </div>
     </div>
+    <span id="bottom"></span>
     {% include 'partials/footer.html' %}
     <script>
         const audio = new Audio('{{ url_for('static', filename='ztink.wav') }}');

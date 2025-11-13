@@ -23,8 +23,13 @@
         <section style="padding: 1px;border: none;">
             <center>
                 <h2>{{ cluster.name }} Requests </h2>
-        </section>
+  
+  </section>
         <br>
+        <a href="#bottom" >
+        <p>Jumb to Bottom</p>
+        
+        </a>
  {% for request in requests %}
  <div style=" ">
  <section style="color: black">
@@ -86,7 +91,7 @@
  
  {% endfor %}
  
-  
+  <span id="bottom"></span>
     <br>
     {% include 'partials/footer.html' %}
     
