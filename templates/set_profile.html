@@ -28,17 +28,15 @@
  
  <section class="create-cluster">
 <h2>Update account details</h2>
+<p>Only fill where you want to update</p>
 <form action="{{ url_for('register_update') }}" method="POST">
   <strong>Username</strong>
   <input type="text" name="username" placeholder="Preferred Username"><br>
-  <strong>Change Email</strong>
-  <input type="email" name="email" placeholder="Email"><br>
   <strong>Location</strong>
   <input type="text" name="location" placeholder="Location"><br><br>
   
   <strong>Edit About</strong>
   <textarea name="description" placeholder="About you"></textarea><br><br>
-  <strong>Key Skills</strong>
   
   <strong>Public links</strong>
   <input type="text" name="website" placeholder="website or Link"><br>
@@ -54,8 +52,11 @@
  </div>
  
   <br>
+  <strong>Change Email</strong>
+  <input type="email" name="email" placeholder="Email"><br>
+  
   <strong>Update Password</strong>
-  <input type="password" name="password" placeholder="Password"><br>
+  <input type="password" name="password" placeholder="new Password"><br>
   <strong>Confirm Password</strong>
   <input type="password" name="confirm_password" placeholder="Confirm Password"><br>
   
@@ -65,9 +66,9 @@
 </section>
 
 <br>
-   
+   <!--
    <button onclick="" class="dashboardBtn" style="background: red; width: 90%;"><strong> Delete Account </strong></button>
-  
+  -->
    </div>
  
 {% include 'partials/footer.html' %}

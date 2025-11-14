@@ -522,16 +522,14 @@ def get_cluster_members(cluster_id):
     cluster = Cluster.query.get(cluster_id)
     if not cluster:
         error = "Cluster not found"
-        return redirect(url_for('error'), error=error)
-        
+        return render_template('error.html', error=error)
     members = cluster.get_members()
     member_data = []
     for member_id in members:
         member = User.query.get(member_id)
         if member:
             member_data.append({'id': member.id, 'name': member.name})
-    error = "Memmbers - " + member_data
-    return redirect(url_for('error'), error=error)
+    return render_template('cluster_members.html', cluster=cluster, members=member_data)
     
     
     
@@ -553,6 +551,14 @@ def exit_cluster(cluster_id):
     return redirect('/clusters')
     
 
+@app.route('/user_id>')
+def get_user(user_id):
+    user = User.query.get(user_id)
+    if not user:
+        error = "User not found"
+        return render_template('error.html', error=error)
+    return render_template('user.html', user=user)
+
 @app.route('/clusters/<int:cluster_id>/remove-member/<int:member_id>', methods=['POST'])
 def remove_cluster_member(cluster_id, member_id):
     if 'user_id' not in session:
@@ -561,16 +567,16 @@ def remove_cluster_member(cluster_id, member_id):
     cluster = Cluster.query.get(cluster_id)
     if not cluster:
         error = "Cluster not found"
-        return render_template('error.html', error=error)
+        return render_template('error.html', error=_error)
     if int(cluster.author) != user_id:
         return redirect('/home')
     members = cluster.get_members()
-    if member_id not in members:
+    if int(member_id) not in members:
         return redirect('/home')
-    members.remove(member_id)
+    members = [member for member in members if member != int(member_id)]
     cluster.set_members(members)
     db.session.commit()
-    return redirect(url_for('cluster_members', cluster_id=cluster_id))
+    return redirect(url_for('getCluster', id=cluster_id))
     
 
 @app.route('/clusters/<int:cluster_id>/members')
@@ -642,7 +648,7 @@ def withdraw_request(cluster_id, request_id):
         user_clusters_requests.remove(cluster_id)
         user.clusters_requests = json.dumps(user_clusters_requests)
     db.session.commit()
-    return redirect(url_for('requested', cluster_id=cluster_id))
+    return redirect(url_for('user_requests'))
     
 
 @app.route('/send_cluster_request/<cluster_id>', methods=['POST'])

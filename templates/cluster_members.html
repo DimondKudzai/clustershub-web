@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="keywords" content="Cluster, Members" />
+  <meta name="description" content="Here's all Clusters members" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terms | Clusters Hub</title>
+  <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}">
+  <link rel="icon" type="image/jpg" href="{{url_for('static', filename='logo.jpg')}}">
+  </head>
+<body>
+
+{% include 'partials/header.html' %}
+  
+
+  <div class="container">
+
+    <section class="create-cluster">
+      <h2>{{cluster.name}} Members</h2>
+      
+     <p>
+     Hello, i want to know something please.
+     </p>
+    
+    </section>
+    </div>
+    
+    {% include 'partials/footer.html' %}
+    
+    <script type="text/javascript" src="{{url_for('static', filename='createCluster.js')}}"></script>
+    </body>
+    </html>
