@@ -63,13 +63,33 @@
     <br>
     
     <button onclick="openRequestPopup({{ cluster.id }})" class="dashboardBtn" style="background: red; width: 90%;"><strong> Delete Cluster </strong></button>
-   
+    
+    <br><br>
+    <section style="display: none" id="delete-cluster-popup" class="popup">
+    <p>Do you really want to delete this cluster? This action cannot be reversed.</p>
+    <form method="POST" action="{{ url_for('delete_cluster', cluster_id=cluster.id) }}">
+    <button type="submit" class="dashboardBtn" style="background: red;">Delete</button> &#160 &#160<button onclick="closeRequestPopup()" class="dashboardBtn">Cancel</button>
+    
+    </form>
+    </section>
+    
+    
     </div>
     
     {% include 'partials/footer.html' %}
     
     <script>
-    const availableTags = {{ suggested_skills | tojson }};
+    const availableTags = {{ suggested_skills | tojson }}
+    
+    function openRequestPopup(clusterId) {
+    document.getElementById('delete-cluster-popup').style.display = 'block';
+    }
+    
+    function closeRequestPopup() {
+    document.getElementById('delete-cluster-popup').style.display = 'none';
+    }
+    
+    
     </script>
     
     <script type="text/javascript" src="{{url_for('static', filename='createCluster.js')}}"></script>

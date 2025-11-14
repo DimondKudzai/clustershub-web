@@ -139,6 +139,28 @@
   <a href="{{ url_for('cluster_updates', cluster_id=cluster.id) }}"> 
   <button class="dashboardBtn" style="background: ; width: 90%;"><strong> Open Cluster Updates </strong></button>
   </a>
+ <button onclick="openRemoveMembersPopup({{ cluster.id }})" class="dashboardBtn" style="background: red; width: 90%;"><strong> Remove Members </strong></button>
+ 
+ <br><br>
+ <section style="display: none; text-align: left;" id="remove-members-popup" class="popup">
+ <h2>Remove Members - <small>(are you sure?, move can't be reversed)</small></h2>
+ <ul>
+ {% for member in cluster.get_members() %}
+ {% set member_user = User.query.get(member) %}
+ 
+ <li>
+ {{ member_user.name }}
+ <form method="POST" action="{{ url_for('remove_cluster_member', cluster_id=cluster.id, member_id=member) }}">
+ <button type="submit" class="dashboardBtn" style="background: red; text-align: right;">Remove</button>
+ </form>
+ </li>
+ <hr>
+ {% endfor %}
+ </ul>
+ <button onclick="closeRemoveMembersPopup()" class="dashboardBtn" style="background: blue;">Cancel</button>
+ </sction>
+ 
+  
   {% elif is_member %}
   <a href="{{ url_for('show_cluster', cluster_id=cluster.id) }}"> 
   <button class="dashboardBtn" style="background: ; width: 90%;"><strong> Open Cluster </strong></button>
@@ -146,6 +168,18 @@
   <a href="{{ url_for('cluster_updates', cluster_id=cluster.id) }}"> 
   <button class="dashboardBtn" style="background: ; width: 90%;"><strong> Open Cluster Updates </strong></button>
   </a>
+<button onclick="openExitPopup({{ cluster.id }})" class="dashboardBtn" style="background: red; width: 90%;"><strong> Exit Cluster </strong></button>
+
+<br><br>
+<section id="exit-cluster-popup" class="popup" style="display: none">
+    <p>Do you really want to exit this cluster? You will lose access to this cluster's conversations and updates.</p>
+        <form method="POST" action="{{ url_for('exit_cluster', cluster_id=cluster.id) }}">
+        <button type="submit" class="dashboardBtn" style="background: red;">Exit</button>
+    </form>
+    <button onclick="closeExitPopup()" class="dashboardBtn" style="background: blue;">Cancel</button>
+</section>
+
+  
   {% else %}
   {% if requested %}
   <a href="{{ url_for('user_requests') }}"> 
@@ -202,6 +236,24 @@ document.addEventListener('click', (event) => {
         audio.play();
     }
 });
+
+
+
+function openExitPopup(clusterId) {
+    document.getElementById('exit-cluster-popup').style.display = 'block';
+}
+
+function closeExitPopup() {
+    document.getElementById('exit-cluster-popup').style.display = 'none';
+}
+
+function openRemoveMembersPopup(clusterId) {
+    document.getElementById('remove-members-popup').style.display = 'block';
+}
+
+function closeRemoveMembersPopup() {
+    document.getElementById('remove-members-popup').style.display = 'none';
+}
 </script>
 </body>
 </html>

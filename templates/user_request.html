@@ -52,7 +52,9 @@
                     </form>
                 </div>
                 <br>
-                <button onclick="openRequestPopup({{ cluster.id }})" class="dashboardBtn" style="background: red; width: 90%;" id="button_click"><strong> Withdraw and delete </strong></button>
+                <form method="POST" action="{{ url_for('withdraw_request', cluster_id=cluster.id, request_id=request.chatId) }}">
+                <button type="submit" class="dashboardBtn" style="background: red; width: 90%;"><strong> Withdraw Request </strong></button>
+                </form>
                 
                 <br><br>
             {% endfor %}
@@ -71,6 +73,8 @@
                 audio.play();
             }
         });
+        
+        
     </script>
 </body>
 </html>
