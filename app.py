@@ -198,7 +198,7 @@ def register():
             skills=json.dumps(skills),
             password=generate_password_hash(password),
             clusters_count=0,
-           joined = datetime.utcnow(),
+            joined = datetime.utcnow(),
             created_clusters=json.dumps([]),
             clusters_requests=json.dumps([]),
             notifications_count=0,
@@ -215,7 +215,18 @@ def register():
             suggestion = Suggestion(skills=json.dumps(skills))
             db.session.add(suggestion)
         db.session.commit()
-
+        
+        # Send notification
+        notification = {
+        "id": len(user.get_messages()) + 1,
+        "body": f"Welcome to your first day on Clusters Hub {username}. You can get started with work by Creating a Cluster or joining Clusters. Here are your recommended Clusters.",
+        "read": False,
+        "url": f"/recommended_clusters",
+        "timestamp": datetime.utcnow().isoformat() + 'Z'
+        }
+        user.set_messages(user.get_messages() + [notification])
+        db.session.commit()
+        
         session['user_id'] = user.id
         return redirect('/home')
     return render_template('register.html', suggested_skills=suggested_skills, notice=notice)
@@ -394,6 +405,25 @@ def startCluster():
         created_clusters.append(cluster.id)
         user.created_clusters = json.dumps(created_clusters)
         db.session.commit()
+        
+        # Send notification
+        notification = {
+        "id": len(user.get_messages()) + 1,
+        "body": f"You have successfully created Cluster - {name}. Did you know sharing your Cluster online increases member quality by 3X. Here are your Clusters.",
+        "read": False,
+        "url": f"/clusters",
+        "timestamp": datetime.utcnow().isoformat() + 'Z'
+        }
+        user.set_messages(user.get_messages() + [notification])
+        db.session.commit()
+       
+        updates = {
+        "message": f"{cluster.name} created.",
+        "timestamp": datetime.utcnow().isoformat() + 'Z'
+        }
+        cluster.set_updates(cluster.get_updates() + [updates])
+        db.session.commit()
+        
         return redirect('/clusters')
     return render_template('createCluster.html', suggested_skills=suggested_skills, notice=notice)
         
@@ -540,6 +570,29 @@ def exit_cluster(cluster_id):
     members.remove(user_id)
     cluster.set_members(members)
     db.session.commit()
+    
+    user = User.query.get(user_id)
+    if user is None:
+        return redirect('/login')
+        
+    # Send notification
+    notification = {
+    "id": len(user.get_messages()) + 1,
+    "body": f"You exited {cluster.name}. Here are your recommended Clusters",
+    "read": False,
+    "url": f"/recommended_clusters",
+    "timestamp": datetime.utcnow().isoformat() + 'Z'
+    }
+    user.set_messages(user.get_messages() + [notification])
+    db.session.commit()
+    
+    updates = {
+    "message": f"{user.name} left",
+    "timestamp": datetime.utcnow().isoformat() + 'Z'
+    }
+    cluster.set_updates(cluster.get_updates() + [updates])
+    db.session.commit()
+    
     return redirect('/clusters')
     
 
@@ -548,17 +601,35 @@ def remove_cluster_member(cluster_id, member_id):
     if 'user_id' not in session:
         return redirect('/login')
     user_id = session['user_id']
+    user = User.query.get(user_id)  # Retrieve the user object
     cluster = Cluster.query.get(cluster_id)
     if not cluster:
         error = "No Cluster found"
-        return render_template('error.html', error=_error)
+        return render_template('error.html', error=error)
     if int(cluster.author) != user_id:
         return redirect('/home')
     members = cluster.get_members()
     if int(member_id) not in members:
         return redirect('/home')
+    removed_member = User.query.get(member_id)
     members = [member for member in members if member != int(member_id)]
     cluster.set_members(members)
+    db.session.commit()
+    # Send notification
+    notification = {
+        "id": len(user.get_messages()) + 1,
+        "body": f"You have successfully removed {removed_member.name} from Cluster - {cluster.name}.",
+        "read": False,
+        "url": f"/clusters",
+        "timestamp": datetime.utcnow().isoformat() + 'Z'
+    }
+    user.set_messages(user.get_messages() + [notification])
+    db.session.commit()
+    updates = {
+        "message": f"{removed_member.name} was removed by author",
+        "timestamp": datetime.utcnow().isoformat() + 'Z'
+    }
+    cluster.set_updates(cluster.get_updates() + [updates])
     db.session.commit()
     return redirect(url_for('getCluster', id=cluster_id))
     
@@ -632,6 +703,18 @@ def withdraw_request(cluster_id, request_id):
         user_clusters_requests.remove(cluster_id)
         user.clusters_requests = json.dumps(user_clusters_requests)
     db.session.commit()
+    
+    # Send notification
+    notification = {
+    "id": len(user.get_messages()) + 1,
+    "body": f"You successfully withdrew your request to join - {cluster.name}.",
+    "read": False,
+    "url": f"/clusters/{cluster_id}",
+    "timestamp": datetime.utcnow().isoformat() + 'Z'
+    }
+    user.set_messages(user.get_messages() + [notification])
+    db.session.commit()
+
     return redirect(url_for('user_requests'))
     
 
@@ -709,7 +792,7 @@ def requested_comment(cluster_id, chatId):
             })
             cluster.requests = json.dumps(requests)
             db.session.commit()
-            return redirect(url_for('user_requests'))
+            return redirect(url_for('requested', cluster_id=cluster_id))
     error = "No Request found"
     return render_template('error.html', error=error)
 
@@ -781,7 +864,16 @@ def accept_request(cluster_id, request_id):
             "timestamp": datetime.utcnow().isoformat() + 'Z'
         }
         user.set_messages(user.get_messages() + [notification])
-    db.session.commit()
+        db.session.commit()
+        
+        updates = {
+        "message": f"{user.name} was added",
+        "timestamp": datetime.utcnow().isoformat() + 'Z'
+        }
+        cluster.set_updates(cluster.get_updates() + [updates])
+        db.session.commit()
+    
+    
     return redirect(url_for('requested', cluster_id=cluster_id))
     
 
@@ -811,7 +903,7 @@ def decline_request(cluster_id, request_id):
         # Send notification
         notification = {
             "id": len(user.get_messages()) + 1,
-            "body": f"Your request to join {cluster.name} was declined. Here are your recommended Clusters",
+            "body": f"Your request to join {cluster.name} was declined. Here are your recommended Clusters.",
             "read": False,
             "url": f"/recommended_clusters",
             "timestamp": datetime.utcnow().isoformat() + 'Z'

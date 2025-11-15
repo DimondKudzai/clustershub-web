@@ -15,9 +15,14 @@
   <center>
   <h2>{{ cluster.name }} updates</h2>
   </center>
+  
+  <a href="#bottom" >
+  <p>Jumb to Bottom</p>
+  </a>
+  
 {% for update in updates %}
   <div class="container">
-
+  
     <section class="create-cluster">
     <h3>From Clusters Hub</h3>
   <p> {{ update.message }}</p>
@@ -25,6 +30,7 @@
        
     </section>
     </div>
+    <span id="bottom"></span>
     {% endfor %}
     
     {% include 'partials/footer.html' %}
