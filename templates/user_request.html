@@ -52,10 +52,11 @@
                     </form>
                 </div>
                 <br>
+                <section style="border: none;">
                 <form method="POST" action="{{ url_for('withdraw_request', cluster_id=cluster.id, request_id=request.chatId) }}">
                 <button type="submit" class="dashboardBtn" style="background: red; width: 90%;"><strong> Withdraw Request </strong></button>
                 </form>
-                
+                </section>
                 <br><br>
             {% endfor %}
             <br>

@@ -143,8 +143,8 @@
  
  <br><br>
  <section style="display: none; text-align: left; border: none;" id="remove-members-popup" class="popup">
- <h2>Remove Members  <small style="font-size: 16px">Can't be undone!</small></h2>
- <ul>
+ <h2>Remove Members  <small style="font-size: 16px; color: red;">Can't be undone!</small></h2>
+ <ul style="list-style: none">
  {% for member in cluster.get_members() %}
  {% set member_user = User.query.get(member) %}
  
@@ -157,7 +157,7 @@
  <hr>
  {% endfor %}
  </ul>
- <button onclick="closeRemoveMembersPopup()" class="dashboardBtn" style="background: blue;">Cancel</button>
+ <button onclick="closeRemoveMembersPopup()" class="dashboardBtn" style="background: blue; width:100%;">Cancel</button>
  </sction>
  
   
@@ -172,11 +172,11 @@
 
 <br><br>
 <section id="exit-cluster-popup" class="popup" style="display: none">
-    <p>Do you really want to exit this cluster? You will lose access to this cluster's conversations and updates.</p>
+    <p style="color:red;">Do you really want to exit this cluster? You will lose access to this cluster's conversations and updates.</p>
         <form method="POST" action="{{ url_for('exit_cluster', cluster_id=cluster.id) }}">
-        <button type="submit" class="dashboardBtn" style="background: red;">Exit</button>
+        <button type="submit" class="dashboardBtn" style="background: red; width:100%;">Exit</button>
     </form>
-    <button onclick="closeExitPopup()" class="dashboardBtn" style="background: blue;">Cancel</button>
+    <br><button onclick="closeExitPopup()" class="dashboardBtn" style="background: blue;width:100%;">Cancel</button>
 </section>
 
   
