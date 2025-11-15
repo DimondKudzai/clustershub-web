@@ -316,7 +316,7 @@ def register_update():
             suggestion = Suggestion(skills=json.dumps(skills))
             db.session.add(suggestion)
         db.session.commit()
-        return redirect('/home')
+        return redirect('/myProfile')
     return render_template('set_profile.html', suggested_skills=suggested_skills, notice=notice)
 
 
@@ -494,7 +494,7 @@ def cluster_updater(id):
         if description:
             cluster.description = description
         if skills:
-            cluster.skills = json.dumps(skills)
+            cluster.tags = json.dumps(skills)
         if location:
             cluster.location = location
         if status:
@@ -502,7 +502,8 @@ def cluster_updater(id):
         if target:
             cluster.target = target
         db.session.commit()
-        return redirect('/clusters')
+        return redirect(url_for('getCluster', id=cluster.id))
+        
     return render_template('cluster_settings.html', cluster=cluster, suggested_skills=suggested_skills, notice=notice)
   
   
@@ -692,6 +693,10 @@ def requested(cluster_id):
     if int(cluster.author) != user_id:
         return redirect('/home')
     requests = cluster.get_requests()
+    if not requests:
+        error = "no requests found"
+        return render_template('error.html', error=error)
+    
     for request in requests:
         author = User.query.get(request['author'])
         request['author_id'] = request['author']  # Add author's ID
