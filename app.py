@@ -552,7 +552,7 @@ def exit_cluster(cluster_id):
     return redirect('/clusters')
     
 
-@app.route('/user_id>')
+@app.route('/<int:user_id>')
 def get_user(user_id):
     user = User.query.get(user_id)
     if not user:
@@ -888,8 +888,8 @@ def post_comment(cluster_id, thread_id):
     })
     cluster.set_conversations(conversations)
     db.session.commit()
-    return redirect(url_for('user_requests'))
-
+    return redirect(url_for('show_cluster', cluster_id=cluster_id))
+    
 @app.route('/clusters/<int:cluster_id>/threads', methods=['POST'])
 def create_thread(cluster_id):
     user_id = session.get('user_id')
@@ -989,6 +989,8 @@ def error():
 def logout():
     session.clear()
     return redirect('/login')
+
+
     
 if __name__ == '__main__':
     app.run(debug=True)
