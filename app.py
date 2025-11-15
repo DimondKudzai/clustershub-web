@@ -1,8 +1,7 @@
-from flask import Flask, request, redirect, url_for, render_template, send_from_directory, session,json
+from flask import Flask, request, redirect, url_for, render_template, send_from_directory, session,json,jsonify
 import os
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timezone
-from flask import jsonify
 #from services.appData import get_all_users, get_all_clusters, get_suggestions
 from models import db
 from config import Config
@@ -45,14 +44,6 @@ def naturaltime_filter(timestamp):
 def index():
     return redirect('/home')
     
-    users = User.query.all()
-    user = users[0]
-    return render_template(
-        'dashboard.html',
-        name=user.name,
-        clustersCount=user.clusters_count,
-        notificationsCount=user.notifications_count
-    )
     
 @app.route('/home')
 def home():
@@ -448,7 +439,7 @@ def getCluster(id):
         # Fetch the member user objects
         members = [User.query.get(member_id) for member_id in cluster.get_members()]
         return render_template("cluster_detail.html", cluster=cluster, is_author=is_author, is_member=is_member, requested=requested, author=author, members=members, User=User)
-    error = "Cluster not found"
+    error = "No Cluster found"
     return render_template('error.html', error=error)
     
       
@@ -511,7 +502,7 @@ def cluster_updater(id):
 def delete_cluster(cluster_id):
     cluster = Cluster.query.get(cluster_id)
     if not cluster:
-        error = "Cluster not found"
+        error = "No Cluster found"
         return render_template('error.html', error=error)
     db.session.delete(cluster)
     db.session.commit()
@@ -522,7 +513,7 @@ def delete_cluster(cluster_id):
 def get_cluster_members(cluster_id):
     cluster = Cluster.query.get(cluster_id)
     if not cluster:
-        error = "Cluster not found"
+        error = "No Cluster found"
         return render_template('error.html', error=error)
     members = cluster.get_members()
     member_data = []
@@ -541,7 +532,7 @@ def exit_cluster(cluster_id):
     user_id = session['user_id']
     cluster = Cluster.query.get(cluster_id)
     if not cluster:
-        error = "Cluster not found"
+        error = "No Cluster found"
         return render_template('error.html', error=error)
     members = cluster.get_members()
     if user_id not in members:
@@ -552,14 +543,6 @@ def exit_cluster(cluster_id):
     return redirect('/clusters')
     
 
-@app.route('/<int:user_id>')
-def get_user(user_id):
-    user = User.query.get(user_id)
-    if not user:
-        error = "User not found"
-        return render_template('error.html', error=error)
-    return render_template('user.html', user=user)
-
 @app.route('/clusters/<int:cluster_id>/remove-member/<int:member_id>', methods=['POST'])
 def remove_cluster_member(cluster_id, member_id):
     if 'user_id' not in session:
@@ -567,7 +550,7 @@ def remove_cluster_member(cluster_id, member_id):
     user_id = session['user_id']
     cluster = Cluster.query.get(cluster_id)
     if not cluster:
-        error = "Cluster not found"
+        error = "No Cluster found"
         return render_template('error.html', error=_error)
     if int(cluster.author) != user_id:
         return redirect('/home')
@@ -584,7 +567,7 @@ def remove_cluster_member(cluster_id, member_id):
 def cluster_members(cluster_id):
     cluster = Cluster.query.get(cluster_id)
     if not cluster:
-        error = "Cluster not found"
+        error = "No Cluster found"
         return render_template('error.html', error=error)
     return render_template('cluster_members.html', cluster=cluster)
         
@@ -632,12 +615,12 @@ def withdraw_request(cluster_id, request_id):
     user_id = session['user_id']
     cluster = Cluster.query.get(cluster_id)
     if not cluster:
-        error = "Cluster not found"
+        error = "No Cluster found"
         return render_template('error.html', error=error)
     requests = cluster.get_requests()
     request_to_withdraw = next((r for r in requests if r['chatId'] == request_id), None)
     if not request_to_withdraw:
-        error = "Request not found"
+        error = "No Request found"
         return render_template('error.html', error=error)
     if request_to_withdraw['author'] != user_id:
         return redirect('/home')
@@ -688,7 +671,7 @@ def requested(cluster_id):
     user_id = session['user_id']
     cluster = Cluster.query.get(cluster_id)
     if not cluster:
-        error = "Cluster not found"
+        error = "No Cluster found"
         return render_template('error.html', error=error)
     if int(cluster.author) != user_id:
         return redirect('/home')
@@ -714,7 +697,7 @@ def requested_comment(cluster_id, chatId):
         return redirect('/login')
     cluster = Cluster.query.get(cluster_id)
     if not cluster:
-        error = "Cluster not found"
+        error = "No Cluster found"
         return render_template('error.html', error=error)
     requests = cluster.get_requests()
     for req in requests:
@@ -727,7 +710,7 @@ def requested_comment(cluster_id, chatId):
             cluster.requests = json.dumps(requests)
             db.session.commit()
             return redirect(url_for('user_requests'))
-    error = "Request not found"
+    error = "No Request found"
     return render_template('error.html', error=error)
 
 @app.route('/user_requests')
@@ -759,19 +742,19 @@ def user_requests():
                 requested_clusters.append(cluster_data)
     if requested_clusters:
         return render_template('user_request.html', user=user, clusters=requested_clusters, clustersCount=len(requested_clusters))
-    error = "Request not found"
+    error = "No Request found"
     return render_template('error.html', error=error)
 
 @app.route('/clusters/<int:cluster_id>/requests/<int:request_id>/accept', methods=['POST'])
 def accept_request(cluster_id, request_id):
     cluster = Cluster.query.get(cluster_id)
     if not cluster:
-        error = "Cluster not found"
+        error = "No Cluster found"
         return render_template('error.html', error=error)
     requests = cluster.get_requests()
     request = next((r for r in requests if r['chatId'] == request_id), None)
     if not request:
-        error = "Request not found"
+        error = "No Request found"
         return render_template('error.html', error=error)
     # Add author to members
     members = cluster.get_members()
@@ -792,9 +775,9 @@ def accept_request(cluster_id, request_id):
         # Send notification
         notification = {
             "id": len(user.get_messages()) + 1,
-            "body": f"Your request to join {cluster.name} has been accepted.",
+            "body": f"Your request to join {cluster.name} was accepted.",
             "read": False,
-            "url": f"/clusters/chat/{cluster.id}/chat",
+            "url": f"/clusters/{cluster.id}/chat",
             "timestamp": datetime.utcnow().isoformat() + 'Z'
         }
         user.set_messages(user.get_messages() + [notification])
@@ -806,12 +789,12 @@ def accept_request(cluster_id, request_id):
 def decline_request(cluster_id, request_id):
     cluster = Cluster.query.get(cluster_id)
     if not cluster:
-        error = "Cluster not found"
+        error = "No Cluster found"
         return render_template('error.html', error=error)
     requests = cluster.get_requests()
     request = next((r for r in requests if r['chatId'] == request_id), None)
     if not request:
-        error = "Request not found"
+        error = "No Request found"
         return render_template('error.html', error=error)
     # Remove request from cluster requests
     requests.remove(request)
@@ -828,7 +811,7 @@ def decline_request(cluster_id, request_id):
         # Send notification
         notification = {
             "id": len(user.get_messages()) + 1,
-            "body": f"Your request to join {cluster.name} has been declined. Here are your recommended Clusters",
+            "body": f"Your request to join {cluster.name} was declined. Here are your recommended Clusters",
             "read": False,
             "url": f"/recommended_clusters",
             "timestamp": datetime.utcnow().isoformat() + 'Z'
@@ -846,7 +829,7 @@ def show_cluster(cluster_id):
     user_id = session['user_id']
     cluster = Cluster.query.get(cluster_id)
     if not cluster:
-        error = "Cluster not found"
+        error = "No Cluster found"
         return render_template('error.html', error=error)
     members = cluster.get_members()
     if user_id not in [User.query.filter_by(id=member).first().id for member in members]:
@@ -872,7 +855,7 @@ def post_comment(cluster_id, thread_id):
         return redirect('/login')
     cluster = Cluster.query.get(cluster_id)
     if not cluster:
-        error = "Cluster not found"
+        error = "No Cluster found"
         return render_template('error.html', error=error)
     conversations = cluster.get_conversations()
     thread = next((t for t in conversations if t['chatId'] == thread_id), None)
@@ -900,7 +883,7 @@ def create_thread(cluster_id):
         return redirect('/login')
     cluster = Cluster.query.get(cluster_id)
     if not cluster:
-        error = "Cluster not found"
+        error = "No Cluster found"
         return render_template('error.html', error=error)
     title = request.form['title']
     body = request.form['text']
@@ -927,7 +910,7 @@ def cluster_updates(cluster_id):
     user_id = session['user_id']
     cluster = Cluster.query.get(cluster_id)
     if not cluster:
-        error = "Cluster not found"
+        error = "No Cluster found"
         return render_template('error.html', error=error)
     members = cluster.get_members()
     if user_id not in members:
@@ -989,8 +972,7 @@ def error():
 def logout():
     session.clear()
     return redirect('/login')
-
-
-    
+  
+  
 if __name__ == '__main__':
     app.run(debug=True)

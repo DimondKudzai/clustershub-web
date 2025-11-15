@@ -130,20 +130,27 @@
   <a href="{{ url_for('show_cluster', cluster_id=cluster.id) }}"> 
   <button class="dashboardBtn" style="background: ; width: 90%;"><strong> Open Cluster </strong></button>
   </a>
+  
+  
+  <a href="{{ url_for('cluster_updates', cluster_id=cluster.id) }}"> 
+  <button class="dashboardBtn" style="background: ; width: 90%;"><strong> Cluster Updates </strong></button>
+  </a>
+  
   <a href="{{ url_for('requested', cluster_id=cluster.id) }}">
   <button class="dashboardBtn" style="background: ; width: 90%;"><strong> Member Requests </strong></button>
   </a>
+  
   <a href="{{ url_for('cluster_updater', id=cluster.id) }}" > 
   <button class="dashboardBtn" style="background: ; width: 90%;"><strong>⚙️ Cluster settings </strong></button>
   </a>
-  <a href="{{ url_for('cluster_updates', cluster_id=cluster.id) }}"> 
-  <button class="dashboardBtn" style="background: ; width: 90%;"><strong> Open Cluster Updates </strong></button>
-  </a>
- <button onclick="openRemoveMembersPopup({{ cluster.id }})" class="dashboardBtn" style="background: red; width: 90%;"><strong> Remove Members </strong></button>
+  
+ <button onclick="openRemoveMembersPopup({{ cluster.id }})" class="dashboardBtn" style="background: red; width: 90%;">
+ <strong> Remove Members </strong>
+ </button>
  
  <br><br>
  <section style="display: none; text-align: left; border: none;" id="remove-members-popup" class="popup">
- <h2>Remove Members  <small style="font-size: 16px; color: red;">Can't be undone!</small></h2>
+ <h2 style="color: red;">Remove Members  <small style="font-size: 16px; color: red;">Can't be undone!</small></h2>
  <ul style="list-style: none">
  {% for member in cluster.get_members() %}
  {% set member_user = User.query.get(member) %}
@@ -186,11 +193,11 @@
   <button class="dashboardBtn" style="background: ; width: 90%;"><strong> View sent request</strong></button>
   </a>
   {% else %}
-  <button onclick="openRequestPopup({{ cluster.id }})" class="dashboardBtn" style="background: ; width: 90%;" id="button_click"><strong> Request membership </strong></button>
+  <button onclick="openRequestPopup({{ cluster.id }})" class="dashboardBtn" style="background: ; width: 90%;" id="button_click">
+  <strong> Request membership </strong>
+  </button>
   {% endif %}
-  {% endif %}
-  
-   
+  {% endif %} 
    
    </center>
    </section>
