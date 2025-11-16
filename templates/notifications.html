@@ -8,6 +8,9 @@
   <title>Account Notifications</title>
   <link rel="icon" type="image/jpg" href="{{url_for('static', filename='logo.jpg')}}">
   <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}">
+  <style type="text/css">
+  a{color: inherit;}
+  </style>
 </head>
 <body>
 {% include 'partials/header.html' %}
@@ -38,7 +41,10 @@
     
     
   <p>
-   {{ message.body }} <a href="{{message.url}}" style="text-decoration: none; color: black;"> <strong>-<u> VIEW</u></strong></a>
+  <b> {{ message.body }} </b>
+  <a href="{{message.url}}" style="text-decoration: none; color: black;">
+   <h3><u style="color: green"> View source</u></h3>
+   </a>
   </p>
     <br>
     <small>{{ message.timestamp | naturaltime }}</small>
