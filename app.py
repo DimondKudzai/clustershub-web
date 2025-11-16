@@ -754,6 +754,17 @@ def sent_cluster_request(cluster_id):
     user_clusters_requests.append(int(cluster_id))
     user.clusters_requests = json.dumps(user_clusters_requests)
     db.session.commit()
+    # Send notification to cluster author
+    cluster_author = User.query.get(cluster.author)
+    notification = {
+        "id": len(cluster_author.get_messages()) + 1,
+        "body": f"{user.name} requested to join your Cluster - {cluster.name}.",
+        "read": False,
+        "url": f"/clusters/requests/{cluster.id}",
+        "timestamp": datetime.utcnow().isoformat() + 'Z'
+    }
+    cluster_author.set_messages(cluster_author.get_messages() + [notification])
+    db.session.commit()
     return redirect(url_for('user_requests'))
 
 @app.route('/clusters/requests/<int:cluster_id>', methods=['GET'])
@@ -800,6 +811,17 @@ def requested_comment(cluster_id, chatId):
                 'timestamp': datetime.utcnow().isoformat() + 'Z'
             })
             cluster.requests = json.dumps(requests)
+            db.session.commit()
+            # Send notification to the request author
+            request_author = User.query.get(req['author'])
+            notification = {
+                "id": len(request_author.get_messages()) + 1,
+                "body": f"{user.name} replied to your request to join {cluster.name}.",
+                "read": False,
+                "url": f"/user_requests",
+                "timestamp": datetime.utcnow().isoformat() + 'Z'
+            }
+            request_author.set_messages(request_author.get_messages() + [notification])
             db.session.commit()
             return redirect(url_for('requested', cluster_id=cluster_id))
     error = "No Request found"

@@ -25,7 +25,7 @@
       <a href="{{ url_for('recommended_clusters') }}" > <button class="dashboardBtn" style="background-color: blue;" id="mark"><strong>Exclusive Matches</strong></button></a>
         <a href="{{ url_for('startCluster') }}" > <button class="dashboardBtn"><strong>New Cluster</strong></button></a>
         <a href="{{ url_for('clusters') }}" ><button class="dashboardBtn"><strong>My Clusters </strong></button></a>
-        <a href="{{ url_for('notifications') }}" ><button class="dashboardBtn"><strong>Notifications</strong> {% if notificationsCount >= 1 %} <b style="color: red;font-size: 16px;">{{ notificationsCount }}</b>{% endif %}</button></a>
+        <a href="{{ url_for('notifications') }}" ><button class="dashboardBtn"><strong>Notifications</strong> {% if notificationsCount >= 1 %} <b style="color: yellow;font-size: 16px;">{{ notificationsCount }}</b>{% endif %}</button></a>
         <a href="{{ url_for('myProfile') }}" > <button class="dashboardBtn"><strong>👤 Profile</strong></button></a>
         <a href="{{ url_for('register_update') }}" ><button class="dashboardBtn"><strong>⚙️ Profile Settings</strong></button></a>
         <a href="{{ url_for('about') }}" > <button class="dashboardBtn"><strong>About - Feedback</strong></button></a>
