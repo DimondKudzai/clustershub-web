@@ -13,7 +13,11 @@
 
 {% include 'partials/header.html' %}
   <center>
-  <h2>{{ cluster.name }} updates</h2>
+  <h2>
+  <a href="{{ url_for('getCluster', id=cluster.id) }}"> 
+  {{ cluster.name }}</a> updates
+  
+  </h2>
   </center>
   
   <a href="#bottom" >

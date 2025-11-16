@@ -27,8 +27,8 @@ admin.add_view(ModelView(User, db.session))
 admin.add_view(ModelView(Cluster, db.session))
 admin.add_view(ModelView(Suggestion, db.session))
 
-app.jinja_env.filters['naturaltime'] = naturaltime
 
+app.jinja_env.filters['naturaltime'] = naturaltime
 
 @app.template_filter('naturaltime')
 def naturaltime_filter(timestamp):
@@ -219,7 +219,7 @@ def register():
         # Send notification
         notification = {
         "id": len(user.get_messages()) + 1,
-        "body": f"Welcome to your first day on Clusters Hub {username}. You can get started with work by Creating a Cluster or joining Clusters. Here are your recommended Clusters.",
+        "body": f"Welcome to your first day on Clusters Hub {username}. You can get started with work by Creating a Cluster or joining Clusters. Don't forget to tell your friends about Clusters Hub. Here are your recommended Clusters.",
         "read": False,
         "url": f"/recommended_clusters",
         "timestamp": datetime.utcnow().isoformat() + 'Z'
@@ -418,7 +418,7 @@ def startCluster():
         db.session.commit()
        
         updates = {
-        "message": f"{cluster.name} created.",
+        "message": f"{cluster.name} created by Author.",
         "timestamp": datetime.utcnow().isoformat() + 'Z'
         }
         cluster.set_updates(cluster.get_updates() + [updates])
@@ -544,7 +544,7 @@ def delete_cluster(cluster_id):
         if member:
             notification = {
                 "id": len(member.get_messages()) + 1,
-                "body": f"{cluster.name} was deleted by its Author. Here are recommended Clusters",
+                "body": f"{cluster.name} was deleted by its Author. Here are your recommended Clusters",
                 "read": False,
                 "url": f"/recommended_clusters",
                 "timestamp": datetime.utcnow().isoformat() + 'Z'
@@ -602,7 +602,7 @@ def exit_cluster(cluster_id):
     db.session.commit()
     
     updates = {
-    "message": f"{user.name} left",
+    "message": f"{user.name} left this Cluster",
     "timestamp": datetime.utcnow().isoformat() + 'Z'
     }
     cluster.set_updates(cluster.get_updates() + [updates])
@@ -633,7 +633,7 @@ def remove_cluster_member(cluster_id, member_id):
     # Send notification
     notification = {
         "id": len(user.get_messages()) + 1,
-        "body": f"You have successfully removed {removed_member.name} from Cluster - {cluster.name}.",
+        "body": f"You successfully removed {removed_member.name} from Cluster - {cluster.name}.",
         "read": False,
         "url": f"/clusters/{cluster_id}",
         "timestamp": datetime.utcnow().isoformat() + 'Z'
@@ -650,7 +650,7 @@ def remove_cluster_member(cluster_id, member_id):
     removed_member.set_messages(removed_member.get_messages() + [second_notification])  # Fix here
     db.session.commit()
     updates = {
-        "message": f"{removed_member.name} was removed by author",
+        "message": f"{removed_member.name} was removed from this Cluster by author",
         "timestamp": datetime.utcnow().isoformat() + 'Z'
     }
     cluster.set_updates(cluster.get_updates() + [updates])
@@ -913,7 +913,7 @@ def accept_request(cluster_id, request_id):
         db.session.commit()
         
         updates = {
-        "message": f"{user.name} was added",
+        "message": f"{user.name} was added to this Cluster.",
         "timestamp": datetime.utcnow().isoformat() + 'Z'
         }
         cluster.set_updates(cluster.get_updates() + [updates])
@@ -1064,7 +1064,7 @@ def create_thread(cluster_id):
             member.set_messages(member.get_messages() + [notification])
     db.session.commit()
     updates = {
-        "message": f"Thread '{title}' created by {user.name}",
+        "message": f"Thread '{title}' created by {user.name}.",
         "timestamp": datetime.utcnow().isoformat() + 'Z'
     }
     cluster.set_updates(cluster.get_updates() + [updates])
