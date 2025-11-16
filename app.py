@@ -620,10 +620,19 @@ def remove_cluster_member(cluster_id, member_id):
         "id": len(user.get_messages()) + 1,
         "body": f"You have successfully removed {removed_member.name} from Cluster - {cluster.name}.",
         "read": False,
-        "url": f"/clusters",
+        "url": f"/clusters/{cluster_id}",
         "timestamp": datetime.utcnow().isoformat() + 'Z'
     }
     user.set_messages(user.get_messages() + [notification])
+    db.session.commit()
+    second_notification = {
+        "id": len(removed_member.get_messages()) + 1,
+        "body": f"You were removed from Cluster - {cluster.name}.",
+        "read": False,
+        "url": f"/clusters/{cluster_id}",
+        "timestamp": datetime.utcnow().isoformat() + 'Z'
+    }
+    removed_member.set_messages(removed_member.get_messages() + [second_notification])  # Fix here
     db.session.commit()
     updates = {
         "message": f"{removed_member.name} was removed by author",
