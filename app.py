@@ -534,7 +534,22 @@ def delete_cluster(cluster_id):
     if not cluster:
         error = "No Cluster found"
         return render_template('error.html', error=error)
+    members = cluster.get_members()
+    cluster_author = User.query.get(cluster.author)
     db.session.delete(cluster)
+    db.session.commit()
+    # Send notification to all cluster members
+    for member_id in members:
+        member = User.query.get(member_id)
+        if member:
+            notification = {
+                "id": len(member.get_messages()) + 1,
+                "body": f"{cluster.name} was deleted by its Author. Here are recommended Clusters",
+                "read": False,
+                "url": f"/recommended_clusters",
+                "timestamp": datetime.utcnow().isoformat() + 'Z'
+            }
+            member.set_messages(member.get_messages() + [notification])
     db.session.commit()
     return redirect('/clusters')
   
@@ -994,6 +1009,17 @@ def post_comment(cluster_id, thread_id):
     })
     cluster.set_conversations(conversations)
     db.session.commit()
+    # Send notification to the thread author
+    thread_author = User.query.get(thread['author'])
+    notification = {
+        "id": len(thread_author.get_messages()) + 1,
+        "body": f"{user.name} commented on your thread - {thread['title']}.",
+        "read": False,
+        "url": f"/clusters/{cluster_id}/chat",
+        "timestamp": datetime.utcnow().isoformat() + 'Z'
+    }
+    thread_author.set_messages(thread_author.get_messages() + [notification])
+    db.session.commit()
     return redirect(url_for('show_cluster', cluster_id=cluster_id))
     
 @app.route('/clusters/<int:cluster_id>/threads', methods=['POST'])
@@ -1022,6 +1048,26 @@ def create_thread(cluster_id):
     }
     conversations.append(new_thread)
     cluster.set_conversations(conversations)
+    db.session.commit()
+    # Send notification to all cluster members
+    members = cluster.get_members()
+    for member_id in members:
+        member = User.query.get(member_id)
+        if member:
+            notification = {
+                "id": len(member.get_messages()) + 1,
+                "body": f"{user.name} created a Thread titled '{title}' in Cluster - {cluster.name}.",
+                "read": False,
+                "url": f"/clusters/{cluster_id}/chat",
+                "timestamp": datetime.utcnow().isoformat() + 'Z'
+            }
+            member.set_messages(member.get_messages() + [notification])
+    db.session.commit()
+    updates = {
+        "message": f"Thread '{title}' created by {user.name}",
+        "timestamp": datetime.utcnow().isoformat() + 'Z'
+    }
+    cluster.set_updates(cluster.get_updates() + [updates])
     db.session.commit()
     return redirect(url_for('show_cluster', cluster_id=cluster_id))
 
