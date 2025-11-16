@@ -30,6 +30,19 @@ admin.add_view(ModelView(Suggestion, db.session))
 
 app.jinja_env.filters['naturaltime'] = naturaltime
 
+from itsdangerous import URLSafeTimedSerializer
+
+def generate_reset_token(email):
+    serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+    return serializer.dumps(email, salt='password-reset-salt')
+
+def verify_reset_token(token, max_age=3600):
+    serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+    try:
+        return serializer.loads(token, salt='password-reset-salt', max_age=max_age)
+    except:
+        return None
+
 @app.template_filter('naturaltime')
 def naturaltime_filter(timestamp):
     if isinstance(timestamp, str):
@@ -122,6 +135,51 @@ def login():
     notice = session.pop('notice', None)
     return render_template('auth.html', notice=notice)
 
+
+
+@app.route('/forgot', methods=['GET', 'POST'])
+def forgot_password():
+    if request.method == 'POST':
+        email = request.form['email']
+        user = User.query.filter_by(email=email).first()
+        if user:
+            token = generate_reset_token(user.email)
+            reset_url = url_for('reset_password', token=token, _external=True)
+            # Send the email with the reset URL
+            # Replace this with your email function
+            
+            #print(f"Reset URL: {reset_url}")
+            url = f"We sent you an email. Please click on the link sent to you to reset your password. Check your mailbox. Reset URL: {reset_url}"
+            #return redirect('/login')
+            return render_template('forgot.html', url=url)
+            
+    return render_template('forgot.html')
+
+
+
+@app.route('/reset/<token>', methods=['GET', 'POST'])
+def reset_password(token):
+    email = verify_reset_token(token)
+    if not email:
+        error = "Token expired or invalid"
+        return render_template('error.html', error=error)
+        
+    if request.method == 'POST':
+        new_password = request.form['password']
+        confirm_password = request.form['confirm_password']
+        if new_password != confirm_password:
+            error = "Passwords do not match"
+            return render_template('error.html', error=error)
+            
+        user = User.query.filter_by(email=email).first()
+        if user:
+            user.password = generate_password_hash(new_password)
+            db.session.commit()
+            return redirect('/login')
+    return render_template('reset.html', token=token)
+    
+    
+    
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():

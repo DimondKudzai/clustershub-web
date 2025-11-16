@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="keywords" content="Cluster, Updates, Page" />
+  <meta name="description" content=" Here are your Cluster Updates" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Updates | Clusters Hub</title>
+  <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}">
+  <link rel="icon" type="image/jpg" href="{{url_for('static', filename='logo.jpg')}}">
+  </head>
+<body>
+
+{% include 'partials/header.html' %}
+ 
+  <div class="container">
+  
+    <section class="create-cluster">
+    <center><h3>Reset password?</h3></center>
+    <p> {{ url }}</p>
+ <form method="POST" action="{{ url_for('forgot_password') }}">
+ <label for="email">Email</label>
+ <input type="email" id="email" name="email" required placeholder="account email">
+ <button type="submit" class="dashboardBtn">Reset Password</button>
+ </form>
+ 
+       
+    </section>
+    </div>
+    
+    {% include 'partials/footer.html' %}
+    
+   </body>
+ </html>
