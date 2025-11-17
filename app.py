@@ -1179,6 +1179,66 @@ def recommended_clusters():
     matched_clusters = [c for score, c in scored if score > 0]
     return render_template('recommended.html', clusters=matched_clusters, user=user)
     
+"""   
+# ai powered matching
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+
+@app.route('/ai_recommended_clusters')
+def recommended_clusters():
+    user_id = session.get('user_id')
+    if user_id is None:
+        return redirect('/login')
+    user = User.query.get(user_id)
+    if user is None:
+        return redirect('/login')
+    
+    user_skills = [skill.lower() for skill in user.get_skills()]
+    user_desc_words = user.description.lower().split() if user.description else []
+    user_location = user.location.lower() if user.location else ''
+    user_text = ' '.join(user_skills + user_desc_words + [user_location])
+
+    def semantic_similarity_score(user_text, cluster_text):
+        documents = [user_text, cluster_text]
+        vectorizer = TfidfVectorizer().fit(documents)
+        vectors = vectorizer.transform(documents)
+        return cosine_similarity(vectors[0], vectors[1])[0][0]
+
+    scored = []
+    for cluster in Cluster.query.all():
+        tags = [tag.lower() for tag in cluster.get_tags()]
+        target = cluster.target.lower() if cluster.target else ''
+        target_words = target.split()
+        cluster_description = cluster.description.lower() if cluster.description else ''
+        cluster_location = cluster.location.lower() if cluster.location else ''
+        score = 0
+        
+        # Keyword overlap
+        score += 3 * len(set(user_skills) & set(tags))  # Exact in target
+        if any(skill in target for skill in user_skills):
+            score += 2  # Loose match
+        score += sum(1 for skill in user_skills if any(skill in word for word in target_words))
+        
+        # Description overlap
+        score += sum(1 for word in user_desc_words if word in cluster_description.split())
+        
+        # Location match
+        if user_location and cluster_location and (user_location in cluster_location or cluster_location in user_location):
+            score += 5
+        
+        # Semantic similarity
+        cluster_text = ' '.join(tags + [target, cluster_description, cluster_location])
+        score += semantic_similarity_score(user_text, cluster_text) * 5
+        
+        # Bonus for activity
+        score += 0.1 * len(cluster.get_members())
+        scored.append((score, cluster))
+    
+    scored.sort(key=lambda x: x[0], reverse=True)
+    matched_clusters = [c for score, c in scored if score > 0]
+    
+    return render_template('recommended.html', clusters=matched_clusters, user=user)
+"""
     
 # Extra endpoints
 

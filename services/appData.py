@@ -18,7 +18,7 @@ def get_all_users():
     "id": 1,
     "name": "Dimond",
     "full_name": "Dimond Madechawo",
-    "description": "A well known software dev.",
+    "description": "Software developer.",
     "website": "http://smartlearning.liveblog365.com",
     "second_website": "github.com/dimondkudzai",
     "email": "diamondkudzai70@gmail.com",
@@ -26,124 +26,21 @@ def get_all_users():
     "phone": "012 345 6789",
     "password": "chimboza@1",
     "image" : "image1.png",
-    "joined": "2025-09-12T14:30:00.000000",
+    "joined": "2025-11-12T14:30:00.000000",
     "skills": ["Health","Finance","Farmer","Software developer"],
-    "clusters_count" : 7,
-    "created_clusters": [1,2,7,12,4,1],
-    "clusters_requests": [1,2,7,6,9,4,5],
+    "clusters_count" : 1,
+    "created_clusters": [1,2,3,4],
+    "clusters_requests": [1],
     "notifications_count" : 4,
     "location": "Zimbabwe",
     "messages":[{
     "id": 1,
-    "body": "Your request to join 'Tech Builders' was accepted: 'Glad to have you!'",
+    "body": "Hello mr CEO: 'Glad to have you!'",
     "read": False,
-    "timestamp": "2025-09-12T14:30:00.000000",
+    "timestamp": "2025-11-12T14:30:00.000000",
     }]
     },
-    {
-    "id": 2,
-    "name": "JohnDoe",
-    "full_name": "Jon Deen Doe",
-    "description": "A passionate designer",
-    "website": "diamondkudzai70@gmail.com",
-    "second_website": "github.com/dimondkudzai",
-    "email": "contact@secoggnduser.co.za",
-    "joined": "2025-09-12T14:30:00.000000",
-    "confirm_email": True,
-    "phone": "+2712 345 6790",
-    "password": "chimboza@1",
-    "image" : "image2.png",
-    "skills": ["Designer","Creativity"],
-    "clusters_count" : 9,
-    "created_clusters": [13,6,7,12,14,1],
-    "clusters_requests": [10,6,7,6,9,4,5],
-    "notifications_count" : 10,
-    "clusters": [1,2,3,12,8,9],
-    "location": "Zimbabwe",
-	"messages": [
-	    {
-	        "id": 1,
-	        "body": "Your request to join 'Tech Builders' was accepted.",
-	        "read": False,
-	        "timestamp": "2025-09-12T14:30:00.000000",
-	        "url": "/clusters/chat/5"
-	    },
-	    {
-	        "id": 2,
-	        "body": "You have a new follower: @ChrisDev",
-	        "read": False,
-	        "timestamp": "2025-09-12T14:30:00.000000",
-	        "url": "/users/Dimond"
-	    }
-	]
     
-    },
-    {
-    "id": 3,
-    "name": "ChrisVoiloe2",
-    "full_name": "Chris Voiloe",
-    "description": "Here is Description for Chris user.",
-    "website": "http://smartlearning.liveblog365.com/dimond/index.html",
-    "second_website": "github.com/dimondkudzai",
-    "email": "contact@seconduser.co.za",
-    "confirm_email": True,
-    "phone": "+2712 345 6790",
-    "joined": "2025-09-12T14:30:00.000000",
-    "password": "chimboza@1",
-    "image" : "image3.png",
-    "skills": ["Public Speaking","Motivator","Counceling"],
-    "clusters_count" : 9,
-    "notifications_count" : 8,
-    "created_clusters": [1,6,7,12,14,15],
-    "clusters_requests": [10,6,7,2,4,5],
-    "location": "Jamaica",
-    "messages":["@said something","We expect more","we will get there"]
-    
-    },
-    {
-    "id": 4,
-    "name": "VictorPoseZw",
-    "full_name": "Victor Pose",
-    "description": "Description for Victor Pose.",
-    "website": "www.sPruser.co.za",
-    "second_website": "clustershub.co.zw/VictorPoseZw",
-    "email": "contact@seconfghduser.co.za",
-    "confirm_email": True,
-    "phone": "012 345 6790",
-    "joined": "2025-09-12T14:30:00.000000",
-    "password": "chimboza@1",
-    "image" : "image4.png",
-    "skills": ["Real estate","Construction","Legal"],
-    "clusters_count": 0,
-    "created_clusters": [10,6,7,1,14,5],
-    "clusters_requests": [1,6,7,12,4,5],
-    "notifications_count" : 4,
-    "location": "USA",
-    "messages":["@Dimond said something","We expect more","we will get there"]
-    
-    },
-    {
-    "id": 5,
-    "name": "KnosiDubeSA",
-    "full_name": "Knosilazi Dube",
-    "description": "A lawyer in SA.",
-    "second_website": "clustershub.co.zw/VictorPoseZw",
-    "website": "www.sgueconduser.co.za",
-    "email": "contact@setcondghuser.co.za",
-    "confirm_email": True,
-    "phone": "+26312 345 6790",
-    "joined": "2025-09-12T14:30:00.000000",
-    "password": "chimboza@1",
-    "image" : "image5.png",
-    "skills": ["Marketing","Business","Analysis"],
-    "clusters_count" : 1,
-    "created_clusters": [1,6,7,12,14,15],
-    "clusters_requests": [10,6,7,2,4,5],
-    "notifications_count" : 3,
-    "location": "Toronto",
-    "messages":["@said something","We expect more","we will get there"]
-    
-    }
     ]
     return users
     
@@ -161,12 +58,8 @@ def get_all_clusters():
 	"tags": ["ML", "AI", "Neurology","health"],
 	"members": [1],
 	"updates": [{
-	"message": "Thank you for joining",
-	"timestamp": "2025-09-12T14:30:00.000000"
-	},
-	{
-	"message": "You know good on you is for joining",
-	"timestamp": "2025-09-12T14:30:00.000000"
+	"message": "Created by author",
+	"timestamp": "2025-11-12T14:30:00.000000"
 	}
 	],
 	"conversations": [
@@ -180,17 +73,7 @@ def get_all_clusters():
 	{"user": 1, "comment_id": 1, "text": "Excited to contribute!", "timestamp": "2025-09-12T14:30:00.000000"},
 	{"user": 2,"comment_id": 2, "text": "Let's go!", "timestamp": "2025-09-12T14:30:00.000000"}
 	]
-	},{
-	"chatId": 2,
-	"title": "Kickoff Meeting",
-	"author": 2,
-	"body": "Lets start working guys",
-	"created": "2025-09-12T14:30:00.000000",
-	"comments": [
-	{"user": 1, "comment_id": 1,"text": "Excited to start", "timestamp": "2025-09-12T14:30:00.000000"},
-	{"user": 2, "comment_id": 2, "text": "Let's go!", "timestamp": "2025-09-12T14:30:00.000000"}
-	]
-	}
+	},
 	],
 	"requests": [
 	{
@@ -201,17 +84,12 @@ def get_all_clusters():
 	"created": "2025-09-12T14:30:00.000000",
 	"comments": [
 	{
-	"user": 2,
+	"user": 1,
 	"comment_id": 1,
 	"text": "Yes sure",
 	"timestamp": "2025-09-12T14:30:00.000000"
 	},
-	{
-	"user": 2,
-	"comment_id": 2,
-	"text": "Let's go!",
-	"timestamp": "2025-09-12T14:30:00.000000"
-	}
+
 	]
 	}
 	]
@@ -222,40 +100,30 @@ def get_all_clusters():
 	"target": "Produce Breams for sale",
 	"status": "Brain Flow AI",
 	"author": 1,
-	"created": "2025-09-12T14:30:00.000000",
+	"created": "2025-11-12T14:30:00.000000",
 	"location": "Zimbabwe",
 	"members": [1],
 	"updates": [{
 	"message": "Thank you for joining",
-	"timestamp": "2025-09-12T14:30:00.000000"
+	"timestamp": "2025-11-12T14:30:00.000000"
 	},
-	{
-	"message": "You know good on you is for joining",
-	"timestamp": "2025-09-12T14:30:00.000000"
-	}
 	],
 	"description": "Fish production is cheap and there is market in Zimbabwe. With land and small capital much returns",
 	"tags": ["Farmer", "Marketing", "Finance"],
 	"conversations": [
 	{
 	"chatId": 1,
-	"title": "Starting",
+	"title": "For starting Starting",
 	"body": "Let's find land with dam or pond.",
 	"author": 1,
-	"created": "2025-09-12T14:30:00.000000",
+	"created": "2025-11-12T14:30:00.000000",
 	"comments": [
 	{
-	"user": 2,
+	"user": 1,
 	"comment_id": 2,
 	"text": "Yes sure",
 	"timestamp": "2025-09-12T14:30:00.000000"
 	},
-	{
-	"user": 1,
-	"text": "Let's go!",
-	"comment_id": 2,
-	"timestamp": "2025-09-12T14:30:00.000000"
-	}
 	]
 	}
 	],
@@ -268,17 +136,12 @@ def get_all_clusters():
 	"created": "2025-09-12T14:30:00.000000",
 	"comments": [
 	{
-	"user": 3,
+	"user": 1,
 	"text": "Yes sure",
 	"timestamp": "2025-09-12T14:30:00.000000",
 	"comment_id": 2,
 	},
-	{
-	"user": 2,
-	"text": "Let's go!",
-	"timestamp": "2025-09-12T14:30:00.000000",
-	"comment_id": 2,
-	}
+	
 	]
 	}
 	]
@@ -293,15 +156,12 @@ def get_all_clusters():
 	"description": "Legal Firm",
 	"target": "Fairness to everyone",
 	"tags": ["legal", "marketing"],
-	"members": [1,2],
+	"members": [1],
 	"updates": [{
-	"message": "Thank you for joining",
-	"timestamp": "2025-09-12T14:30:00.000000"
+	"message": "Created by author",
+	"timestamp": "2025-11-12T14:30:00.000000"
 	},
-	{
-	"message": "You know good on you is for joining",
-	"timestamp": "2025-09-12T14:30:00.000000"
-	}
+
 	],
 	"location": "Zimbabwe",
 	"conversations": [
@@ -325,13 +185,13 @@ def get_all_clusters():
 	"created": "2025-09-12T14:30:00.000000",
 	"comments": [
 	{
-	"user": 3,
+	"user": 1,
 	"comment_id": 2,
 	"text": "Yes sure",
 	"timestamp": "2025-09-12T14:30:00.000000"
 	},
 	{
-	"user": 2,
+	"user": 1,
 	"text": "Let's go!",
 	"comment_id": 2,
 	"timestamp": "2025-09-12T14:30:00.000000"
@@ -345,16 +205,16 @@ def get_all_clusters():
 	"name": "Design Lab",
 	"location": "Panama",
 	"status": "Brain Flow AI",
-	"author": 2,
+	"author": 1,
 	"created": "2025-09-12T14:30:00.000000",
 	"location": "Harare",
 	"description": "Buiding Everything",
 	"tags": ["Legal", "Co-founders", "DevOps"],
 	"target": "Let's Design Apps",
-	"members": [1,2,3],
+	"members": [1],
 	"updates": [{
 	"message": "Thank you for joining",
-	"timestamp": "2025-09-12T14:30:00.000000"
+	"timestamp": "2025-11-12T14:30:00.000000"
 	},
 	{
 	"message": "You know good on you is for joining",
@@ -364,9 +224,9 @@ def get_all_clusters():
 	"conversations": [
 	{
 	"chatId": 1,
-	"title": "Color Theory",
+	"title": "Lets get started",
 	"author": 1,
-	"created": "2025-09-12T14:30:00.000000",
+	"created": "2025-11-12T14:30:00.000000",
 	"comments": [
 	{"user": 1, "comment_id": 2,"text": "Love this topic!", "timestamp": "2025-09-12T14:30:00.000000"}
 	]
@@ -382,7 +242,7 @@ def get_all_clusters():
 	"created": "2025-09-12T14:30:00.000000",
 	"comments": [
 	{
-	"user": 2,
+	"user": 1,
 	"comment_id": 2,
 	"text": "Yes sure",
 	"timestamp": "2025-09-12T14:30:00.000000"
