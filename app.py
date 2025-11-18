@@ -28,6 +28,28 @@ admin.add_view(ModelView(User, db.session))
 admin.add_view(ModelView(Cluster, db.session))
 admin.add_view(ModelView(Suggestion, db.session))
 
+"""
+from flask_login import LoginManager, login_user, current_user, login_required
+
+login_manager = LoginManager()
+login_manager.login_view = 'login'  # Set this after creating the instance
+login_manager.init_app(app)
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+ """
+    
+# Add a decorator to check if the user is logged in
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_id' not in session:
+            session['next'] = request.url
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
+    
 
 app.jinja_env.filters['naturaltime'] = naturaltime
 
@@ -75,26 +97,85 @@ def home():
     # Count unread
     unread_count = sum(1 for m in messages if not m.get("read", False))
     return render_template('dashboard.html',id=user.id, name=user.name, clustersCount=cluster_count, notificationsCount=unread_count)
-    
-    
-# PROFILE
-    
-@app.route('/myProfile')
-def myProfile():
+   
+
+
+# Create a URLSafeTimedSerializer for generating and verifying tokens
+ts = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+
+def generate_confirmation_token(email):
+    return ts.dumps(email, salt='confirm-email')
+
+def verify_confirmation_token(token, expiration=3600):
+    try:
+        email = ts.loads(token, salt='confirm-email', max_age=expiration)
+    except:
+        return None
+    return email
+
+
+@app.route('/send-confirmation-email', methods=['POST', 'GET'])
+@login_required  # Your custom session-based decorator
+def send_confirmation_email():
     user_id = session.get('user_id')
-    if user_id is None:
-        return redirect('/login')
-
     user = User.query.get(user_id)
-    if user is None:
-        return redirect('/login')
+    
+    if not user:
+        return "User not logged in", 401
 
-    return render_template('profile.html', user=user)
-        
+    if user.confirm_email == 1:
+        return redirect(url_for('home'))
+
+    token = generate_confirmation_token(user.email)
+    confirm_url = url_for('confirm_email', token=token, _external=True)
+
+    # Ideally you'd send this via email
+    return render_template('error.html', error=f'Confirm URL: {confirm_url}')
+    
+
+@app.route('/confirm/<token>')
+def confirm_email(token):
+    email = verify_confirmation_token(token)
+    if not email:
+        return "Token expired or invalid", 400
+    user = User.query.filter_by(email=email).first()
+    if user:
+        user.confirm_email = int(1)
+        db.session.commit()
+        return redirect(url_for('home'))
+    return "User not found", 404
+
+@app.before_request
+def check_confirmed():
+    exempt_routes = ['login', 'logout', 'confirm_email', 'send_confirmation_email', 'resend_confirmation_email', 'static']
+    if request.endpoint in exempt_routes or request.endpoint is None:
+        return  # Skip check for exempt routes
+    user_id = session.get('user_id')
+    if user_id:
+        user = User.query.get(user_id)
+        if user and str(user.confirm_email) != '1':
+            if request.endpoint != 'send_confirmation_email':
+                return redirect(url_for('send_confirmation_email'))
+
+@app.route('/resend-confirmation-email')
+@login_required
+def resend_confirmation_email():
+    if current_user.confirm_email:
+        return redirect(url_for('dashboard'))
+    token = generate_confirmation_token(current_user.email)
+    confirm_url = url_for('confirm_email', token=token, _external=True)
+    # Send the email with the confirm URL
+    # print(f'Confirm URL: {confirm_url}')
+   # return redirect(url_for('dashboard'))
+    error = "f'Confirm URL: {confirm_url}"
+    return render_template('error.html', error=error)
+    
+    
+
 
 
 # LOGIN HANDLER
-
+"""
 # old handler
 @app.route('/old_login_handler', methods=['POST'])
 def old_login_handler():
@@ -108,22 +189,14 @@ def old_login_handler():
     user = next((u for u in users if (u.name.strip().lower() == username.lower() or u.email.strip().lower() == username.lower()) and u.password == password), None)
     if user:
         session['user_id'] = user.id
+        login_user(user)
         return redirect('/home')
     else:
         session['notice'] = "Invalid login details, retry or create an account"
         return redirect(url_for('login'))
-        
+    """    
 # handler   
 
-# Add a decorator to check if the user is logged in
-def login_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if 'user_id' not in session:
-            session['next'] = request.url
-            return redirect(url_for('login'))
-        return f(*args, **kwargs)
-    return decorated_function
 
 @app.route('/login_handler', methods=['POST'])
 def login_handler():
@@ -137,6 +210,7 @@ def login_handler():
     
     if user and check_password_hash(user.password, password):
         session['user_id'] = user.id
+        #login_user(user)
         next_url = session.pop('next', None)
         if next_url:
             return redirect(next_url)
@@ -145,7 +219,6 @@ def login_handler():
     else:
         session['notice'] = "Invalid login details, retry or create an account"
         return redirect(url_for('login'))
-
         
 
 @app.route('/login')
@@ -275,6 +348,7 @@ def register():
             password=generate_password_hash(password),
             clusters_count=0,
             joined = datetime.utcnow(),
+            confirm_email=0,
             created_clusters=json.dumps([]),
             clusters_requests=json.dumps([]),
             notifications_count=0,
@@ -304,6 +378,7 @@ def register():
         db.session.commit()
         
         session['user_id'] = user.id
+        #login_user(user)
         return redirect('/home')
     return render_template('register.html', suggested_skills=suggested_skills, notice=notice)
 
@@ -400,6 +475,23 @@ def register_update():
 
 
 # Users
+
+# PROFILE
+    
+@app.route('/myProfile')
+@login_required
+def myProfile():
+    user_id = session.get('user_id')
+    if user_id is None:
+        return redirect('/login')
+
+    user = User.query.get(user_id)
+    if user is None:
+        return redirect('/login')
+
+    return render_template('profile.html', user=user)
+        
+
 
 @app.route("/users")
 @login_required
@@ -1287,6 +1379,8 @@ def recommended_clusters():
     
 # Extra endpoints
 
+    
+    
 @app.route('/about')
 def about():
     return render_template('about.html')

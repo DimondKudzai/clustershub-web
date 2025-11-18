@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_login import UserMixin
 from flask_sqlalchemy import SQLAlchemy
 import json
 from datetime import datetime
@@ -12,7 +13,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
@@ -21,7 +22,7 @@ class User(db.Model):
     website = db.Column(db.String)
     second_website = db.Column(db.String)
     email = db.Column(db.String, unique=True)
-    confirm_email = db.Column(db.Text)
+    confirm_email = db.Column(db.Integer)
     joined = db.Column(db.DateTime, default=datetime.utcnow)
     phone = db.Column(db.String)
     password = db.Column(db.String)
@@ -57,7 +58,7 @@ class User(db.Model):
 
     def set_messages(self, messages):
         self.messages = json.dumps(messages)
-
+  
 class Cluster(db.Model):
     __tablename__ = 'clusters'
     id = db.Column(db.Integer, primary_key=True)
