@@ -12,6 +12,7 @@ import uuid
 import sqlite3
 from sqlalchemy import func
 from datetime import datetime
+from functools import wraps
 
 import humanize
 from humanize import naturaltime
@@ -112,7 +113,18 @@ def old_login_handler():
         session['notice'] = "Invalid login details, retry or create an account"
         return redirect(url_for('login'))
         
-# handler       
+# handler   
+
+# Add a decorator to check if the user is logged in
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_id' not in session:
+            session['next'] = request.url
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
+
 @app.route('/login_handler', methods=['POST'])
 def login_handler():
     try:
@@ -122,12 +134,18 @@ def login_handler():
         return redirect(url_for('login'))
     
     user = User.query.filter((func.lower(User.name) == username) | (func.lower(User.email) == username)).first()
+    
     if user and check_password_hash(user.password, password):
         session['user_id'] = user.id
-        return redirect('/home')
+        next_url = session.pop('next', None)
+        if next_url:
+            return redirect(next_url)
+        else:
+            return redirect('/home')
     else:
         session['notice'] = "Invalid login details, retry or create an account"
         return redirect(url_for('login'))
+
         
 
 @app.route('/login')
@@ -149,7 +167,7 @@ def forgot_password():
             # Replace this with your email function
             
             #print(f"Reset URL: {reset_url}")
-            url = f"We sent you an email. Please click on the link sent to you to reset your password. Check your mailbox. Reset URL: {reset_url}"
+            url = f"We sent you an email. Please click on the link sent to you to reset your password. Please check your mailbox and click on the link before it expires in 60 minutes. Reset URL: {reset_url}"
             #return redirect('/login')
             return render_template('forgot.html', url=url)
             
@@ -292,6 +310,7 @@ def register():
 
 
 @app.route('/register_update', methods=['GET', 'POST'])
+@login_required
 def register_update():
     notice = session.pop('notice', None)
     suggested = Suggestion.query.first()
@@ -383,10 +402,12 @@ def register_update():
 # Users
 
 @app.route("/users")
+@login_required
 def users():
     return jsonify(User.query.all())
     
 @app.route("/users/<int:user_id>")
+@login_required
 def getUser(user_id):
     user = User.query.get(user_id)
     if user:
@@ -400,6 +421,7 @@ def getUser(user_id):
 # Clusters
 
 @app.route('/startCluster', methods=['GET', 'POST'])
+@login_required
 def startCluster():
     suggested = Suggestion.query.first()
     if suggested:
@@ -487,6 +509,7 @@ def startCluster():
         
 
 @app.route('/clusters')
+@login_required
 def clusters():
     user_id = session.get('user_id')
     if user_id is None:
@@ -508,6 +531,7 @@ def clusters():
     return render_template('error.html', error=error)
 
 @app.route("/clusters/<int:id>")
+@login_required
 def getCluster(id):
     user_id = session.get('user_id')
     if user_id is None:
@@ -533,6 +557,7 @@ def getCluster(id):
       
    
 @app.route('/cluster_update/<int:id>', methods=['GET', 'POST'])
+@login_required
 def cluster_updater(id):
     notice = session.pop('notice', None)
     cluster = Cluster.query.get(id)
@@ -587,6 +612,7 @@ def cluster_updater(id):
   
   
 @app.route('/clusters/<int:cluster_id>/delete', methods=['POST'])
+@login_required
 def delete_cluster(cluster_id):
     cluster = Cluster.query.get(cluster_id)
     if not cluster:
@@ -613,6 +639,7 @@ def delete_cluster(cluster_id):
   
   
 @app.route('/clusters/<int:cluster_id>/members', methods=['GET'])
+@login_required
 def get_cluster_members(cluster_id):
     cluster = Cluster.query.get(cluster_id)
     if not cluster:
@@ -629,6 +656,7 @@ def get_cluster_members(cluster_id):
     
     
 @app.route('/clusters/<int:cluster_id>/exit', methods=['POST'])
+@login_required
 def exit_cluster(cluster_id):
     if 'user_id' not in session:
         return redirect('/login')
@@ -670,6 +698,7 @@ def exit_cluster(cluster_id):
     
 
 @app.route('/clusters/<int:cluster_id>/remove-member/<int:member_id>', methods=['POST'])
+@login_required
 def remove_cluster_member(cluster_id, member_id):
     if 'user_id' not in session:
         return redirect('/login')
@@ -717,6 +746,7 @@ def remove_cluster_member(cluster_id, member_id):
     
 
 @app.route('/clusters/<int:cluster_id>/members')
+@login_required
 def cluster_members(cluster_id):
     cluster = Cluster.query.get(cluster_id)
     if not cluster:
@@ -728,6 +758,7 @@ def cluster_members(cluster_id):
 # Notifications        
         
 @app.route("/notifications")
+@login_required
 def notifications():
     user_id = session.get('user_id')
     if user_id is None:
@@ -742,6 +773,7 @@ def notifications():
 
 
 @app.route("/notifications/read/<int:msg_id>")
+@login_required
 def mark_read(msg_id):
     user_id = session.get('user_id')
     if user_id is None:
@@ -762,6 +794,7 @@ def mark_read(msg_id):
 # Requests
 
 @app.route('/clusters/<int:cluster_id>/withdraw-request/<int:request_id>', methods=['POST'])
+@login_required
 def withdraw_request(cluster_id, request_id):
     if 'user_id' not in session:
         return redirect('/login')
@@ -801,6 +834,7 @@ def withdraw_request(cluster_id, request_id):
     
 
 @app.route('/send_cluster_request/<cluster_id>', methods=['POST'])
+@login_required
 def sent_cluster_request(cluster_id):
     title = request.form.get('title')
     message = request.form.get('message')
@@ -841,6 +875,7 @@ def sent_cluster_request(cluster_id):
     return redirect(url_for('user_requests'))
 
 @app.route('/clusters/requests/<int:cluster_id>', methods=['GET'])
+@login_required
 def requested(cluster_id):
     if 'user_id' not in session:
         return redirect('/home')
@@ -865,6 +900,7 @@ def requested(cluster_id):
     return render_template('requests.html', cluster=cluster, requests=requests)
 
 @app.route('/clusters/requests/<int:cluster_id>/comment/<chatId>', methods=['POST'])
+@login_required
 def requested_comment(cluster_id, chatId):
     text = request.form.get('text')
     user_id = session['user_id']
@@ -901,6 +937,7 @@ def requested_comment(cluster_id, chatId):
     return render_template('error.html', error=error)
 
 @app.route('/user_requests')
+@login_required
 def user_requests():
     user_id = session.get('user_id')
     if user_id is None:
@@ -933,6 +970,7 @@ def user_requests():
     return render_template('error.html', error=error)
 
 @app.route('/clusters/<int:cluster_id>/requests/<int:request_id>/accept', methods=['POST'])
+@login_required
 def accept_request(cluster_id, request_id):
     cluster = Cluster.query.get(cluster_id)
     if not cluster:
@@ -982,6 +1020,7 @@ def accept_request(cluster_id, request_id):
     
 
 @app.route('/clusters/<int:cluster_id>/requests/<int:request_id>/decline', methods=['POST'])
+@login_required
 def decline_request(cluster_id, request_id):
     cluster = Cluster.query.get(cluster_id)
     if not cluster:
@@ -1019,6 +1058,7 @@ def decline_request(cluster_id, request_id):
 # conversations
 
 @app.route('/clusters/<int:cluster_id>/chat', methods=['GET'])
+@login_required
 def show_cluster(cluster_id):
     if 'user_id' not in session:
         return redirect('/login')
@@ -1042,6 +1082,7 @@ def show_cluster(cluster_id):
     return render_template('conversations.html', cluster=cluster, conversations=conversations)
 
 @app.route('/clusters/<int:cluster_id>/threads/<int:thread_id>/comments', methods=['POST'])
+@login_required
 def post_comment(cluster_id, thread_id):
     user_id = session.get('user_id')
     if user_id is None:
@@ -1081,6 +1122,7 @@ def post_comment(cluster_id, thread_id):
     return redirect(url_for('show_cluster', cluster_id=cluster_id))
     
 @app.route('/clusters/<int:cluster_id>/threads', methods=['POST'])
+@login_required
 def create_thread(cluster_id):
     user_id = session.get('user_id')
     if user_id is None:
@@ -1131,6 +1173,7 @@ def create_thread(cluster_id):
 
 
 @app.route('/clusters/<int:cluster_id>/updates', methods=['GET'])
+@login_required
 def cluster_updates(cluster_id):
     if 'user_id' not in session:
         return redirect('/login')
@@ -1149,6 +1192,7 @@ def cluster_updates(cluster_id):
 # Recomended clusters - Algo
 
 @app.route('/recommended_clusters')
+@login_required
 def recommended_clusters():
     user_id = session.get('user_id')
     if user_id is None:
@@ -1185,6 +1229,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 @app.route('/ai_recommended_clusters')
+@login_required
 def recommended_clusters():
     user_id = session.get('user_id')
     if user_id is None:
@@ -1251,6 +1296,7 @@ def terms():
     return render_template('terms.html')
     
 @app.route('/error')
+@login_required
 def error():
     return render_template('error.html', error=error)
     

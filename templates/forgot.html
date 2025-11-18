@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Updates | Clusters Hub</title>
   <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}">
-  <link rel="icon" type="image/jpg" href="{{url_for('static', filename='logo.jpg')}}">
+  <link rel="icon" type="image/jpg" href="{{url_for('static', filename='banner.jpg')}}">
   </head>
 <body>
 
@@ -19,8 +19,8 @@
     <center><h3>Reset password?</h3></center>
     <p> {{ url }}</p>
  <form method="POST" action="{{ url_for('forgot_password') }}">
- <label for="email">Email</label>
- <input type="email" id="email" name="email" required placeholder="account email">
+ <label for="email"><strong>Email</strong></label>
+ <input type="email" id="email" name="email" required placeholder="account email address">
  <button type="submit" class="dashboardBtn">Reset Password</button>
  </form>
  

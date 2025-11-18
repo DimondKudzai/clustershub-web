@@ -4,3 +4,8 @@ psycopg2-binary
 Flask-SQLAlchemy
 flask_admin
 humanize
+flask-session
+flask-mail
+flask-login
+scikit-learn
+python-dotenv
