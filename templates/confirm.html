@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="keywords" content="Confirm, Email" />
+  <meta name="description" content=" complete your registration" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Complete signup | Clusters Hub</title>
+  <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}">
+  <link rel="icon" type="image/jpg" href="{{url_for('static', filename='banner.jpg')}}">
+  </head>
+<body>
+
+{% include 'partials/header.html' %}
+  <div class="container">
+  
+    <section class="create-cluster">
+    <h3>Confirm Your email</h3>
+    
+  
+  <div class="container">
+  
+  <section class="create-cluster">
+  <center>
+  <p>
+  {{ message }}
+  </p>
+  </center>
+  </section>
+  </div>
+  
+       
+    </section>
+    </div>
+    
+    {% include 'partials/footer.html' %}
+    
+   </body>
+ </html>

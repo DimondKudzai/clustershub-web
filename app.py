@@ -121,7 +121,9 @@ def send_confirmation_email():
     user = User.query.get(user_id)
     
     if not user:
-        return "User not logged in", 401
+        error = "User not logged in"
+        return redirect(url_for('error'), error=error)
+        
 
     if user.confirm_email == 1:
         return redirect(url_for('home'))
@@ -130,20 +132,24 @@ def send_confirmation_email():
     confirm_url = url_for('confirm_email', token=token, _external=True)
 
     # Ideally you'd send this via email
-    return render_template('error.html', error=f'Confirm URL: {confirm_url}')
+    return render_template('confirm.html', message=f'Confirm URL: {confirm_url}')
     
 
 @app.route('/confirm/<token>')
 def confirm_email(token):
     email = verify_confirmation_token(token)
     if not email:
-        return "Token expired or invalid", 400
+        error = "Token expired or invalid"
+        return redirect(url_for('error'), error=error)
+        
     user = User.query.filter_by(email=email).first()
     if user:
         user.confirm_email = int(1)
         db.session.commit()
         return redirect(url_for('home'))
-    return "User not found", 404
+    erorr = "User not found"
+    return redirect(url_for('error'), error=error)
+    
 
 @app.before_request
 def check_confirmed():
@@ -167,8 +173,8 @@ def resend_confirmation_email():
     # Send the email with the confirm URL
     # print(f'Confirm URL: {confirm_url}')
    # return redirect(url_for('dashboard'))
-    error = "f'Confirm URL: {confirm_url}"
-    return render_template('error.html', error=error)
+    message = "f'Confirm URL: {confirm_url}"
+    return render_template('confirm.html', message=message)
     
     
 
