@@ -87,6 +87,10 @@ section {
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
   border: 1px solid green;
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+ 
 }
 .create-cluster{
 paddig: 25px;
