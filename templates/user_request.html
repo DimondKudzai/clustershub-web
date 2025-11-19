@@ -20,6 +20,13 @@
 <body>
     {% include 'partials/header.html' %}
     <div style="width: 100%">
+    
+    <section style="border: none;">
+    <center>
+    <h2>Open Cluster requests</h2>
+    </center>
+    </section>
+    <br>
     <a href="#bottom" >
     <p>Jumb to Bottom</p>
     
@@ -27,7 +34,9 @@
         {% for cluster in clusters %}
         <section class="create-cluster" style="padding: px;border: none;">
             <center>
-                <h2>{{ cluster.name }} Request </h2>
+                 <h2>
+                 <a href="{{ url_for('getCluster', id=cluster.id) }}">{{ cluster.name }}</a> Request 
+                 </h2>
             </center>
             <br>
             {% for request in cluster.user_requests %}

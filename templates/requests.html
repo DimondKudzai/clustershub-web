@@ -22,7 +22,7 @@
     <div class="" style="width: 100%">
         <section style="padding: 1px;border: none;">
             <center>
-                <h2>{{ cluster.name }} Requests </h2>
+                <h2> <a href="{{ url_for('getCluster', id=cluster.id) }}">{{ cluster.name }}</a> Requests </h2>
   
   </section>
         <br>
