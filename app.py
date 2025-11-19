@@ -1433,13 +1433,19 @@ def logout():
     return redirect('/login')
 
 import re
-from markupsafe import Markup
+from markupsafe import Markup, escape
 
 @app.template_filter('linkify')
 def linkify(text):
-    url_pattern = re.compile(r'(https?://[^\s]+)')
-    return Markup(re.sub(url_pattern, r'<a href="\1" target="_blank">\1</a>', text))
+    # Escape HTML first for safety
+    text = escape(text)
 
+    # Linkify URLs
+    text = re.sub(r'(https?://[^\s]+)', r'<a href="\1" target="_blank">\1</a>', text)
+    text = re.sub(r'@(\w+)', r'<span style="color: blue;">@\1</span>', text)
+    text = re.sub(r'#(\w+)', r'<span style="color: green;">#\1</span>', text)
+  
+    return Markup(text)
   
 if __name__ == '__main__':
     app.run(debug=True)
