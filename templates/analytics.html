@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="keywords" content="Analytics, Clusters Hub" />
+  <meta name="description" content="Clusters Analytics" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Complete signup | Clusters Hub</title>
+  <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}">
+  <link rel="icon" type="image/jpg" href="{{url_for('static', filename='banner.jpg')}}">
+  <script src="{{ url_for('static', filename='chart.min.js') }}"></script>
+  </head>
+<body>
+
+ 
+ {% include 'partials/header.html' %}
+ 
+ <div class="container">
+ 
+ <section class="create-cluster">
+ <center>
+
+ <h1>📊 Clusters Hub Analytics</h1>
+ </center> 
+ <p>
+ <ul style="color: black;">
+ <li>Total Users: {{ total_users }}</li>
+ <li>Total Clusters: {{ total_clusters }}</li>
+ <li>Total Cluster Join Requests: {{ total_requests }}</li>
+ <li>Total Messages: {{ total_messages }}</li>
+ <li>Total Threads (Conversations): {{ total_conversations }}</li>
+ </ul>
+ </p>
+ </section>
+
+ <h2>Cluster Stats</h2>
+ 
+ <section>
+ <canvas id="myChart" width="400" height="200"></canvas>
+ 
+ <script>
+ const ctx = document.getElementById('myChart').getContext('2d');
+ const myChart = new Chart(ctx, {
+ type: 'radar',
+ data: {
+ labels: {{ labels | safe }},
+ datasets: [{
+ label: 'Members per Cluster',
+ data: {{ data | safe }},
+ backgroundColor: 'rgba(54, 162, 235, 0.6)',
+ borderColor: 'rgba(54, 162, 235, 1)',
+ borderWidth: 1
+ }]
+ },
+ options: {
+ scales: {
+ y: { beginAtZero: true }
+ }
+ }
+ });
+ </script>
+</section>
+
+ </div>
+ 
+ 
+ </section>
+ </div>
+ 
+ {% include 'partials/footer.html' %}
+ 
+ </body>
+ 
+ </html>

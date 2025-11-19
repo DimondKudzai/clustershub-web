@@ -1385,7 +1385,33 @@ def recommended_clusters():
     
 # Extra endpoints
 
+@app.route('/admin/analytics')
+def admin_analytics():
+    if session.get('user_id') != 1:  # restrict to you (adjust ID or use a proper admin check)
+        return redirect('/login')
+
+    total_users = User.query.count()
+    total_clusters = Cluster.query.count()
     
+    total_requests = sum(len(cluster.get_requests()) for cluster in Cluster.query.all())
+    total_messages = sum(len(user.get_messages()) for user in User.query.all())
+    total_conversations = sum(len(cluster.get_conversations()) for cluster in Cluster.query.all())
+    
+    clusters = Cluster.query.all()
+    labels = [cluster.name for cluster in clusters]
+    data = [len(cluster.get_members()) for cluster in clusters]
+    
+
+    return render_template('analytics.html', 
+        total_users=total_users,
+        total_clusters=total_clusters,
+        total_requests=total_requests,
+        total_messages=total_messages,
+        total_conversations=total_conversations,
+        labels=labels,
+        data=data
+    )
+
     
 @app.route('/about')
 def about():
