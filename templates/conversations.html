@@ -41,7 +41,7 @@
    <strong style="font-size:20px; color: green;"> ⛓️ {{ thread.title }}</strong>
    <span> by <a href="{{ url_for('getUser', user_id=thread.author_id) }}" style="color: blue">@{{ thread.author_name }}</a></span>
    <br>
-   <p>{{ thread.body }}</p>
+   <p>{{ thread.body | linkify }}</p>
    <small>{{ thread.created | naturaltime }}</small>
    </section>
    <div class="comments">
@@ -50,7 +50,7 @@
    <p>
    {% if comment.user %}
    <a href="{{ url_for('getUser', user_id=comment.user.id) }}" style="color: blue">@{{ comment.user.name }}</a> 
-   {{ comment.text }} 
+   {{ comment.text | linkify }} 
    <br>
    <small>{{ comment.timestamp | naturaltime}}</small>
    {% else %}

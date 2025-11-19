@@ -40,7 +40,7 @@
  <a href="{{ url_for('getUser', user_id=request.author_id) }}" style="color: blue">@{{ request.author_name }}</a>
  </span>
  <br>
- <p>{{ request.body }}</p>
+ <p>{{ request.body | linkify }}</p>
  <small>{{ request.created | naturaltime }}</small>
  </section>
  <div class="comments">
@@ -49,7 +49,7 @@
  <p>
  {% if comment.user %}
  <a href="{{ url_for('getUser', user_id=comment.user.id) }}" style="color: blue">@{{ comment.user.name }}</a> 
- {{ comment.text }} 
+ {{ comment.text | linkify }} 
  <br>
  <small>{{ comment.timestamp | naturaltime }}</small>
  {% else %}

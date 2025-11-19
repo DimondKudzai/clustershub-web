@@ -1431,7 +1431,15 @@ def error():
 def logout():
     session.clear()
     return redirect('/login')
-  
+
+import re
+from markupsafe import Markup
+
+@app.template_filter('linkify')
+def linkify(text):
+    url_pattern = re.compile(r'(https?://[^\s]+)')
+    return Markup(re.sub(url_pattern, r'<a href="\1" target="_blank">\1</a>', text))
+
   
 if __name__ == '__main__':
     app.run(debug=True)
