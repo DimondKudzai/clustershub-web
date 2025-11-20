@@ -19,6 +19,12 @@
   
   
   <h3 style="color:">Your Current Clusters</h3>
+  <center>
+  <a href="{{ url_for('user_requests') }}">
+  <button class="dashboardBtn" style="background: ; width: 90%;"><strong> View sent requests</strong></button>
+  </a>
+  <br><br>
+  </center>
  </center>
   {% for cluster in clusters %}
   
@@ -41,12 +47,7 @@
   
   
   {% endfor %}  
-  <center>
-  <a href="{{ url_for('user_requests') }}">
-  <button class="dashboardBtn" style="background: ; width: 90%;"><strong> View sent requests</strong></button>
-  </a>
-  <br><br>
-  </center>
+
  
   <br>
   </section>

@@ -201,8 +201,8 @@ def old_login_handler():
         session['notice'] = "Invalid login details, retry or create an account"
         return redirect(url_for('login'))
     """    
-# handler   
 
+# handler   
 
 @app.route('/login_handler', methods=['POST'])
 def login_handler():
@@ -253,7 +253,6 @@ def forgot_password():
     return render_template('forgot.html')
 
 
-
 @app.route('/reset/<token>', methods=['GET', 'POST'])
 def reset_password(token):
     email = verify_reset_token(token)
@@ -275,8 +274,8 @@ def reset_password(token):
             return redirect('/login')
     return render_template('reset.html', token=token)
     
-    
-    
+        
+# Register
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -434,7 +433,7 @@ def register_update():
 
         existing_user = User.query.filter_by(email=email).first()
         if existing_user and existing_user.id != session['user_id']:
-            session['notice'] = "login first"
+            session['notice'] = "Email already registered"
             return redirect('/register_update')
             
         existing_email = User.query.filter_by(email=email).first()
@@ -520,7 +519,6 @@ def getUser(user_id):
         error = 'No user found'
         return render_template('error.html', error=error)
 	    	    
-	    
 	    
 # Clusters
 
