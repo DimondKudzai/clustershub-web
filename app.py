@@ -434,9 +434,14 @@ def register_update():
 
         existing_user = User.query.filter_by(email=email).first()
         if existing_user and existing_user.id != session['user_id']:
-            session['notice'] = "Email already exists"
+            session['notice'] = "login first"
             return redirect('/register_update')
-
+            
+        existing_email = User.query.filter_by(email=email).first()
+        if existing_user and existing_user.email != session['user_id']:
+            session['notice'] = "Email already registered"
+            return redirect('/register_update')
+    
         existing_username = User.query.filter_by(name=username).first()
         if existing_username and existing_username.id != session['user_id']:
             session['notice'] = "Username already taken"
@@ -450,6 +455,7 @@ def register_update():
                 user.full_name = full_name
             if email:
                 user.email = email
+                user.confirm_email = int(0)
             if location:
                 user.location = location
             if description:

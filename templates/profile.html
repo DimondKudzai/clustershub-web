@@ -38,8 +38,12 @@
  <br>
  <strong style="border-right: 1px solid green;padding-right: 15px;color:black;">{{ user.full_name | e }} </strong><strong style="padding: 15px"> @{{ user.name | e }}</strong>
  
-
+<br><br>
+ <h3>About User </h3>
+ <section>
  <p class="about">{{ user.description | linkify }}</p>
+ </section>
+ <br>
  <strong> Joined </strong><span class="badge">{{ user.joined | naturaltime }}</span>
  
  <h3>Skills </h3>

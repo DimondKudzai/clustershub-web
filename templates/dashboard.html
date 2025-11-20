@@ -15,10 +15,16 @@
   
   <section class="dashboardContainer" style="margin-top: +10px;">
   
-  <section style="padding: 5px;border: none;">
+  <section style="padding: 5px; border: none; display: flex; align-items: center; gap: 10px;">
+  <h3 style="margin: 0; font-family: 'roboto';">
+  <a href="{{ url_for('getUser', user_id=id) }}">@{{ name }}</a>
+  </h3>
   
-     <a href="{{ url_for('getUser',user_id=id) }}"><h3>@{{name}}</h3></a>
-      </section>
+  <h1 style="margin: 0; font-family: 'roboto'; font-weight: bold;">
+  Dashboard
+  </h1>
+  </section>
+
       <br>
       <section>
       <div class="tabs">
