@@ -577,35 +577,37 @@ def startCluster():
             status=status,
             target=target,
             members=json.dumps([user_id]),
-            author=user_id # Store the user ID as the author
+            author=user_id  # Store the user ID as the author
         )
         db.session.add(cluster)
         db.session.commit()
         # Update the user's clusters
         user = db.session.get(User, user_id)
-        created_clusters = json.loads(user.created_clusters)
+        created_clusters = user.get_created_clusters()
         created_clusters.append(cluster.id)
-        user.created_clusters = json.dumps(created_clusters)
+        user.set_created_clusters(created_clusters)
+
+        user_clusters = user.get_joined()
+        user_clusters.append(cluster.id)
+        user.set_joined(user_clusters)
+
         db.session.commit()
-        
         # Send notification
         notification = {
-        "id": len(user.get_messages()) + 1,
-        "body": f"You have successfully created Cluster - {name}. Did you know sharing your Cluster online increases member quality by 3X. Here are your Clusters.",
-        "read": False,
-        "url": f"/clusters",
-        "timestamp": datetime.now(timezone.utc).isoformat()
+            "id": len(user.get_messages()) + 1,
+            "body": f"You have successfully created Cluster - {name}. Did you know sharing your Cluster online increases member quality by 3X. Here are your Clusters.",
+            "read": False,
+            "url": f"/clusters",
+            "timestamp": datetime.now(timezone.utc).isoformat()
         }
         user.set_messages(user.get_messages() + [notification])
         db.session.commit()
-       
         updates = {
-        "message": f"{cluster.name} created by Author.",
-        "timestamp": datetime.now(timezone.utc).isoformat()
+            "message": f"{cluster.name} created by Author.",
+            "timestamp": datetime.now(timezone.utc).isoformat()
         }
         cluster.set_updates(cluster.get_updates() + [updates])
         db.session.commit()
-        
         return redirect('/clusters')
     return render_template('createCluster.html', suggested_skills=suggested_skills, notice=notice)
         
@@ -623,8 +625,9 @@ def clusters():
 
     clusters = Cluster.query.all()
     created_clusters = user.get_created_clusters()
+    joined_clusters = user.get_joined()
     requested_clusters = user.get_clusters_requests()
-    total_clusters = created_clusters + requested_clusters
+    total_clusters = joined_clusters + created_clusters + requested_clusters
     cluster_count = len(total_clusters)
     show_clusters = [c for c in clusters if c.id in total_clusters]
     if show_clusters:
@@ -721,9 +724,19 @@ def delete_cluster(cluster_id):
         error = "No Cluster found"
         return render_template('error.html', error=error)
     members = cluster.get_members()
-    cluster_author = db.session.get(User,cluster.author)
+    cluster_author = db.session.get(User, cluster.author)
+    
+    # Remove cluster from member_clusters of all members
+    for member_id in members:
+        member = db.session.get(User, member_id)
+        if member:
+            member_joined_clusters = member.get_joined()
+            member_joined_clusters.remove(cluster_id)
+            member.set_joined(member_joined_clusters)
+    
     db.session.delete(cluster)
     db.session.commit()
+    
     # Send notification to all cluster members
     for member_id in members:
         member = db.session.get(User, member_id)
@@ -736,7 +749,7 @@ def delete_cluster(cluster_id):
                 "timestamp": datetime.now(timezone.utc).isoformat()
             }
             member.set_messages(member.get_messages() + [notification])
-    db.session.commit()
+            db.session.commit()
     return redirect('/clusters')
   
   
@@ -772,30 +785,34 @@ def exit_cluster(cluster_id):
         return redirect('/home')
     members.remove(user_id)
     cluster.set_members(members)
-    db.session.commit()
     
     user = db.session.get(User, user_id)
     if user is None:
         return redirect('/login')
-        
+    
+    # Remove cluster from user's joined clusters
+    user_joined_clusters = user.get_joined()
+    user_joined_clusters.remove(cluster_id)
+    user.set_joined(user_joined_clusters)
+    
+    db.session.commit()
+    
     # Send notification
     notification = {
-    "id": len(user.get_messages()) + 1,
-    "body": f"You exited {cluster.name}. Here are your recommended Clusters",
-    "read": False,
-    "url": f"/recommended_clusters",
-    "timestamp": datetime.now(timezone.utc).isoformat()
+        "id": len(user.get_messages()) + 1,
+        "body": f"You exited {cluster.name}. Here are your recommended Clusters",
+        "read": False,
+        "url": f"/recommended_clusters",
+        "timestamp": datetime.now(timezone.utc).isoformat()
     }
     user.set_messages(user.get_messages() + [notification])
     db.session.commit()
-    
     updates = {
-    "message": f"{user.name} left this Cluster",
-    "timestamp": datetime.now(timezone.utc).isoformat()
+        "message": f"{user.name} left this Cluster",
+        "timestamp": datetime.now(timezone.utc).isoformat()
     }
     cluster.set_updates(cluster.get_updates() + [updates])
     db.session.commit()
-    
     return redirect('/clusters')
     
 
@@ -818,6 +835,12 @@ def remove_cluster_member(cluster_id, member_id):
     removed_member = db.session.get(User, member_id)
     members = [member for member in members if member != int(member_id)]
     cluster.set_members(members)
+    
+    # Remove cluster from removed member's joined clusters
+    removed_member_joined_clusters = removed_member.get_joined()
+    removed_member_joined_clusters.remove(cluster_id)
+    removed_member.set_joined(removed_member_joined_clusters)
+    
     db.session.commit()
     # Send notification
     notification = {
@@ -836,7 +859,7 @@ def remove_cluster_member(cluster_id, member_id):
         "url": f"/clusters/{cluster_id}",
         "timestamp": datetime.now(timezone.utc).isoformat()
     }
-    removed_member.set_messages(removed_member.get_messages() + [second_notification])  # Fix here
+    removed_member.set_messages(removed_member.get_messages() + [second_notification])
     db.session.commit()
     updates = {
         "message": f"{removed_member.name} was removed from this Cluster by author",
@@ -1135,7 +1158,13 @@ def accept_request(cluster_id, request_id):
     if user:
         user_clusters_requests = user.get_clusters_requests()
         user_clusters_requests.remove(cluster_id)
-        user.clusters_requests = json.dumps(user_clusters_requests)
+        user.set_clusters_requests(user_clusters_requests)
+        
+        # Add cluster to user's joined clusters
+        user_joined_clusters = user.get_joined()
+        user_joined_clusters.append(cluster_id)
+        user.set_joined(user_joined_clusters)
+        
         # Send notification
         notification = {
             "id": len(user.get_messages()) + 1,
@@ -1146,15 +1175,12 @@ def accept_request(cluster_id, request_id):
         }
         user.set_messages(user.get_messages() + [notification])
         db.session.commit()
-        
         updates = {
-        "message": f"{user.name} was added to this Cluster.",
-        "timestamp": datetime.now(timezone.utc).isoformat()
+            "message": f"{user.name} was added to this Cluster.",
+            "timestamp": datetime.now(timezone.utc).isoformat()
         }
         cluster.set_updates(cluster.get_updates() + [updates])
         db.session.commit()
-    
-    
     return redirect(url_for('requested', cluster_id=cluster_id))
     
 
@@ -1463,7 +1489,6 @@ def terms():
     return render_template('terms.html')
     
 @app.route('/error')
-@login_required
 def error():
     return render_template('error.html', error=error)
     

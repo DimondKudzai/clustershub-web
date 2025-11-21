@@ -26,6 +26,7 @@ def get_all_users():
     "phone": "012 345 6789",
     "password": "chimboza@1",
     "image" : "image1.png",
+    "member_clusters": [],
     "joined": "2025-11-12T14:30:00.000000",
     "skills": ["Health","Finance","Farmer","Software developer"],
     "clusters_count" : 1,

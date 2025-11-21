@@ -29,6 +29,7 @@ class User(db.Model, UserMixin):
     image = db.Column(db.String)
     skills = db.Column(db.Text)  # JSON stringified list
     clusters_count = db.Column(db.Integer)
+    member_clusters = db.Column(db.Text) # json stringified list
     created_clusters = db.Column(db.Text)  # JSON stringified list
     clusters_requests = db.Column(db.Text)  # JSON stringified list
     notifications_count = db.Column(db.Integer)
@@ -46,6 +47,12 @@ class User(db.Model, UserMixin):
 
     def get_messages(self):
         return json.loads(self.messages or '[]')
+       
+    def get_joined(self):
+        return json.loads(self.member_clusters or '[]')
+
+    def set_joined(self, member_clusters):
+        self.member_clusters = json.dumps(member_clusters)
 
     def set_skills(self, skills):
         self.skills = json.dumps(skills)
@@ -137,6 +144,7 @@ def seed_users():
                 joined= datetime.strptime(user_data["joined"].replace('Z', ''), "%Y-%m-%dT%H:%M:%S.%f"),
                 skills=json.dumps(user_data["skills"]),
                 clusters_count=user_data["clusters_count"],
+                member_clusters=json.dumps(user_data["member_clusters"]),
                 created_clusters=json.dumps(user_data["created_clusters"]),
                 clusters_requests=json.dumps(user_data["clusters_requests"]),
                 notifications_count=user_data["notifications_count"],
