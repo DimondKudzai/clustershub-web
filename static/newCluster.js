@@ -43,8 +43,8 @@ input.addEventListener('keydown', function (e) {
 });
 
 function addTag(text) {
-    if (selectedTags.length >= 10) {
-        alert('You can add up to 10 skills only');
+    if (selectedTags.length >= 20) {
+        alert('You can add up to 20 skills only');
         return;
     }
     if (selectedTags.includes(text)) return;
