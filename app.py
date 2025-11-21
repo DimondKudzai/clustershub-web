@@ -1037,6 +1037,43 @@ def requested_comment(cluster_id, chatId):
             return redirect(url_for('requested', cluster_id=cluster_id))
     error = "No Request found"
     return render_template('error.html', error=error)
+    
+@app.route('/user_clusters/requests/<int:cluster_id>/comment/<chatId>', methods=['POST'])
+@login_required
+def user_requested_comment(cluster_id, chatId):
+    text = request.form.get('text')
+    user_id = session['user_id']
+    user = db.session.get(User, user_id)
+    if not user:
+        return redirect('/login')
+    cluster = db.session.get(Cluster, cluster_id)
+    if not cluster:
+        error = "No Cluster found"
+        return render_template('error.html', error=error)
+    requests = cluster.get_requests()
+    for req in requests:
+        if str(req['chatId']) == chatId:
+            req['comments'].append({
+                'user': user_id,
+                'text': text,
+                'timestamp': datetime.now(timezone.utc).isoformat()
+            })
+            cluster.requests = json.dumps(requests)
+            db.session.commit()
+            # Send notification to the request author
+            request_author = db.session.get(User, req['author'])
+            notification = {
+                "id": len(request_author.get_messages()) + 1,
+                "body": f"{user.name} replied to your request to join {cluster.name}.",
+                "read": False,
+                "url": f"/user_requests",
+                "timestamp": datetime.now(timezone.utc).isoformat()
+            }
+            request_author.set_messages(request_author.get_messages() + [notification])
+            db.session.commit()
+            return redirect(url_for('user_requests'))
+    error = "No Request found"
+    return render_template('error.html', error=error)
 
 @app.route('/user_requests')
 @login_required
@@ -1441,14 +1478,15 @@ from markupsafe import Markup, escape
 
 @app.template_filter('linkify')
 def linkify(text):
-    # Escape HTML first for safety
-    text = escape(text)
-
-    # Linkify URLs
-    text = re.sub(r'(https?://[^\s]+)', r'<a href="\1" target="_blank">\1</a>', text)
+    if not text:
+        return ''
+    
+    # Now it's safe to process
+    text = re.sub(r'([\w\.-]+@[\w\.-]+\.\w+)', r'<span style="color:purple;">\1</span>', text)
     text = re.sub(r'@(\w+)', r'<span style="color: blue;">@\1</span>', text)
+    text = re.sub(r'(https?://[^\s]+)', r'<a href="\1" target="_blank">\1</a>', text)
     text = re.sub(r'#(\w+)', r'<span style="color: green;">#\1</span>', text)
-  
+
     return Markup(text)
   
 if __name__ == '__main__':

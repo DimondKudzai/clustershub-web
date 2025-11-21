@@ -13,7 +13,7 @@
             color: green;
         }
         section{
-            border: none;
+            border: ;
         }
     </style>
 </head>
@@ -40,12 +40,17 @@
  <a href="{{ url_for('getUser', user_id=request.author_id) }}" style="color: blue">@{{ request.author_name }}</a>
  </span>
  <br>
- <p>{{ request.body | linkify }}</p>
+ <p>
+ <strong>
+ {{ request.body | linkify }}
+ </strong>
+ </p>
  <small>{{ request.created | naturaltime }}</small>
  </section>
  <div class="comments">
  <h3>🗣 ️Commments</h3>
  {% for comment in request.comments %}
+ <section>
  <p>
  {% if comment.user %}
  <a href="{{ url_for('getUser', user_id=comment.user.id) }}" style="color: blue">@{{ comment.user.name }}</a> 
@@ -56,6 +61,8 @@
  <span style="color: red;">Comment deleted</span>
  {% endif %}
  </p>
+ </section>
+ <br>
  {% endfor %}
  <!-- Comment Form -->
  <form method="POST" action="{{ url_for('requested_comment', cluster_id=cluster.id, chatId=request.chatId)}}" class="create-cluster">

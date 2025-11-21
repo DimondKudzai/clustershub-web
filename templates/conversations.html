@@ -41,22 +41,30 @@
    <strong style="font-size:20px; color: green;"> ⛓️ {{ thread.title }}</strong>
    <span> by <a href="{{ url_for('getUser', user_id=thread.author_id) }}" style="color: blue">@{{ thread.author_name }}</a></span>
    <br>
-   <p>{{ thread.body | linkify }}</p>
+   <p>
+   <strong>
+   {{ thread.body | linkify }}
+   </strong>
+   </p>
    <small>{{ thread.created | naturaltime }}</small>
    </section>
    <div class="comments">
    <h3>🗣 ️Commments</h3>
    {% for comment in thread.comments %}
+   <section style="">
    <p>
    {% if comment.user %}
    <a href="{{ url_for('getUser', user_id=comment.user.id) }}" style="color: blue">@{{ comment.user.name }}</a> 
    {{ comment.text | linkify }} 
    <br>
    <small>{{ comment.timestamp | naturaltime}}</small>
+   
    {% else %}
    <span style="color: red;">Comment deleted</span>
    {% endif %}
    </p>
+   </section>
+   <br>
    {% endfor %}
    <!-- Comment Form -->
    <form method="POST" action="{{ url_for('post_comment', cluster_id=cluster.id, thread_id=thread.chatId)}}" class="create-cluster">
@@ -65,6 +73,7 @@
    </form>
    </div>
    </div>
+   
    </section>
    </div>
    <br>
