@@ -46,13 +46,14 @@
                         <strong style="font-size:22px; color: green;"> {{ request.title }}</strong><span> by <a href="{{ url_for('getUser', user_id=request.author) }}" style="color: blue">@{{ request.author_name }}</a></span>
                         <br>
                         <p>
-                        <strong>
+                        <strong style="font-size: 1.2em;">
                         {{ request.body | linkify }}
                         </strong>
                         </p>
                         <small>{{request.created | naturaltime }}</small>
                     </section>
                     <div class="comments">
+                    <br><br>
                         <h3>Replies</h3>
                         {% for comment in request.comments %}
                         <section>

@@ -52,16 +52,20 @@
   <br><br>
   
   <section class="profile" id="cluster">
-  
+  <center>
     <img src="{{ url_for('static', filename='cluster.jpg') }}" class="circle" id="">
     
-    <span id="button_click">
-    <button class="dashboardBtn" style="float: right;background-color: blue;" id="share-button">
+  <br>
+  <span id="button_click">
+    <button class="dashboardBtn" style="float: righ;background-color: #1E90FF;" id="share-button">
     🔗Copy cluster link
     </button>
     </span>
+    </center>
     
-    <h3>{{ cluster.name }}</h3>
+    <br>
+    
+    <h2>{{ cluster.name }}</h2>
     <p class="about">{{ cluster.target }}</p>  
     
     <section>
@@ -78,7 +82,7 @@
      <h3>👥 Members </h3>
    <section class="badges">
    {% for member in members %}
-   <span class="badge" style="background-color: blue;color: white;link-color: inherit;">
+   <span class="badge" style="background-color: #1E90FF;color: white;link-color: inherit;">
    <a href="{{ url_for('getUser', user_id=member.id) }}" style="color: inherit">@{{ member.name }}</a>
    </span>
    {% endfor %}
@@ -128,23 +132,23 @@
     
   {% if is_author %}
   <a href="{{ url_for('show_cluster', cluster_id=cluster.id) }}"> 
-  <button class="dashboardBtn" style="background: ; width: 90%;"><strong> Open Cluster </strong></button>
+  <button class="dashboardBtn" style="background: ; width: 90%; display: block;margin-bottom: 5px;"><strong> Open Cluster </strong></button>
   </a>
   
   
   <a href="{{ url_for('cluster_updates', cluster_id=cluster.id) }}"> 
-  <button class="dashboardBtn" style="background: ; width: 90%;"><strong> Cluster Updates </strong></button>
+  <button class="dashboardBtn" style="background: ; width: 90%; display: block;margin-bottom: 5px;"><strong> Cluster Updates </strong></button>
   </a>
   
   <a href="{{ url_for('requested', cluster_id=cluster.id) }}">
-  <button class="dashboardBtn" style="background: ; width: 90%;"><strong> Member Requests </strong></button>
+  <button class="dashboardBtn" style="background: ; width: 90%; display: block;margin-bottom: 5px;"><strong> Member Requests </strong></button>
   </a>
   
   <a href="{{ url_for('cluster_updater', id=cluster.id) }}" > 
-  <button class="dashboardBtn" style="background: ; width: 90%;"><strong>⚙️ Cluster settings </strong></button>
+  <button class="dashboardBtn" style="background: ; width: 90%; display: block;margin-bottom: 5px;"><strong> Cluster settings </strong></button>
   </a>
   
- <button onclick="openRemoveMembersPopup({{ cluster.id }})" class="dashboardBtn" style="background: red; width: 90%;">
+ <button onclick="openRemoveMembersPopup({{ cluster.id }})" class="dashboardBtn" style="background: red; width: 90%; display: block;margin-bottom: 5px;">
  <strong> Remove Members </strong>
  </button>
  
@@ -164,7 +168,7 @@
  <hr>
  {% endfor %}
  </ul>
- <button onclick="closeRemoveMembersPopup()" class="dashboardBtn" style="background: blue; width:100%;">Cancel</button>
+ <button onclick="closeRemoveMembersPopup()" class="dashboardBtn" style="background: #1E90FF; width:100%;">Cancel</button>
  </sction>
  
   
@@ -183,7 +187,7 @@
         <form method="POST" action="{{ url_for('exit_cluster', cluster_id=cluster.id) }}">
         <button type="submit" class="dashboardBtn" style="background: red; width:100%;">Exit</button>
     </form>
-    <br><button onclick="closeExitPopup()" class="dashboardBtn" style="background: blue;width:100%;">Cancel</button>
+    <br><button onclick="closeExitPopup()" class="dashboardBtn" style="background: #1E90FF;width:100%;">Cancel</button>
 </section>
 
   
@@ -205,9 +209,11 @@
    <br>
 <section class="extraText">
     <ul style="list-style: none;">
+    <strong>
         <li>Author: <a href="{{ url_for('getUser', user_id=author.id) }}">@{{ author.name }}</a></li>
         <li>Date Created: {{ cluster.created | naturaltime }}</li>
-        <li>Status: <b>{{ cluster.status }}</b></li>
+        <li>Status: {{ cluster.status }}</li>
+     </strong>
     </ul>
 </section>
   </section>

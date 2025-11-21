@@ -70,6 +70,8 @@ def verify_reset_token(token, max_age=3600):
 def naturaltime_filter(timestamp):
     if isinstance(timestamp, str):
         dt = datetime.fromisoformat(timestamp.replace('Z', '+00:00'))
+    elif timestamp.tzinfo is None:
+        dt = timestamp.replace(tzinfo=timezone.utc)
     else:
         dt = timestamp
     return humanize.naturaltime(dt)
@@ -1507,9 +1509,9 @@ def linkify(text):
         return ''
     
     # Now it's safe to process
-    text = re.sub(r'([\w\.-]+@[\w\.-]+\.\w+)', r'<span style="color:purple;">\1</span>', text)
-    text = re.sub(r'@(\w+)', r'<span style="color: blue;">@\1</span>', text)
-    text = re.sub(r'(https?://[^\s]+)', r'<a href="\1" target="_blank">\1</a>', text)
+    text = re.sub(r'([\w\.-]+@[\w\.-]+\.\w+)', r'<span style="color:green;">\1</span>', text)
+    text = re.sub(r'@(\w+)', r'<span style="color: green;">@\1</span>', text)
+    text = re.sub(r'(https?://[^\s]+)', r'<a href="\1" target="_blank" style="color: green">\1</a>', text)
     text = re.sub(r'#(\w+)', r'<span style="color: green;">#\1</span>', text)
 
     return Markup(text)

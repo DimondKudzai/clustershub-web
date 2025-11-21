@@ -18,7 +18,7 @@
  
  <section class="profile">
  
- <button class="dashboardBtn" style="float: right;background-color: blue;" id="share-button">
+ <button class="dashboardBtn" style="float: right;background-color: #1E90FF;" id="share-button">
     🔗Copy Profile link
     </button>
  
@@ -42,7 +42,7 @@
 <br><br>
  <h3>About User </h3>
  <section>
- <p class="about">{{ user.description | linkify }}</p>
+ <p class="about" style="">{{ user.description | linkify }}</p>
  </section>
  <br>
  <strong> Joined </strong><span class="badge">{{ user.joined | naturaltime }}</span>

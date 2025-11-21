@@ -38,17 +38,18 @@
    <section style="color: black">
    <section>
    <div class="thread">
-   <strong style="font-size:20px; color: green;"> ⛓️ {{ thread.title }}</strong>
+   <strong style="font-size:20px; color: green;"> 📢 {{ thread.title }}</strong>
    <span> by <a href="{{ url_for('getUser', user_id=thread.author_id) }}" style="color: blue">@{{ thread.author_name }}</a></span>
    <br>
    <p>
-   <strong>
+   <strong style="font-size: 1.2em;">
    {{ thread.body | linkify }}
    </strong>
    </p>
    <small>{{ thread.created | naturaltime }}</small>
    </section>
    <div class="comments">
+   <br><br>
    <h3>🗣 ️Commments</h3>
    {% for comment in thread.comments %}
    <section style="">
@@ -84,7 +85,7 @@
             <form id="new-thread-form" method="POST" action="{{ url_for('create_thread', cluster_id=cluster.id) }}">
                 <input type="text" name="title" placeholder="Thread title" required />
                 <textarea id="thread-body" name="text" placeholder="Message body" required></textarea><br>
-                <button id="clicked" type="submit" class="dashboardBtn">Submit Thread ⛓️</button>
+                <button id="clicked" type="submit" class="dashboardBtn">Submit Thread 📢</button>
                 <span id="start-thread"></span>
             </form>
         </section>

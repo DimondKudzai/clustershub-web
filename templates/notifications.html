@@ -34,7 +34,7 @@
     <section style="background-color: {% if not message.read %}#d4fdd4{% else %}transparent{% endif %};">
     
     {% if not message.read %}<a href="{{ url_for('mark_read', msg_id=message.id) }}">
-   <button class="dashboardBtn" style="background-color: blue;" id="mark"> Mark as read</button>
+   <button class="dashboardBtn" style="background-color: #1E90FF;" id="mark"> Mark as read</button>
     {% endif %}
     </a>
     <br><br>

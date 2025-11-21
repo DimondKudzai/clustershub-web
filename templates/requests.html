@@ -41,13 +41,14 @@
  </span>
  <br>
  <p>
- <strong>
+ <strong style="font-size: 1.2em;">
  {{ request.body | linkify }}
  </strong>
  </p>
  <small>{{ request.created | naturaltime }}</small>
  </section>
  <div class="comments">
+ <br><br>
  <h3>🗣 ️Commments</h3>
  {% for comment in request.comments %}
  <section>

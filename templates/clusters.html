@@ -31,8 +31,8 @@
   <section class="profile" id="cluster" class="">
   <img src="{{ url_for('static', filename='cluster.jpg') }}" class="circle" id="">
   <a href="{{ url_for('getCluster', id=cluster.id) }}">
-  <button class="dashboardBtn" style="float: right;background-color: blue;"> 👀 View Cluster</button></a>
-  <h3>{{ cluster.name }}</h3>
+  <button class="dashboardBtn" style="float: right;background-color: #1E90FF;"> 👀 View Cluster</button></a>
+  <h2>{{ cluster.name }}</h2>
   <p class="about">{{ cluster.target }}</p>      
   
   <section class="badges">

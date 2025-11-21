@@ -27,7 +27,7 @@
       <br>
       <section>
       <div class="tabs">
-        <a href="{{ url_for('recommended_clusters') }}" > <button class="dashboardBtn" style="background-color: blue;" id="mark"><strong>Exclusive Matches</strong></button></a>
+        <a href="{{ url_for('recommended_clusters') }}" > <button class="dashboardBtn" style="background-color: #1E90FF;" id="mark"><strong>Exclusive Matches</strong></button></a>
         <a href="{{ url_for('startCluster') }}" > <button class="dashboardBtn"><strong>New Cluster</strong></button></a>
         <a href="{{ url_for('clusters') }}" ><button class="dashboardBtn"><strong>My Clusters </strong></button></a>
         <a href="{{ url_for('notifications') }}" ><button class="dashboardBtn"><strong>Notifications</strong> {% if notificationsCount >= 1 %} <b style="color: yellow;font-size: 16px;">{{ notificationsCount }}</b>{% endif %}</button></a>
@@ -36,7 +36,7 @@
         <a href="{{ url_for('about') }}" > <button class="dashboardBtn"><strong>About - Feedback</strong></button></a>
         {% if id == 1 %}
         <a href="{{ url_for('admin_analytics') }}" >
-         <button class="dashboardBtn" style="background: blue;"><strong>Admin</strong></button>
+         <button class="dashboardBtn" style="background: #1E90FF;"><strong>Admin</strong></button>
         </a>
         {% endif %}
       </div>
