@@ -502,7 +502,7 @@ def myProfile():
     if user is None:
         return redirect('/login')
 
-    return render_template('profile.html', user=user)
+    return render_template('myProfile.html', user=user)
         
 
 

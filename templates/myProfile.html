@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="keywords" content="User profile, Users" />
+  <meta name="description" content="This is User profile on Clusters Hub" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile</title>
+  <link rel="icon" type="image/jpg" href="{{url_for('static', filename='banner.jpg')}}">
+  <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}">
+</head>
+<body>
+
+{% include 'partials/header.html' %}
+  
+  
+ <div class="container">
+ 
+ <section class="profile">
+ 
+<a href="{{ url_for('register_update') }}" >
+ <button class="dashboardBtn" style="float: right;background-color: #1E90FF;" id="">
+  ✍️ Edit Account?
+    </button>
+ </a>
+ 
+ <div class="avatar" id="avatar" style="background-color: green; color: white;">                                                                    
+ <script>
+ const fullName = "{{user.full_name}}";
+ if (fullName) {
+ const initials = fullName
+ .split(' ')
+ .map(word => word[0])
+ .join('')
+ .toUpperCase();
+ document.getElementById('avatar').textContent = initials;
+ }
+ </script>
+ </div>
+ <br>
+ <strong style="border-right: 1px solid green;padding-right: 15px;color:black;">{{ user.full_name | e }} </strong>
+ <strong style="padding: 15px"> @{{ user.name | e }}</strong>
+ 
+<br><br>
+ <h3>About User </h3>
+ <section>
+ <p class="about" style="">{{ user.description | linkify }}</p>
+ </section>
+ <br>
+ <strong> Joined </strong><span class="badge">{{ user.joined | naturaltime }}</span>
+ 
+ <h3>Skills </h3>
+ <section class="badges">
+ {% for skill in user.get_skills() %}
+ <span class="badge">{{ skill | e }}</span>
+ {% endfor %}
+ </section>
+ 
+ <strong>🌐 Location </strong>
+ <span class="badge">{{ user.location | e }}</span>
+ <br>
+ 
+ 
+
+ <h3> 🔗 Public links</h3>
+ <section class="about_links" >
+ 
+ <strong>
+ <ul style="list-style: square;padding: 12px;color: green;">
+ <li>{{user.website | linkify }}</li><br>
+ 
+ <li>{{ user.second_website | linkify }}</li>
+ </ul>
+ </strong>
+ </section>
+ 
+ </div>
+ 
+ 
+{% include 'partials/footer.html' %}
+<script type="text/javascript">
+
+const playSoundButton = document.getElementById('share-button');
+const audio = new Audio('{{ url_for('static', filename='ztink.wav') }}');
+
+playSoundButton.addEventListener('click', () => {
+   audio.play();
+});
+
+</script>
+</body>
+</html>
