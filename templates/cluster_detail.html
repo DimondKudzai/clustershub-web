@@ -128,8 +128,10 @@
     <br>
     <section>
     <center>
-    
-    
+    <style type="text/css">
+    .action a{text-decoration:none}
+    </style>
+    <div class="action">
   {% if is_author %}
   <a href="{{ url_for('show_cluster', cluster_id=cluster.id) }}"> 
   <button class="dashboardBtn" style="background: ; width: 90%; display: block;margin-bottom: 5px;"><strong> Open Cluster </strong></button>
@@ -205,7 +207,7 @@
    
    </center>
    </section>
-   
+   </div>
    <br>
 <section class="extraText">
     <ul style="list-style: none;">
