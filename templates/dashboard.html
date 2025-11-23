@@ -8,6 +8,9 @@
   <meta name="description" content="Clusters hub main menu | dashboard" />
   <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}"> 
   <link rel="icon" type="image/jpg" href="{{url_for('static', filename='banner.jpg')}}">
+  <style type="text/css">
+  *{ font-family: 'roboto';}
+  </style>
 </head>
 <body>
 
@@ -16,7 +19,7 @@
   <section class="dashboardContainer" style="margin-top: +10px;">
   
   <section style="padding: 5px; border: none; display: flex; align-items: center; gap: 10px;">
-  <h3 style="margin: 0; font-family: 'roboto';">
+  <h3 style="margin: 0;">
   <a href="{{ url_for('getUser', user_id=id) }}">@{{ name }}</a>
   </h3>
   <h1 style="margin: 0; font-family: 'roboto'; font-weight: bold;">
@@ -26,8 +29,8 @@
 
       <br>
       <section>
-      <div class="tabs">
-        <a href="{{ url_for('recommended_clusters') }}" > <button class="dashboardBtn" style="background-color: #1E90FF;" id="mark"><strong>⚡ Exclusive Matches</strong></button></a>
+      <div class="tabs" style="padding-right: 30px;">
+        <a href="{{ url_for('recommended_clusters') }}" > <button class="dashboardBtn" style="" id="mark"><strong>⚡ Exclusive Matches</strong></button></a>
         <a href="{{ url_for('startCluster') }}" > <button class="dashboardBtn"><strong>⭐ New Cluster</strong></button></a>
         <a href="{{ url_for('clusters') }}" ><button class="dashboardBtn"><strong>🏠 My Clusters </strong></button></a>
         <a href="{{ url_for('notifications') }}" ><button class="dashboardBtn"><strong>🔔 Notifications</strong> {% if notificationsCount >= 1 %} <b style="color: yellow;font-size: 16px;">{{ notificationsCount }}</b>{% endif %}</button></a>
