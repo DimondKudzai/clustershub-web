@@ -1426,10 +1426,10 @@ def recommended_clusters():
         score = 0
         
         # Keyword overlap
-        score += 3 * len(set(user_skills) & set(tags))  # Exact in target
+        score += 3 * len(set(user_skills) & set(tags))  # Exact match in skill and tags
         if any(skill in target for skill in user_skills):
-            score += 2  # Loose match
-        score += sum(1 for skill in user_skills if any(skill in word for word in target_words))
+            score += 2  # cluster target and user skill match
+        score += sum(1 for skill in user_skills if any(skill in word for word in target_words)) #loose match
         
         # Description overlap
         score += sum(1 for word in user_desc_words if word in cluster_description.split())
