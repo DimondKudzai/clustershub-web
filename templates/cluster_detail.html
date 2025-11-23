@@ -176,10 +176,10 @@
   
   {% elif is_member %}
   <a href="{{ url_for('show_cluster', cluster_id=cluster.id) }}"> 
-  <button class="dashboardBtn" style="background: ; width: 90%;"><strong> Open Cluster </strong></button>
+  <button class="dashboardBtn" style="background: ; width: 90%; display: block;margin-bottom: 5px;"><strong> Open Cluster </strong></button>
   </a>
   <a href="{{ url_for('cluster_updates', cluster_id=cluster.id) }}"> 
-  <button class="dashboardBtn" style="background: ; width: 90%;"><strong> Open Cluster Updates </strong></button>
+  <button class="dashboardBtn" style="background: ; width: 90%; display: block;margin-bottom: 5px;"><strong> Open Cluster Updates </strong></button>
   </a>
 <button onclick="openExitPopup({{ cluster.id }})" class="dashboardBtn" style="background: red; width: 90%;"><strong> Exit Cluster </strong></button>
 
@@ -196,10 +196,10 @@
   {% else %}
   {% if requested %}
   <a href="{{ url_for('user_requests') }}"> 
-  <button class="dashboardBtn" style="background: ; width: 90%;"><strong> View sent request</strong></button>
+  <button class="dashboardBtn" style="background: ; width: 90%; display: block;margin-bottom: 5px;"><strong> View sent request</strong></button>
   </a>
   {% else %}
-  <button onclick="openRequestPopup({{ cluster.id }})" class="dashboardBtn" style="background: ; width: 90%;" id="button_click">
+  <button onclick="openRequestPopup({{ cluster.id }})" class="dashboardBtn" style="background: ; width: 90%; display: block; margin-bottom: 5px;" id="button_click">
   <strong> Request membership </strong>
   </button>
   {% endif %}

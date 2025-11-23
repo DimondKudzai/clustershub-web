@@ -49,7 +49,7 @@
  </section>
  <div class="comments">
  <br><br>
- <h3>🗣 ️Commments</h3>
+ <h3>📬 ️Replies</h3>
  {% for comment in request.comments %}
  <section>
  <p>
@@ -67,8 +67,8 @@
  {% endfor %}
  <!-- Comment Form -->
  <form method="POST" action="{{ url_for('requested_comment', cluster_id=cluster.id, chatId=request.chatId)}}" class="create-cluster">
- <textarea type="text" name="text" placeholder="Your comment" required></textarea><br>
- <button id="clicked" type="submit" class="dashboardBtn">Post Comment</button>
+ <textarea type="text" name="text" placeholder="Add Reply" required></textarea><br>
+ <button id="clicked" type="submit" class="dashboardBtn">Sent Reply</button>
  </form>
  </div>
  
@@ -76,7 +76,7 @@
    <section style="padding: 5px;border: none;">
    <center>
    <form method="POST" action="{{ url_for('accept_request', cluster_id=cluster.id, request_id=request.chatId) }}">
-   <button class="dashboardBtn" style=" width: 100%;" type="submit">Accept Request</button>
+   <button class="dashboardBtn" style=" width: 100%;" type="submit">Accept Request and Delete</button>
    </form>
    <form method="POST" action="{{ url_for('decline_request', cluster_id=cluster.id, request_id=request.chatId) }}">
    <button class="dashboardBtn" style="background: red; width: 100%;" type="submit">Decline and Delete</button>

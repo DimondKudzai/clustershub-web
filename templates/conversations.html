@@ -21,7 +21,9 @@
             <center>
             <a href="{{ url_for('getCluster', id=cluster.id) }}">
                 <h2>{{ cluster.name }} </a>💬 </h2>
-                <p style="color: black">{{ cluster.target }} 
+                <p style="color: black">
+                {{ cluster.target }} 
+                <br>
                 <a href="#start-thread" >
                 <button class="dashboardBtn">Jumb to Start Thread 📢</button></p>
                 </a>
@@ -50,7 +52,7 @@
    </section>
    <div class="comments">
    <br><br>
-   <h3>🗣 ️Commments</h3>
+   <h3>🗣 ️Comments</h3>
    {% for comment in thread.comments %}
    <section style="">
    <p>

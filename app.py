@@ -251,6 +251,10 @@ def forgot_password():
             url = f"We sent you an email. Please click on the link sent to you to reset your password. Please check your mailbox and click on the link before it expires in 60 minutes. Reset URL: {reset_url}"
             #return redirect('/login')
             return render_template('forgot.html', url=url)
+        else:
+            error = "email adress not registered"
+            return render_template('error.html', error=error)
+            
             
     return render_template('forgot.html')
 

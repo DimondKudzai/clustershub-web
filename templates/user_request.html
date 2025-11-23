@@ -54,7 +54,7 @@
                     </section>
                     <div class="comments">
                     <br><br>
-                        <h3>Replies</h3>
+                        <h3>📬 Replies</h3>
                         {% for comment in request.comments %}
                         <section>
                         <p>
@@ -68,14 +68,14 @@
                     </div>
                     <form action="{{ url_for('user_requested_comment', chatId=request.chatId, cluster_id=cluster.id)}}" method="post">
                         <input type="hidden" name="chatId" value="{{ request.chatId }}">
-                        <textarea type="text" name="text" placeholder="Your comment" required></textarea><br>
-                        <button type="submit" class="dashboardBtn" style="background: blue;">Sent Reply</button>
+                        <textarea type="text" name="text" placeholder="Add Reply" required></textarea><br>
+                        <button type="submit" class="dashboardBtn" style="">Sent Reply</button>
                     </form>
                 </div>
                 <br>
                 <section style="border: none;">
                 <form method="POST" action="{{ url_for('withdraw_request', cluster_id=cluster.id, request_id=request.chatId) }}">
-                <button type="submit" class="dashboardBtn" style="background: red; width: 90%;"><strong> Withdraw Request </strong></button>
+                <button type="submit" class="dashboardBtn" style="background: red; width: 90%;"><strong> Withdraw and delete Request </strong></button>
                 </form>
                 </section>
                 <br><br>
