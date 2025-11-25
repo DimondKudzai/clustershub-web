@@ -34,9 +34,11 @@
       <h2>Create Cluster</h2>
       <form action="{{url_for('startCluster')}}" method="POST">
       <strong class=""> Name</strong>
-      <input name="name" type="text" placeholder="Cluster Name" class="input"><br><br>
+      <input name="name" type="text" placeholder="Cluster Name" class="input">
+      <br><br>
       <strong class=""> Description</strong>
-      <textarea name="description" placeholder="Description"></textarea><br><br>
+      <textarea name="description" placeholder="Description"></textarea>
+      <br><br>
       
       <strong class="">Roles Needed</strong>
       <br><br>
@@ -57,10 +59,13 @@
         <input type="text/number" name="status" placeholder="Idea or In progress">
           </div>
         
-        <br><strong class="">Current Target</strong>
+        <br>
+        <strong class="">Current Target</strong>
         <input type="text" name="target" placeholder="start typing.." class="input"><br>     
     
-        <button class="dashboardBtn" type="submit"><span style="font-size: 16px;">Create Cluster</span></button>
+        <button class="dashboardBtn" type="submit">
+        <span style="font-size: 16px;">Create Cluster</span>
+        </button>
     </form>
     
     </section>
