@@ -24,9 +24,14 @@
   </center>
   <br>
   
+  <section style="border: none">
+  <center>
+  <h2>Edit {{ cluster.name }}</h2>
+  </section>
+  </center>
+  <br>
 
     <section class="create-cluster">
-      <h2>Edit️ Cluster - {{ cluster.name }}</h2>
       <p>Only fill where you want to update</p>
      <form action="{{url_for('cluster_updater', id=cluster.id)}}" method="POST">
      <strong class="">Change Name</strong>
@@ -57,14 +62,13 @@
      
      <button class="dashboardBtn" type="submit"><span style="font-size: 16px;">Update Cluster</span></button>
      </form>
-    
-    </section>
-    
     <br>
     <section style="border: none;">
     <button onclick="openRequestPopup({{ cluster.id }})" class="dashboardBtn" style="background: red; width: 90%;"><strong> Delete Cluster </strong></button>
     </section>
-    <br><br>
+    
+    </section>
+   
     <section style="display: none;color: red;" id="delete-cluster-popup" class="popup">
     <p style="color: red">Do you really want to delete this cluster? This action cannot be reversed.</p>
     <form method="POST" action="{{ url_for('delete_cluster', cluster_id=cluster.id) }}">

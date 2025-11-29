@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="keywords" content="Notifications, Messages" />
-  <meta name="description" content="Here are your account notifications" />
+  <meta name="description" content="Here are your Account notifications" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Account Notifications</title>
   <link rel="icon" type="image/jpg" href="{{url_for('static', filename='banner.jpg')}}">
@@ -16,11 +16,11 @@
 {% include 'partials/header.html' %}
   
   <div class="container">
-    <section class="profile">
+    <div class="profile">
     
     <section style="padding: 1px;border: none;">
     <center>
-        <h3>Notifications</h3> 
+        <h2>Account Notifications</h2> 
       </center>
       </section>
       <br>
@@ -28,6 +28,7 @@
     
     <a href="#bottom" >
     <p>Jumb to Bottom</p>
+    </a>
     
     {% for message in messages %}
     
@@ -52,10 +53,9 @@
     </section>
     <br>
     {% endfor %}
-   
-        
+       
       </div>
- </section>
+ </div>
  <span id="bottom"></span>
 {% include 'partials/footer.html' %}
 </body>

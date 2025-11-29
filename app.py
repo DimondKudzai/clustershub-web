@@ -2,7 +2,6 @@ from flask import Flask, request, redirect, url_for, render_template, send_from_
 import os
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timezone
-#from services.appData import get_all_users, get_all_clusters, get_suggestions
 from models import db
 from config import Config
 from models import User, Cluster, Suggestion # Import models
@@ -13,9 +12,10 @@ import sqlite3
 from sqlalchemy import func
 from datetime import datetime
 from functools import wraps
-
 import humanize
 from humanize import naturaltime
+import re
+from markupsafe import Markup, escape
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -28,19 +28,8 @@ admin.add_view(ModelView(User, db.session))
 admin.add_view(ModelView(Cluster, db.session))
 admin.add_view(ModelView(Suggestion, db.session))
 
-"""
-from flask_login import LoginManager, login_user, current_user, login_required
-
-login_manager = LoginManager()
-login_manager.login_view = 'login'  # Set this after creating the instance
-login_manager.init_app(app)
-
-@login_manager.user_loader
-def load_user(user_id):
-    return db.session.get(User, int(user_id))
- """
-    
-# Add a decorator to check if the user is logged in
+   
+# Decorator to check if the user is logged in
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -55,6 +44,7 @@ app.jinja_env.filters['naturaltime'] = naturaltime
 
 from itsdangerous import URLSafeTimedSerializer
 
+# Password reset
 def generate_reset_token(email):
     serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
     return serializer.dumps(email, salt='password-reset-salt')
@@ -74,33 +64,8 @@ def naturaltime_filter(timestamp):
         dt = timestamp.replace(tzinfo=timezone.utc)
     else:
         dt = timestamp
-    return humanize.naturaltime(dt)
+    return humanize.naturaltime(dt)   
     
-# HOME
-
-@app.route('/')
-def index():
-    return redirect('/home')
-    
-    
-@app.route('/home')
-def home():
-    user_id = session.get('user_id')
-    if user_id is None:
-        return redirect('/login')
-
-    user = db.session.get(User,user_id)
-    if user is None:
-        return redirect('/login')
-
-    created_clusters = user.get_created_clusters()
-    cluster_count = len(created_clusters)
-    messages = user.get_messages()
-    # Count unread
-    unread_count = sum(1 for m in messages if not m.get("read", False))
-    return render_template('dashboard.html',id=user.id, name=user.name, clustersCount=cluster_count, notificationsCount=unread_count)
-   
-
 
 # Create a URLSafeTimedSerializer for generating and verifying tokens
 ts = URLSafeTimedSerializer(app.config['SECRET_KEY'])
@@ -117,7 +82,7 @@ def verify_confirmation_token(token, expiration=3600):
 
 
 @app.route('/send-confirmation-email', methods=['POST', 'GET'])
-@login_required  # Your custom session-based decorator
+@login_required
 def send_confirmation_email():
     user_id = session.get('user_id')
     user = db.session.get(User, user_id)
@@ -177,35 +142,32 @@ def resend_confirmation_email():
    # return redirect(url_for('dashboard'))
     message = "f'We have sent you an email. Please click on the link sent to you to confirm your account. Please check your mailbox and click on the link before it expires in 60 minutes. Confirm URL: {confirm_url}"
     return render_template('confirm.html', message=message)
-    
-    
 
+# HOME
+@app.route('/')
+def index():
+    return redirect('/home')
+    
+    
+@app.route('/home')
+def home():
+    user_id = session.get('user_id')
+    if user_id is None:
+        return redirect('/login')
+
+    user = db.session.get(User,user_id)
+    if user is None:
+        return redirect('/login')
+
+    created_clusters = user.get_created_clusters()
+    cluster_count = len(created_clusters)
+    messages = user.get_messages()
+    # Count unread
+    unread_count = sum(1 for m in messages if not m.get("read", False))
+    return render_template('dashboard.html',id=user.id, name=user.name, clustersCount=cluster_count, notificationsCount=unread_count)  
 
 
 # LOGIN HANDLER
-"""
-# old handler
-@app.route('/old_login_handler', methods=['POST'])
-def old_login_handler():
-    try:
-        username = request.form['username'].strip()
-        password = request.form['password'].strip()
-    except KeyError:
-        return redirect(url_for('login'))
-
-    users = User.query.all()
-    user = next((u for u in users if (u.name.strip().lower() == username.lower() or u.email.strip().lower() == username.lower()) and u.password == password), None)
-    if user:
-        session['user_id'] = user.id
-        login_user(user)
-        return redirect('/home')
-    else:
-        session['notice'] = "Invalid login details, retry or create an account"
-        return redirect(url_for('login'))
-    """    
-
-# handler   
-
 @app.route('/login_handler', methods=['POST'])
 def login_handler():
     try:
@@ -233,7 +195,6 @@ def login_handler():
 def login():
     notice = session.pop('notice', None)
     return render_template('auth.html', notice=notice)
-
 
 
 @app.route('/forgot', methods=['GET', 'POST'])
@@ -282,7 +243,6 @@ def reset_password(token):
     
         
 # Register
-
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     notice = session.pop('notice', None)
@@ -394,7 +354,6 @@ def register():
     return render_template('register.html', suggested_skills=suggested_skills, notice=notice)
 
 
-
 @app.route('/register_update', methods=['GET', 'POST'])
 @login_required
 def register_update():
@@ -493,8 +452,7 @@ def register_update():
 
 # Users
 
-# PROFILE
-    
+# Profile    
 @app.route('/myProfile')
 @login_required
 def myProfile():
@@ -509,11 +467,11 @@ def myProfile():
     return render_template('myProfile.html', user=user)
         
 
-
 @app.route("/users")
 @login_required
 def users():
     return jsonify(User.query.all())
+    
     
 @app.route("/users/<int:user_id>")
 @login_required
@@ -527,7 +485,6 @@ def getUser(user_id):
 	    	    
 	    
 # Clusters
-
 @app.route('/startCluster', methods=['GET', 'POST'])
 @login_required
 def startCluster():
@@ -665,8 +622,7 @@ def getCluster(id):
     error = "No Cluster found"
     return render_template('error.html', error=error)
     
-      
-   
+        
 @app.route('/cluster_update/<int:id>', methods=['GET', 'POST'])
 @login_required
 def cluster_updater(id):
@@ -774,8 +730,7 @@ def get_cluster_members(cluster_id):
             member_data.append({'id': member.id, 'name': member.name})
     return render_template('cluster_members.html', cluster=cluster, members=member_data)
     
-    
-    
+        
 @app.route('/clusters/<int:cluster_id>/exit', methods=['POST'])
 @login_required
 def exit_cluster(cluster_id):
@@ -886,8 +841,7 @@ def cluster_members(cluster_id):
     return render_template('cluster_members.html', cluster=cluster)
         
         
-# Notifications        
-        
+# Notifications                
 @app.route("/notifications")
 @login_required
 def notifications():
@@ -901,7 +855,6 @@ def notifications():
     messages.sort(key=lambda x: x['id'], reverse=True)
     return render_template("notifications.html", messages=messages)
     
-
 
 @app.route("/notifications/read/<int:msg_id>")
 @login_required
@@ -923,7 +876,6 @@ def mark_read(msg_id):
     return redirect(url_for("notifications"))
 
 # Requests
-
 @app.route('/clusters/<int:cluster_id>/withdraw-request/<int:request_id>', methods=['POST'])
 @login_required
 def withdraw_request(cluster_id, request_id):
@@ -1030,6 +982,7 @@ def requested(cluster_id):
             comment['user'] = db.session.get(User, comment['user'])
     return render_template('requests.html', cluster=cluster, requests=requests)
 
+
 @app.route('/clusters/requests/<int:cluster_id>/comment/<chatId>', methods=['POST'])
 @login_required
 def requested_comment(cluster_id, chatId):
@@ -1066,6 +1019,7 @@ def requested_comment(cluster_id, chatId):
             return redirect(url_for('requested', cluster_id=cluster_id))
     error = "No Request found"
     return render_template('error.html', error=error)
+    
     
 @app.route('/user_clusters/requests/<int:cluster_id>/comment/<chatId>', methods=['POST'])
 @login_required
@@ -1104,6 +1058,7 @@ def user_requested_comment(cluster_id, chatId):
     error = "No Request found"
     return render_template('error.html', error=error)
 
+
 @app.route('/user_requests')
 @login_required
 def user_requests():
@@ -1136,6 +1091,7 @@ def user_requests():
         return render_template('user_request.html', user=user, clusters=requested_clusters, clustersCount=len(requested_clusters))
     error = "No Request found"
     return render_template('error.html', error=error)
+
 
 @app.route('/clusters/<int:cluster_id>/requests/<int:request_id>/accept', methods=['POST'])
 @login_required
@@ -1226,8 +1182,8 @@ def decline_request(cluster_id, request_id):
     db.session.commit()
     return redirect(url_for('requested', cluster_id=cluster_id))
 
-# conversations
 
+# conversations
 @app.route('/clusters/<int:cluster_id>/chat', methods=['GET'])
 @login_required
 def show_cluster(cluster_id):
@@ -1251,6 +1207,7 @@ def show_cluster(cluster_id):
             comment['user'] = db.session.get(User, comment['user'])
     
     return render_template('conversations.html', cluster=cluster, conversations=conversations)
+
 
 @app.route('/clusters/<int:cluster_id>/threads/<int:thread_id>/comments', methods=['POST'])
 @login_required
@@ -1291,6 +1248,7 @@ def post_comment(cluster_id, thread_id):
     thread_author.set_messages(thread_author.get_messages() + [notification])
     db.session.commit()
     return redirect(url_for('show_cluster', cluster_id=cluster_id))
+    
     
 @app.route('/clusters/<int:cluster_id>/threads', methods=['POST'])
 @login_required
@@ -1361,7 +1319,6 @@ def cluster_updates(cluster_id):
        
 
 # Recomended clusters - Algo
-
 @app.route('/recommended_clusters')
 @login_required
 def recommended_clusters():
@@ -1457,7 +1414,6 @@ def recommended_clusters():
 """
     
 # Extra endpoints
-
 @app.route('/admin/analytics')
 def admin_analytics():
     if session.get('user_id') != 1:  # restrict to you (adjust ID or use a proper admin check)
@@ -1504,8 +1460,6 @@ def logout():
     session.clear()
     return redirect('/login')
 
-import re
-from markupsafe import Markup, escape
 
 @app.template_filter('linkify')
 def linkify(text):
