@@ -685,9 +685,10 @@ def delete_cluster(cluster_id):
     if not cluster:
         error = "No Cluster found"
         return render_template('error.html', error=error)
+
     members = cluster.get_members()
     cluster_author = db.session.get(User, cluster.author)
-    
+
     # Remove cluster from member_clusters of all members
     for member_id in members:
         member = db.session.get(User, member_id)
@@ -695,23 +696,25 @@ def delete_cluster(cluster_id):
             member_joined_clusters = member.get_joined()
             member_joined_clusters.remove(cluster_id)
             member.set_joined(member_joined_clusters)
-    
+
     db.session.delete(cluster)
     db.session.commit()
-    
-    # Send notification to all cluster members
+
+    # Send notification to all cluster members excluding the author
     for member_id in members:
-        member = db.session.get(User, member_id)
-        if member:
-            notification = {
-                "id": len(member.get_messages()) + 1,
-                "body": f"{cluster.name} was deleted by its Author. Here are your recommended Clusters",
-                "read": False,
-                "url": f"/recommended_clusters",
-                "timestamp": datetime.now(timezone.utc).isoformat()
-            }
-            member.set_messages(member.get_messages() + [notification])
-            db.session.commit()
+        if member_id != cluster.author:  # Check if the member is not the cluster author
+            member = db.session.get(User, member_id)
+            if member:
+                notification = {
+                    "id": len(member.get_messages()) + 1,
+                    "body": f"{cluster.name} was deleted by its Author. Here are your recommended Clusters",
+                    "read": False,
+                    "url": f"/recommended_clusters",
+                    "timestamp": datetime.now(timezone.utc).isoformat()
+                }
+                member.set_messages(member.get_messages() + [notification])
+                db.session.commit()
+
     return redirect('/clusters')
   
   
@@ -1236,17 +1239,19 @@ def post_comment(cluster_id, thread_id):
     })
     cluster.set_conversations(conversations)
     db.session.commit()
-    # Send notification to the thread author
+    
+    # Send notification to the thread author (excluding the comment author)
     thread_author = db.session.get(User, thread['author'])
-    notification = {
-        "id": len(thread_author.get_messages()) + 1,
-        "body": f"{user.name} commented on your thread - {thread['title']}.",
-        "read": False,
-        "url": f"/clusters/{cluster_id}/chat",
-        "timestamp": datetime.now(timezone.utc).isoformat()
-    }
-    thread_author.set_messages(thread_author.get_messages() + [notification])
-    db.session.commit()
+    if thread_author.id != user_id:  # Check if the comment author is not the thread author
+        notification = {
+            "id": len(thread_author.get_messages()) + 1,
+            "body": f"{user.name} commented on your thread - {thread['title']}.",
+            "read": False,
+            "url": f"/clusters/{cluster_id}/chat",
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }
+        thread_author.set_messages(thread_author.get_messages() + [notification])
+        db.session.commit()
     return redirect(url_for('show_cluster', cluster_id=cluster_id))
     
     
@@ -1278,20 +1283,22 @@ def create_thread(cluster_id):
     conversations.append(new_thread)
     cluster.set_conversations(conversations)
     db.session.commit()
-    # Send notification to all cluster members
+    
+    # Send notification to all cluster members excluding the thread author
     members = cluster.get_members()
     for member_id in members:
-        member = db.session.get(User, member_id)
-        if member:
-            notification = {
-                "id": len(member.get_messages()) + 1,
-                "body": f"{user.name} created a Thread titled '{title}' in Cluster - {cluster.name}.",
-                "read": False,
-                "url": f"/clusters/{cluster_id}/chat",
-                "timestamp": datetime.now(timezone.utc).isoformat()
-            }
-            member.set_messages(member.get_messages() + [notification])
-    db.session.commit()
+        if member_id != user_id:  # Check if the member is not the thread author
+            member = db.session.get(User, member_id)
+            if member:
+                notification = {
+                    "id": len(member.get_messages()) + 1,
+                    "body": f"{user.name} created a Thread titled '{title}' in Cluster - {cluster.name}.",
+                    "read": False,
+                    "url": f"/clusters/{cluster_id}/chat",
+                    "timestamp": datetime.now(timezone.utc).isoformat()
+                }
+                member.set_messages(member.get_messages() + [notification])
+                db.session.commit()
     updates = {
         "message": f"Thread '{title}' created by {user.name}.",
         "timestamp": datetime.now(timezone.utc).isoformat()
