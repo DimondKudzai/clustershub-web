@@ -65,12 +65,15 @@
  <section class="about_links" >
  
  <strong>
- <ul style="list-style: square;padding: 12px;color: green;">
- <li>{{user.website | linkify }}</li><br>
+ <ul style="list-style: square;padding: 12px;color: #1E90FF;">
+<li>{{ user.website | linkify }}</li><br>
  
+ {% if user.second_website %} 
  <li>{{ user.second_website | linkify }}</li>
+ {% endif %}
  </ul>
  </strong>
+ 
  </section>
  
  </div>
