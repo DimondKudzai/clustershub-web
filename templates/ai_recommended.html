@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="keywords" content="Exclusive, Hot picks, Recommended" />
-  <meta name="description" content="Here are recommended Clusters that matches your skills" />
+  <meta name="keywords" content="Exclusive, Hot picks, AI Recommended" />
+  <meta name="description" content="Here are your AI recommended Clusters that match your skills" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Recommended Clusters</title>
   <link rel="icon" type="image/jpg" href="{{url_for('static', filename='banner.jpg')}}">
@@ -29,7 +29,7 @@
     </h3>
     <a href="{{ url_for('recommended_clusters') }}" >
     <button class="dashboardBtn" style="background-color: green;" id="mark">
-    <strong>🔍 Back to manual Matching</strong>
+    <strong>Turn off 🤖 AI Deep Matching</strong>
     </button>
     </a>
     
@@ -43,7 +43,9 @@
     <section class="profile" id="cluster" class="">
     <img src="{{ url_for('static', filename='cluster.jpg') }}" class="circle" id="">
     
-    <a href="{{ url_for('getCluster', id=cluster.id) }}"><button class="dashboardBtn" style="float: right;background-color: #1E90FF;">👀 View Cluster</button></a>
+    <a href="{{ url_for('getCluster', id=cluster.id) }}">
+    <button class="dashboardBtn" style="float: right;background-color: #1E90FF;">👀 View Cluster</button>
+    </a>
     
     <h2>{{ cluster.name }}</h2>
     <p class="about">{{ cluster.target }}</p>      

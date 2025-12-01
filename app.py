@@ -19,7 +19,7 @@ from markupsafe import Markup, escape
 
 app = Flask(__name__)
 app.config.from_object(Config)
-app.config['SECRET_KEY'] = '2409'
+app.config['SECRET_KEY'] = Config.secret_key
 
 db.init_app(app)
 
@@ -451,8 +451,6 @@ def register_update():
 
 
 # Users
-
-# Profile    
 @app.route('/myProfile')
 @login_required
 def myProfile():
@@ -1423,7 +1421,7 @@ def recommended_clusters():
 # Extra endpoints
 @app.route('/admin/analytics')
 def admin_analytics():
-    if session.get('user_id') != 1:  # restrict to you (adjust ID or use a proper admin check)
+    if session.get('user_id') != 1:
         return redirect('/login')
 
     total_users = User.query.count()
@@ -1457,6 +1455,7 @@ def about():
 def terms():
     return render_template('terms.html')
     
+    
 @app.route('/error')
 def error():
     return render_template('error.html', error=error)
@@ -1473,7 +1472,7 @@ def linkify(text):
     if not text:
         return ''
     
-    # Now it's safe to process
+    # safe to process
     text = re.sub(r'([\w\.-]+@[\w\.-]+\.\w+)', r'<span style="color:deepSkyBlue;">\1</span>', text)
     text = re.sub(r'@(\w+)', r'<span style="color: deepSkyBlue;">@\1</span>', text)
     text = re.sub(r'(https?://[^\s]+)', r'<a href="\1" target="_blank" style="color: deepSkyBlue">\1</a>', text)
