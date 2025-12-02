@@ -113,7 +113,6 @@ width: 100%;
 height: 5rem;
 }
 
-
 .circle {
   width: 100px;
   height: 100px;
@@ -277,6 +276,7 @@ color: blue;
 .badges {
 margin: 10px 0;
 }
+
 .badge {
 display: inline-block;
 background-color: green;
@@ -345,6 +345,7 @@ padding: 5px;
     display: flex;
   }
 }
+
 .aboutLinks{
 font-weight: 350;
 font-size: 14px;
