@@ -9,14 +9,15 @@
   <link rel="icon" type="image/jpg" href="{{url_for('static', filename='banner.jpg')}}">
   <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}">
 
-    <script type="text/javascript">
+   <script type="text/javascript">
     document.addEventListener('click', (event) => {
     if (event.target.classList.contains('dashboardBtn')) {
     const audio = new Audio('{{ url_for('static', filename='ztink.wav') }}');
     audio.play();
     }
     });
-    </script>
+   </script>
+    
 </head>
 <body>
 
@@ -31,16 +32,14 @@
     <button class="dashboardBtn" style="background-color: Orange;" id="mark">
     <strong>Turn on 🤖 AI Deep Matching</strong>
     </button>
-    </a>
-    
+    </a> 
     </center>
   
     <div class="container">
-    
     {% if clusters %}
     {% for cluster in clusters %}
     
-    <section class="profile" id="cluster" class="">
+    <section class="profile" id="cluster">
     <img src="{{ url_for('static', filename='cluster.jpg') }}" class="circle" id="">
     
     <a href="{{ url_for('getCluster', id=cluster.id) }}"><button class="dashboardBtn" style="float: right;background-color: #1E90FF;">👀 View Cluster</button></a>
@@ -57,8 +56,7 @@
     
     </section>
     <br>
-    
-    
+     
     {% endfor %}  
     {% else %}
     <p>No recommended clusters found.</p>

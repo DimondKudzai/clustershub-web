@@ -3,15 +3,18 @@ from flask_login import UserMixin
 from flask_sqlalchemy import SQLAlchemy
 import json
 from datetime import datetime
+from config import Config
 from services.appData import get_all_users, get_all_clusters, get_suggestions
 
-
-
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///clusters.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config.from_object(Config)
+app.config['SECRET_KEY'] = Config.secret_key
 
-db = SQLAlchemy(app)
+
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///clusters.db'
+#app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app) 
 
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
@@ -27,13 +30,13 @@ class User(db.Model, UserMixin):
     phone = db.Column(db.String)
     password = db.Column(db.String)
     image = db.Column(db.String)
-    skills = db.Column(db.Text)  # JSON stringified list
     clusters_count = db.Column(db.Integer)
+    notifications_count = db.Column(db.Integer)
+    location = db.Column(db.String)
+    skills = db.Column(db.Text)  # JSON stringified list
     member_clusters = db.Column(db.Text) # json stringified list
     created_clusters = db.Column(db.Text)  # JSON stringified list
     clusters_requests = db.Column(db.Text)  # JSON stringified list
-    notifications_count = db.Column(db.Integer)
-    location = db.Column(db.String)
     messages = db.Column(db.Text)  # JSON stringified list of objects
 
     def get_skills(self):

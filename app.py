@@ -340,7 +340,7 @@ def register():
         # Send notification
         notification = {
         "id": len(user.get_messages()) + 1,
-        "body": f"Welcome to your first day on Clusters Hub {username}. You can get started with work by Creating a Cluster or joining Clusters. Don't forget to tell your friends about Clusters Hub. Here are your recommended Clusters.",
+        "body": f"Welcome to your first day on Clusters Hub {username}. Get started with work by Creating a Cluster or joining Clusters. Don't forget to tell everyone who might benefit using Clusters Hub. Here are your recommended Clusters.",
         "read": False,
         "url": f"/recommended_clusters",
         "timestamp": datetime.now(timezone.utc).isoformat()
@@ -595,6 +595,7 @@ def clusters():
         return render_template('clusters.html', user=user, clusters=show_clusters, clustersCount=cluster_count)
     error = "no clusters"
     return render_template('error.html', error=error)
+
 
 @app.route("/clusters/<int:id>")
 @login_required
@@ -876,6 +877,7 @@ def mark_read(msg_id):
     db.session.commit()
     return redirect(url_for("notifications"))
 
+
 # Requests
 @app.route('/clusters/<int:cluster_id>/withdraw-request/<int:request_id>', methods=['POST'])
 @login_required
@@ -957,6 +959,7 @@ def sent_cluster_request(cluster_id):
     cluster_author.set_messages(cluster_author.get_messages() + [notification])
     db.session.commit()
     return redirect(url_for('user_requests'))
+
 
 @app.route('/clusters/requests/<int:cluster_id>', methods=['GET'])
 @login_required
@@ -1355,6 +1358,7 @@ def recommended_clusters():
     scored.sort(key=lambda x: x[0], reverse=True)
     matched_clusters = [c for score, c in scored if score > 0]
     return render_template('recommended.html', clusters=matched_clusters, user=user)
+    
     
 """   
 # ai powered matching
