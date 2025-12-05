@@ -10,10 +10,6 @@ app = Flask(__name__)
 app.config.from_object(Config)
 app.config['SECRET_KEY'] = Config.secret_key
 
-
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///clusters.db'
-#app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
 db = SQLAlchemy(app) 
 
 class User(db.Model, UserMixin):

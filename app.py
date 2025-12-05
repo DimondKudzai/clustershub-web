@@ -340,7 +340,7 @@ def register():
         # Send notification
         notification = {
         "id": len(user.get_messages()) + 1,
-        "body": f"Welcome to your first day on Clusters Hub {username}. Get started with work by Creating a Cluster or joining Clusters. Don't forget to tell everyone who might benefit using Clusters Hub. Here are your recommended Clusters.",
+        "body": f"Hello {username}, Welcome to your first day on Clusters Hub. Get started with work by Creating a Cluster or joining Clusters. Please don't forget to spread the good news to everyone who might benefit from using Clusters Hub. Here are your recommended Clusters.",
         "read": False,
         "url": f"/recommended_clusters",
         "timestamp": datetime.now(timezone.utc).isoformat()
@@ -556,7 +556,7 @@ def startCluster():
         # Send notification
         notification = {
             "id": len(user.get_messages()) + 1,
-            "body": f"You have successfully created Cluster - {name}. Did you know sharing your Cluster online increases member quality by 3X. Here are your Clusters.",
+            "body": f"Congratulations, You have successfully created Cluster - { name }. Tip: Did you know sharing your Cluster online increases member quality by 3X. Here are your Clusters.",
             "read": False,
             "url": f"/clusters",
             "timestamp": datetime.now(timezone.utc).isoformat()
@@ -1134,7 +1134,7 @@ def accept_request(cluster_id, request_id):
         # Send notification
         notification = {
             "id": len(user.get_messages()) + 1,
-            "body": f"Your request to join {cluster.name} was accepted.",
+            "body": f"Congratulations your request to join {cluster.name} was accepted. Start contributing.",
             "read": False,
             "url": f"/clusters/{cluster.id}/chat",
             "timestamp": datetime.now(timezone.utc).isoformat()
@@ -1177,7 +1177,7 @@ def decline_request(cluster_id, request_id):
         # Send notification
         notification = {
             "id": len(user.get_messages()) + 1,
-            "body": f"Your request to join {cluster.name} was declined. Here are your recommended Clusters.",
+            "body": f"Your request to join {cluster.name} was declined by its author. Here are your recommended Clusters.",
             "read": False,
             "url": f"/recommended_clusters",
             "timestamp": datetime.now(timezone.utc).isoformat()
@@ -1246,7 +1246,7 @@ def post_comment(cluster_id, thread_id):
     if thread_author.id != user_id:  # Check if the comment author is not the thread author
         notification = {
             "id": len(thread_author.get_messages()) + 1,
-            "body": f"{user.name} commented on your thread - {thread['title']}.",
+            "body": f"{user.name} commented on your thread - {thread['title']}. Check what they said.",
             "read": False,
             "url": f"/clusters/{cluster_id}/chat",
             "timestamp": datetime.now(timezone.utc).isoformat()
@@ -1293,7 +1293,7 @@ def create_thread(cluster_id):
             if member:
                 notification = {
                     "id": len(member.get_messages()) + 1,
-                    "body": f"{user.name} created a Thread titled '{title}' in Cluster - {cluster.name}.",
+                    "body": f"{user.name} created a new Thread titled '{title}' in Cluster - {cluster.name}.",
                     "read": False,
                     "url": f"/clusters/{cluster_id}/chat",
                     "timestamp": datetime.now(timezone.utc).isoformat()
@@ -1454,6 +1454,7 @@ def admin_analytics():
 @app.route('/about')
 def about():
     return render_template('about.html')
+
 
 @app.route('/terms')
 def terms():
