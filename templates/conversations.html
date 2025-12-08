@@ -9,7 +9,7 @@
     <link rel="icon" type="image/jpg" href="{{url_for('static', filename='banner.jpg')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}">
     <style>
-        small{
+        small, b{
             color: green;
         }
     </style>
@@ -32,7 +32,9 @@
         </section>
         <br>
         <a href="#start-thread" >
-        <p>Jumb to Bottom</p>
+        <p>
+        🪂 Jumb to New
+        </p>
         
         </a>
    {% for thread in conversations %}
@@ -56,11 +58,12 @@
    {% for comment in thread.comments %}
    <section style="">
    <p>
-   {% if comment.user %}
-   <a href="{{ url_for('getUser', user_id=comment.user.id) }}" style="color: blue">@{{ comment.user.name }}</a> 
+  {% if comment.user %}
+   <a href="{{ url_for('getUser', user_id=comment.user.id) }}" style="color: blue">@{{ comment.user.name }} </a> 
+   <b>{{ comment.timestamp | naturaltime}}</b>
+   <br><br>
    {{ comment.text | linkify }} 
    <br>
-   <small>{{ comment.timestamp | naturaltime}}</small>
    
    {% else %}
    <span style="color: red;">Comment deleted</span>

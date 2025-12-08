@@ -1476,13 +1476,12 @@ def logout():
 def linkify(text):
     if not text:
         return ''
-    
     # safe to process
+    text = text.replace('\n', '<br>')
     text = re.sub(r'([\w\.-]+@[\w\.-]+\.\w+)', r'<span style="color:deepSkyBlue;">\1</span>', text)
     text = re.sub(r'@(\w+)', r'<span style="color: deepSkyBlue;">@\1</span>', text)
     text = re.sub(r'(https?://[^\s]+)', r'<a href="\1" target="_blank" style="color: deepSkyBlue">\1</a>', text)
     text = re.sub(r'#(\w+)', r'<span style="color: green;">#\1</span>', text)
-
     return Markup(text)
   
 if __name__ == '__main__':

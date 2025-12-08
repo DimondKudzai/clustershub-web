@@ -25,10 +25,12 @@
       </section>
       <br>
     
-    
-    <a href="#bottom" >
-    <p>Jumb to Bottom</p>
-    </a>
+   <p>
+   🪂 <a href="#bottom" >
+   Jumb to older
+   </p>
+   
+   </a>
     
     {% for message in messages %}
     
@@ -67,5 +69,13 @@
         playSoundButton.addEventListener('click', () => {
             audio.play();
         });
+        
+        window.onload = function() {
+        window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: 'smooth'
+        });
+        };
+       
     </script>
 </html>

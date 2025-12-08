@@ -9,9 +9,9 @@
     <link rel="icon" type="image/jpg" href="{{url_for('static', filename='banner.jpg')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}">
     <style>
-        small{
-            color: green;
-        }
+       small, b{
+       color: green;
+       }
         section{
             border: ;
         }
@@ -27,10 +27,13 @@
   
   </section>
         <br>
-        <a href="#bottom" >
-        <p>Jumb to Bottom</p>
         
+        <p>
+       🪂 <a href="#bottom" >
+       Jumb to New
+        </p>
         </a>
+        
  {% for request in requests %}
  <div style=" ">
  <section style="color: black">
@@ -56,9 +59,10 @@
  <p>
  {% if comment.user %}
  <a href="{{ url_for('getUser', user_id=comment.user.id) }}" style="color: blue">@{{ comment.user.name }}</a> 
+ <b>{{ comment.timestamp | naturaltime }}</b>
+ <br><br>
  {{ comment.text | linkify }} 
  <br>
- <small>{{ comment.timestamp | naturaltime }}</small>
  {% else %}
  <span style="color: red;">Comment deleted</span>
  {% endif %}
@@ -69,7 +73,7 @@
  <!-- Comment Form -->
  <form method="POST" action="{{ url_for('requested_comment', cluster_id=cluster.id, chatId=request.chatId)}}" class="create-cluster">
  <textarea type="text" name="text" placeholder="Add Reply" required></textarea><br>
- <button id="clicked" type="submit" class="dashboardBtn">Sent Reply</button>
+ <button id="clicked" type="submit" class="dashboardBtn">Reply and Stall</button>
  </form>
  </div>
  
