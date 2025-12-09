@@ -9,7 +9,7 @@
     <link rel="icon" type="image/jpg" href="{{url_for('static', filename='banner.jpg')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}">
     <style>
-        small{
+        small, b{
             color: green;
         }
         section{
@@ -23,7 +23,7 @@
     
     <section style="border: none;">
     <center>
-    <h2>Open Cluster requests</h2>
+    <h2>Cluster Requests</h2>
     </center>
     </section>
     <br>
@@ -34,7 +34,7 @@
     
     </a>
         {% for cluster in clusters %}
-        <section class="create-cluster" style="padding: px;border: none;">
+        <section class="create-cluster" style="">
             <center>
                  <h2>
                  <a href="{{ url_for('getCluster', id=cluster.id) }}">{{ cluster.name }}</a> Request 
@@ -52,7 +52,7 @@
                         {{ request.body | linkify }}
                         </strong>
                         </p>
-                        <small>{{request.created | naturaltime }}</small>
+                        <b>{{request.created | naturaltime }}</b>
                     </section>
                     <div class="comments">
                     <br><br>
@@ -62,7 +62,7 @@
                         <p>
                         <a href="{{ url_for('getUser', user_id=comment.user.id) }}" style="color: blue">@{{ comment.user.name }}</a>
                          <p> {{ comment.text | linkify }}</p>
-                          <small>{{ comment.timestamp | naturaltime }}</small>
+                          <b>{{ comment.timestamp | naturaltime }}</b>
                         </p>
                         </section>
                         <br>
@@ -74,13 +74,13 @@
                         <button type="submit" class="dashboardBtn" style="">Sent Reply</button>
                     </form>
                 </div>
-                <br>
-                <section style="border: none;">
+                <br><br>
+                <section style="border: ;">
                 <form method="POST" action="{{ url_for('withdraw_request', cluster_id=cluster.id, request_id=request.chatId) }}">
                 <button type="submit" class="dashboardBtn" style="background: red; width: 90%;"><strong> Withdraw and delete Request </strong></button>
                 </form>
                 </section>
-                <br><br>
+                
             {% endfor %}
             <br>
         </section>

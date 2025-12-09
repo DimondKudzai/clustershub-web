@@ -31,9 +31,8 @@
             </center>
         </section>
         <br>
-        <a href="#start-thread" >
         <p>
-        🪂 Jumb to New
+        🪂 <a href="#start-thread" >Jumb to New
         </p>
         
         </a>
@@ -50,7 +49,7 @@
    {{ thread.body | linkify }}
    </strong>
    </p>
-   <small>{{ thread.created | naturaltime }}</small>
+   <b>{{ thread.created | naturaltime }}</b>
    </section>
    <div class="comments">
    <br><br>
@@ -60,7 +59,7 @@
    <p>
   {% if comment.user %}
    <a href="{{ url_for('getUser', user_id=comment.user.id) }}" style="color: blue">@{{ comment.user.name }} </a> 
-   <b>{{ comment.timestamp | naturaltime}}</b>
+   <b> &#160 {{ comment.timestamp | naturaltime}}</b>
    <br><br>
    {{ comment.text | linkify }} 
    <br>

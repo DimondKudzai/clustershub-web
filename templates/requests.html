@@ -49,7 +49,7 @@
  {{ request.body | linkify }}
  </strong>
  </p>
- <small>{{ request.created | naturaltime }}</small>
+ <b>{{ request.created | naturaltime }}</b>
  </section>
  <div class="comments">
  <br><br>
@@ -78,7 +78,7 @@
  </div>
  
  <br><br>
-   <section style="padding: 5px;border: none;">
+   <section style="padding: 5px;border: ;">
    <center>
    <form method="POST" action="{{ url_for('accept_request', cluster_id=cluster.id, request_id=request.chatId) }}">
    <button class="dashboardBtn" style=" width: 100%;" type="submit">Accept Request and Delete</button>
