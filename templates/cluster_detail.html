@@ -212,7 +212,7 @@
     <ul style="list-style: none;">
     <strong>
         <li>Author: <a href="{{ url_for('getUser', user_id=author.id) }}">@{{ author.name }}</a></li>
-        <li>Date Created: {{ cluster.created | naturaltime }}</li>
+        <li>Created: {{ cluster.created | naturaltime }}</li>
         <li>Status: {{ cluster.status }}</li>
      </strong>
     </ul>
