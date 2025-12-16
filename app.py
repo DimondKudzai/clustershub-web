@@ -1009,17 +1009,18 @@ def requested_comment(cluster_id, chatId):
             })
             cluster.requests = json.dumps(requests)
             db.session.commit()
-            # Send notification to the request author
+            # Send notification to the request author (only if not the same user)
             request_author = db.session.get(User, req['author'])
-            notification = {
-                "id": len(request_author.get_messages()) + 1,
-                "body": f"{user.name} replied to your request to join {cluster.name}.",
-                "read": False,
-                "url": f"/user_requests",
-                "timestamp": datetime.now(timezone.utc).isoformat()
-            }
-            request_author.set_messages(request_author.get_messages() + [notification])
-            db.session.commit()
+            if request_author.id != user_id:
+                notification = {
+                    "id": len(request_author.get_messages()) + 1,
+                    "body": f"{user.name} replied to your request to join {cluster.name}.",
+                    "read": False,
+                    "url": f"/user_requests",
+                    "timestamp": datetime.now(timezone.utc).isoformat()
+                }
+                request_author.set_messages(request_author.get_messages() + [notification])
+                db.session.commit()
             return redirect(url_for('requested', cluster_id=cluster_id))
     error = "No Request found"
     return render_template('error.html', error=error)
@@ -1047,17 +1048,18 @@ def user_requested_comment(cluster_id, chatId):
             })
             cluster.requests = json.dumps(requests)
             db.session.commit()
-            # Send notification to the request author
+            # Send notification to the request author (only if not the same user)
             request_author = db.session.get(User, req['author'])
-            notification = {
-                "id": len(request_author.get_messages()) + 1,
-                "body": f"{user.name} replied to your request to join {cluster.name}.",
-                "read": False,
-                "url": f"/user_requests",
-                "timestamp": datetime.now(timezone.utc).isoformat()
-            }
-            request_author.set_messages(request_author.get_messages() + [notification])
-            db.session.commit()
+            if request_author.id != user_id:
+                notification = {
+                    "id": len(request_author.get_messages()) + 1,
+                    "body": f"{user.name} replied to your request to join {cluster.name}.",
+                    "read": False,
+                    "url": f"/user_requests",
+                    "timestamp": datetime.now(timezone.utc).isoformat()
+                }
+                request_author.set_messages(request_author.get_messages() + [notification])
+                db.session.commit()
             return redirect(url_for('user_requests'))
     error = "No Request found"
     return render_template('error.html', error=error)
