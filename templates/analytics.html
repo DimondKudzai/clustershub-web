@@ -11,7 +11,6 @@
   <script src="{{ url_for('static', filename='chart.min.js') }}"></script>
   </head>
 <body>
-
  
  {% include 'partials/header.html' %}
  
@@ -36,6 +35,18 @@
  <section>
  <canvas id="myChart" width="600" height="400"></canvas>
  
+ </section>
+ <br><br>
+ <section>
+ <center>
+ <a href="{{ url_for('send_message') }}" >
+ <button class="dashboardBtn">Create message</button>
+ </a>
+ </center>
+ </section>
+ 
+ 
+ 
  <script>
  const ctx = document.getElementById('myChart').getContext('2d');
  const myChart = new Chart(ctx, {
@@ -57,7 +68,7 @@
  }
  });
  </script>
-</section>
+
 
  </div>
  

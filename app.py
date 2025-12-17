@@ -4,7 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timezone
 from models import db
 from config import Config
-from models import User, Cluster, Suggestion # Import models
+from models import User, Cluster, Suggestion # models
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 import uuid
@@ -16,6 +16,10 @@ import humanize
 from humanize import naturaltime
 import re
 from markupsafe import Markup, escape
+from flask_mail import Mail, Message
+from flask import render_template_string
+from flask_login import current_user
+
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -23,12 +27,24 @@ app.config['SECRET_KEY'] = Config.secret_key
 
 db.init_app(app)
 
-admin = Admin(app, name='Clusters Admin')
-admin.add_view(ModelView(User, db.session))
-admin.add_view(ModelView(Cluster, db.session))
-admin.add_view(ModelView(Suggestion, db.session))
+app.config['MAIL_SERVER'] = 'smtp-relay.brevo.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = '9e0d34001@smtp-brevo.com'
+app.config['MAIL_PASSWORD'] = 'bskr398abOO5uhp'
+app.config['MAIL_DEFAULT_SENDER'] = ('ClustersHub', 'noreply@clustershub.co.zw')  # or verified Brevo email
 
-   
+mail = Mail(app)
+
+class MyModelView(ModelView):
+    def is_accessible(self):
+        return current_user.is_authenticated and current_user.id == 1
+
+admin = Admin(app, name='Clusters Admin')
+admin.add_view(MyModelView(User, db.session))
+admin.add_view(MyModelView(Cluster, db.session))
+admin.add_view(MyModelView(Suggestion, db.session))
+
 # Decorator to check if the user is logged in
 def login_required(f):
     @wraps(f)
@@ -86,20 +102,26 @@ def verify_confirmation_token(token, expiration=3600):
 def send_confirmation_email():
     user_id = session.get('user_id')
     user = db.session.get(User, user_id)
-    
     if not user:
         error = "User not logged in"
-        return redirect(url_for('error'), error=error)
-        
-
+        return redirect(url_for('error', error=error))
     if user.confirm_email == 1:
         return redirect(url_for('home'))
-
     token = generate_confirmation_token(user.email)
     confirm_url = url_for('confirm_email', token=token, _external=True)
 
-    # Ideally you'd send this via email
-    return render_template('confirm.html', message=f'Confirm URL: {confirm_url}')
+    # Create the email message
+    msg = Message('Confirm Your Email Address', 
+                  sender='noreply@clustershub.co.zw', 
+                  recipients=[user.email])
+    msg.html = render_template('email_confirm_email.html', 
+                               confirm_url=confirm_url, 
+                               user=user)
+
+    # Send the email
+    mail.send(msg)
+
+    return render_template('confirm.html', message='A confirmation email has been sent to your email address. Please open your mail box and click confirm to finish registration. Link expires in 60 minutes')
     
 
 @app.route('/confirm/<token>')
@@ -137,10 +159,14 @@ def resend_confirmation_email():
         return redirect(url_for('dashboard'))
     token = generate_confirmation_token(current_user.email)
     confirm_url = url_for('confirm_email', token=token, _external=True)
-    # Send the email with the confirm URL
-    # print(f'Confirm URL: {confirm_url}')
-   # return redirect(url_for('dashboard'))
-    message = "f'We have sent you an email. Please click on the link sent to you to confirm your account. Please check your mailbox and click on the link before it expires in 60 minutes. Confirm URL: {confirm_url}"
+    msg = Message('Confirm Your Email Address', 
+                  sender='noreply@clustershub.co.zw', 
+                  recipients=[current_user.email])
+    msg.html = render_template('email/confirm_email.html', 
+                               confirm_url=confirm_url, 
+                               user=current_user)
+    mail.send(msg)
+    message = "We have sent you an email. Please click on the link sent to you to confirm your account. Please check your mailbox and click on the link before it expires in 60 minutes."
     return render_template('confirm.html', message=message)
 
 # HOME
@@ -205,18 +231,18 @@ def forgot_password():
         if user:
             token = generate_reset_token(user.email)
             reset_url = url_for('reset_password', token=token, _external=True)
-            # Send the email with the reset URL
-            # Replace this with your email function
-            
-            #print(f"Reset URL: {reset_url}")
-            url = f"We sent you an email. Please click on the link sent to you to reset your password. Please check your mailbox and click on the link before it expires in 60 minutes. Reset URL: {reset_url}"
-            #return redirect('/login')
-            return render_template('forgot.html', url=url)
+            msg = Message('Password Reset Request', 
+                          sender='noreply@clustershub.co.zw', 
+                          recipients=[user.email])
+            msg.html = render_template('email_reset_password.html', 
+                                       reset_url=reset_url, 
+                                       user=user)
+            mail.send(msg)
+            return render_template('forgot.html', 
+                                  message='A password reset link has been sent to your email address. Open your mail box and click link to reset password. Link expires in 60 minutes')
         else:
-            error = "email adress not registered"
+            error = "Email address not registered"
             return render_template('error.html', error=error)
-            
-            
     return render_template('forgot.html')
 
 
@@ -1429,9 +1455,10 @@ def recommended_clusters():
     
 # Extra endpoints
 @app.route('/admin/analytics')
+@login_required
 def admin_analytics():
     if session.get('user_id') != 1:
-        return redirect('/login')
+        return redirect('/home')
 
     total_users = User.query.count()
     total_clusters = Cluster.query.count()
@@ -1488,6 +1515,28 @@ def linkify(text):
     text = re.sub(r'(https?://[^\s]+)', r'<a href="\1" target="_blank" style="color: deepSkyBlue">\1</a>', text)
     text = re.sub(r'#(\w+)', r'<span style="color: green;">#\1</span>', text)
     return Markup(text)
-  
+    
+    
+@app.route('/send_message', methods=['GET', 'POST'])
+@login_required
+def send_message():
+    if session.get('user_id') != 1:
+        return redirect('/home')
+    
+    if request.method == 'POST':
+        subject = request.form['subject']
+        message = request.form['message']
+        users = User.query.all()
+        for user in users:
+            msg = Message(subject, 
+                          sender='noreply@clustershub.co.zw', 
+                          recipients=[user.email])
+            msg.html = render_template('email_message.html', 
+                                       message=message, 
+                                       user=user)
+            mail.send(msg)
+        return 'Messages sent successfully!'
+    return render_template('send_message.html')
+    
 if __name__ == '__main__':
     app.run(debug=True)

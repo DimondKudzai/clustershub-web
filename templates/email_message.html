@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="ClustesHub, message" />
+    <meta name="description" content="Message from Clusters hub." />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message from Clusters Hub</title>
+    <link rel="icon" type="image/jpg" href="{{url_for('static', filename='banner.jpg')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}">
+    <style>
+       small, b{
+       color: green;
+       }
+        section{
+        }
+    </style>
+</head>
+  <body>
+  <section>
+  <center>
+    <h2>Message from Clusters Hub</h2>
+  </center>
+    <p>Dear {{ user.name }},</p>
+    <p>{{ message }}</p>
+    <p>Best regards,</p>
+    <p>The Clusters Hub Team</p>
+    </section>
+  </body>
+</html>

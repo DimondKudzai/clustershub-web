@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="sent, Email, reach-out" />
+    <meta name="description" content="Contact all users." />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm email</title>
+    <link rel="icon" type="image/jpg" href="{{url_for('static', filename='banner.jpg')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}">
+    <style>
+       small, b{
+       color: green;
+       }
+        section{
+        }
+    </style>
+</head>
+  <body>
+   {% include 'partials/header.html' %}
+  <section class="create-cluster">
+  <center>
+    <h2>Send Message to All Users</h2>
+  </center>
+    <form method="post" action="{{ url_for('send_message') }}">
+      <label for="subject">Subject:</label>
+      <input type="text" id="subject" name="subject"><br><br>
+      <label for="message">Message:</label>
+      <textarea id="message" name="message"></textarea><br><br>
+      <input type="submit" class="dashboardBtn" value="Send Message">
+    </form>
+    </section>
+     {% include 'partials/footer.html' %}
+  </body>
+</html>

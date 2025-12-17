@@ -25,6 +25,12 @@
   <p>
   {{ message }}
   </p>
+  <p>
+  Didn't receive anything?
+  <a href="{{ url_for('resend-confirmation-email') }}" >
+  <button class="dashboardBtn"> Resend link</button>
+  </a>
+  </p>
   </center>
   </section>
   </div>

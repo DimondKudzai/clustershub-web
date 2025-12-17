@@ -21,7 +21,7 @@ class Config:
 
     SQLALCHEMY_DATABASE_URI = f'postgresql://{SUPABASE_DB_USER}:{SUPABASE_DB_PASSWORD}@{SUPABASE_DB_HOST}:5432/{SUPABASE_DB_NAME}'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    secret_key = '2409'
+    secret_key = os.getenv("SECRET_KEY")
 
 # Optional: create Supabase client if  useful
 supabase: Client = create_client(Config.SUPABASE_URL, Config.SUPABASE_KEY)
