@@ -19,20 +19,22 @@ from markupsafe import Markup, escape
 from flask_mail import Mail, Message
 from flask import render_template_string
 from flask_login import current_user
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 
 
 app = Flask(__name__)
 app.config.from_object(Config)
-app.config['SECRET_KEY'] = Config.secret_key
+app.config['SECRET_KEY'] = Config.SECRET_KEY
 
 db.init_app(app)
 
-app.config['MAIL_SERVER'] = 'smtp-relay.brevo.com'
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = '9e0d34001@smtp-brevo.com'
-app.config['MAIL_PASSWORD'] = 'bskr398abOO5uhp'
-app.config['MAIL_DEFAULT_SENDER'] = ('ClustersHub', 'noreply@clustershub.co.zw')  # or verified Brevo email
+app.config['MAIL_SERVER'] = Config.MAIL_SERVER
+app.config['MAIL_PORT'] = Config.MAIL_PORT
+app.config['MAIL_USE_TLS'] = Config.MAIL_USE_TLS
+app.config['MAIL_USERNAME'] = Config.MAIL_USERNAME
+app.config['MAIL_PASSWORD'] = Config.MAIL_PASSWORD
+app.config['MAIL_DEFAULT_SENDER'] = Config.MAIL_DEFAULT_SENDER
 
 mail = Mail(app)
 
@@ -1388,12 +1390,7 @@ def recommended_clusters():
     return render_template('recommended.html', clusters=matched_clusters, user=user)
     
     
-"""   
 # ai powered matching
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
-import re
-
 @app.route('/ai_recommended_clusters')
 @login_required
 def recommended_clusters():
@@ -1451,7 +1448,7 @@ def recommended_clusters():
     matched_clusters = [c for score, c in scored]
 
     return render_template('recommended.html', clusters=matched_clusters, user=user)
-"""
+
     
 # Extra endpoints
 @app.route('/admin/analytics')
