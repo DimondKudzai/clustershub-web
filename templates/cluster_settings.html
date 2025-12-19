@@ -75,8 +75,7 @@
    <br> <button onclick="closeRequestPopup()" class="dashboardBtn" style="width: 100%; background: #1E90FF;">Cancel</button>
     
     </section>
-    
-    
+     
     </div>
     
     {% include 'partials/footer.html' %}
@@ -90,8 +89,7 @@
     
     function closeRequestPopup() {
     document.getElementById('delete-cluster-popup').style.display = 'none';
-    }
-        
+    }   
     </script>
     
     <script type="text/javascript" src="{{url_for('static', filename='newCluster.js')}}"></script>

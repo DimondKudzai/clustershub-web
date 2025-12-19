@@ -8,7 +8,7 @@ from services.appData import get_all_users, get_all_clusters, get_suggestions
 
 app = Flask(__name__)
 app.config.from_object(Config)
-app.config['SECRET_KEY'] = Config.secret_key
+app.config['SECRET_KEY'] = Config.SECRET_KEY
 
 db = SQLAlchemy(app) 
 

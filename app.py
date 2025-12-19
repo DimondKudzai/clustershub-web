@@ -1356,7 +1356,7 @@ def cluster_updates(cluster_id):
     return render_template('updates.html', cluster=cluster, updates=updates)
        
 
-# Recomended clusters - Algo
+# Recomended clusters
 @app.route('/recommended_clusters')
 @login_required
 def recommended_clusters():
@@ -1451,6 +1451,7 @@ def recommended_clusters():
 
     
 # Extra endpoints
+
 @app.route('/admin/analytics')
 @login_required
 def admin_analytics():
@@ -1478,40 +1479,6 @@ def admin_analytics():
         labels=labels,
         data=data
     )
-
-    
-@app.route('/about')
-def about():
-    return render_template('about.html')
-
-
-@app.route('/terms')
-def terms():
-    return render_template('terms.html')
-    
-    
-@app.route('/error')
-def error():
-    return render_template('error.html', error=error)
-    
-    
-@app.route('/logout')
-def logout():
-    session.clear()
-    return redirect('/login')
-
-
-@app.template_filter('linkify')
-def linkify(text):
-    if not text:
-        return ''
-    # safe to process
-    text = text.replace('\n', '<br>')
-    text = re.sub(r'([\w\.-]+@[\w\.-]+\.\w+)', r'<span style="color:deepSkyBlue;">\1</span>', text)
-    text = re.sub(r'@(\w+)', r'<span style="color: deepSkyBlue;">@\1</span>', text)
-    text = re.sub(r'(https?://[^\s]+)', r'<a href="\1" target="_blank" style="color: deepSkyBlue">\1</a>', text)
-    text = re.sub(r'#(\w+)', r'<span style="color: green;">#\1</span>', text)
-    return Markup(text)
     
     
 @app.route('/send_message', methods=['GET', 'POST'])
@@ -1534,6 +1501,41 @@ def send_message():
             mail.send(msg)
         return 'Messages sent successfully!'
     return render_template('send_message.html')
+    
+
+@app.template_filter('linkify')
+def linkify(text):
+    if not text:
+        return ''
+    # safe to process
+    text = text.replace('\n', '<br>')
+    text = re.sub(r'([\w\.-]+@[\w\.-]+\.\w+)', r'<span style="color:deepSkyBlue;">\1</span>', text)
+    text = re.sub(r'@(\w+)', r'<span style="color: deepSkyBlue;">@\1</span>', text)
+    text = re.sub(r'(https?://[^\s]+)', r'<a href="\1" target="_blank" style="color: deepSkyBlue">\1</a>', text)
+    text = re.sub(r'#(\w+)', r'<span style="color: green;">#\1</span>', text)
+    return Markup(text)
+    
+    
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+
+@app.route('/terms')
+def terms():
+    return render_template('terms.html')
+    
+    
+@app.route('/error')
+def error():
+    return render_template('error.html', error=error)
+    
+    
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect('/login')
+
     
 if __name__ == '__main__':
     app.run(debug=True)
