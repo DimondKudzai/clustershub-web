@@ -10,7 +10,9 @@ class Config:
     SUPABASE_DB_NAME = os.getenv("SUPABASE_DB_NAME")
     SUPABASE_DB_HOST = os.getenv("SUPABASE_DB_HOST")  # db.<project-ref>.supabase.co
 
-    SQLALCHEMY_DATABASE_URI = f'postgresql://{SUPABASE_DB_USER}:{SUPABASE_DB_PASSWORD}@{SUPABASE_DB_HOST}:6543/{SUPABASE_DB_NAME}'
+    SQLALCHEMY_DATABASE_URI = f'postgresql+psycopg2://{SUPABASE_DB_USER}:{SUPABASE_DB_PASSWORD}@{SUPABASE_DB_HOST}:6543/{SUPABASE_DB_NAME}/postgres?sslmode=require'
+                                    #  c     postgresql+psycopg2://postgres:<your-password>@pgbouncer.oivrozgjypetuxiorfik.supabase.co:6543/postgres?sslmode=require
+    
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SECRET_KEY = os.getenv("SECRET_KEY")
 
