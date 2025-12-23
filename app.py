@@ -21,6 +21,10 @@ from flask import render_template_string
 from flask_login import current_user
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+import zipfile
+from email.message import EmailMessage
+import smtplib
+import logging
 
 
 app = Flask(__name__)
@@ -1535,6 +1539,56 @@ def error():
 def logout():
     session.clear()
     return redirect('/login')
+
+
+# Backup
+logging.basicConfig(level=logging.INFO)
+
+@app.route('/run_backup', methods=['GET'])
+def run_backup():
+    try:
+        # Make backup directory
+        BACKUP_DIR = 'backups'
+        os.makedirs(BACKUP_DIR, exist_ok=True)
+
+        DB_FILE = 'instance/clusters.db'
+
+        # Timestamped zip
+        timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+        backup_name = f"{DB_FILE}_{timestamp}.zip"
+        backup_path = os.path.join(BACKUP_DIR, backup_name)
+
+        with zipfile.ZipFile(backup_path, 'w') as zipf:
+            zipf.write(DB_FILE)
+            logging.info(f"✅ Zipped {DB_FILE} to {backup_path}")
+
+        # Keep only last 5 backups
+        files = sorted(os.listdir(BACKUP_DIR), reverse=True)
+        for old_file in files[5:]:
+            os.remove(os.path.join(BACKUP_DIR, old_file))
+            logging.info(f"🗑️ Deleted old backup {old_file}")
+
+        # Email
+        msg = EmailMessage()
+        msg['Subject'] = f"ClustersHub Backup - {timestamp}"
+        msg['From']    = Config.EMAIL_FROM
+        msg['To']      = Config.EMAIL_TO
+        msg.set_content("Hey,\n\nYour latest backup is attached.\n\nCheers,\nClustersHub")
+
+        with open(backup_path, 'rb') as f:
+            msg.add_attachment(f.read(), maintype='application', subtype='zip', filename=backup_name)
+
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
+            server.login(Config.GMAIL_USER, Config.GMAIL_PASS)
+            server.send_message(msg)
+            logging.info("✅ Email sent")
+
+        return jsonify({"status": "success", "message": "Backup created and emailed"}), 200
+
+    except Exception as e:
+        logging.error(f"❌ Backup failed: {e}")
+        return jsonify({"status": "error", "message": str(e)}), 500
+
 
     
 if __name__ == '__main__':
