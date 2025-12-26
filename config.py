@@ -1,4 +1,4 @@
-import os
+import os 
 #from supabase import create_client, Client
 
 class Config:
@@ -15,9 +15,9 @@ class Config:
     
     # Backup --- Config ---
     EMAIL_FROM = os.getenv("EMAIL_FROM")
-    EMAIL_TO     = os.getenv("EMAIL_TO")
-    GMAIL_USER   = os.getenv("GMAIL_USER")
-    GMAIL_PASS   = os.getenv("GMAIL_PASS")   # Use an App Password if 2FA is enabled
+	EMAIL_TO = os.getenv("EMAIL_TO")
+    GMAIL_USER = os.getenv("GMAIL_USER")
+    GMAIL_PASS = os.getenv("GMAIL_PASS")   # Use an App Password if 2FA is enabled
     
 """
     SUPABASE_URL = os.getenv("SUPABASE_URL") #'https://oivrozgjypetuxiorfik.supabase.co'

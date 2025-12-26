@@ -9,4 +9,3 @@ flask-mail
 flask-login
 scikit-learn
 python-dotenv
-supabase

@@ -18,15 +18,13 @@
  
 
  <div class="hero" style="background: url('{{url_for('static', filename='')}}') center/cover no-repeat;
- border-radius: 10px; font: weght: 400;padding: 15px;">
- 
+ border-radius: 10px; font: weght: 400;padding: 15px;"> 
 
- <h3 style="purple"> Where ideas and teams meet </h3>
-,<!--
- <a href="#form">
- <p style="padding: +15px;"><strong>Login</strong></p>
- </a>
- ,-->
+ <h3 style="purple">
+ Where ideas and teams meet, <a href="{{ url_for('about') }}" > 
+ <u>Learn more</u> </a>
+  </h3>
+,
  <p style="">
  &#160 No account? 
 <a href="{{ url_for('register') }}" >

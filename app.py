@@ -1397,7 +1397,7 @@ def recommended_clusters():
 # ai powered matching
 @app.route('/ai_recommended_clusters')
 @login_required
-def recommended_clusters():
+def ai_recommended_clusters():
     user_id = session.get('user_id')
     if user_id is None:
         return redirect('/login')
@@ -1588,8 +1588,6 @@ def run_backup():
     except Exception as e:
         logging.error(f"❌ Backup failed: {e}")
         return jsonify({"status": "error", "message": str(e)}), 500
-
-
-    
+   
 if __name__ == '__main__':
     app.run(debug=True)
