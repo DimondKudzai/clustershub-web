@@ -1543,6 +1543,7 @@ def logout():
 
 
 # Backup
+"""
 logging.basicConfig(level=logging.INFO)
 
 @app.route('/run_backup', methods=['GET'])
@@ -1601,6 +1602,6 @@ def run_backup():
         logging.error(f"❌ Backup failed: {e}")
         return jsonify({"status": "error", "message": str(e)}), 500
 
-   
+   """
 if __name__ == '__main__':
     app.run(debug=True)
