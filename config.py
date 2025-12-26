@@ -15,7 +15,7 @@ class Config:
     
     # Backup --- Config ---
     EMAIL_FROM = os.getenv("EMAIL_FROM")
-	EMAIL_TO = os.getenv("EMAIL_TO")
+    EMAIL_TO = os.getenv("EMAIL_TO")
     GMAIL_USER = os.getenv("GMAIL_USER")
     GMAIL_PASS = os.getenv("GMAIL_PASS")   # Use an App Password if 2FA is enabled
     
