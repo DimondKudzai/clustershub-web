@@ -19,8 +19,8 @@ from markupsafe import Markup, escape
 from flask_mail import Mail, Message
 from flask import render_template_string
 from flask_login import current_user
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
+#from sklearn.feature_extraction.text import TfidfVectorizer
+#from sklearn.metrics.pairwise import cosine_similarity
 import zipfile
 from email.message import EmailMessage
 import smtplib
@@ -1395,6 +1395,7 @@ def recommended_clusters():
     
     
 # ai powered matching
+"""
 @app.route('/ai_recommended_clusters')
 @login_required
 def ai_recommended_clusters():
@@ -1452,7 +1453,7 @@ def ai_recommended_clusters():
     matched_clusters = [c for score, c in scored]
 
     return render_template('recommended.html', clusters=matched_clusters, user=user)
-
+"""
     
 # Extra endpoints
 
