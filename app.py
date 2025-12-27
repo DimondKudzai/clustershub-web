@@ -1395,7 +1395,7 @@ def recommended_clusters():
     
     
 # ai powered matching
-"""
+
 @app.route('/ai_recommended_clusters')
 @login_required
 def ai_recommended_clusters():
@@ -1453,7 +1453,7 @@ def ai_recommended_clusters():
     matched_clusters = [c for score, c in scored]
 
     return render_template('recommended.html', clusters=matched_clusters, user=user)
-"""
+
     
 # Extra endpoints
 
@@ -1543,7 +1543,7 @@ def logout():
 
 
 # Backup
-"""
+
 logging.basicConfig(level=logging.INFO)
 
 @app.route('/run_backup', methods=['GET'])
@@ -1602,6 +1602,6 @@ def run_backup():
         logging.error(f"❌ Backup failed: {e}")
         return jsonify({"status": "error", "message": str(e)}), 500
 
-   """
+   
 if __name__ == '__main__':
     app.run(debug=True)
