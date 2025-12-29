@@ -81,7 +81,7 @@
    <section style="padding: 5px;border: ;">
    <center>
    <form method="POST" action="{{ url_for('accept_request', cluster_id=cluster.id, request_id=request.chatId) }}">
-   <button class="dashboardBtn" style=" width: 100%;" type="submit">Accept Request and Delete</button>
+   <button class="dashboardBtn" style=" width: 100%;" type="submit">Accept and Delete</button>
    </form>
    <form method="POST" action="{{ url_for('decline_request', cluster_id=cluster.id, request_id=request.chatId) }}">
    <button class="dashboardBtn" style="background: red; width: 100%;" type="submit">Decline and Delete</button>

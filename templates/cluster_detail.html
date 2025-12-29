@@ -106,7 +106,7 @@
     <input name="title" required placeholder="Type title"><br><br> 
     <label for="message">Message</label><br> 
     <textarea name="message" rows="4" required placeholder="Start typing.."></textarea><br><br> 
-    <button type="submit" class="dashboardBtn">Send Request</button> 
+    <button type="submit" class="dashboardBtn">Request</button> 
     </form>
     
     </div>
@@ -133,20 +133,20 @@
     <div class="action">
   {% if is_author %}
   <a href="{{ url_for('show_cluster', cluster_id=cluster.id) }}"> 
-  <button class="dashboardBtn" style="background: ; width: 90%; display: block;margin-bottom: 5px;"><strong> Open Cluster </strong></button>
+  <button class="dashboardBtn" style="background: ; width: 90%; display: block;margin-bottom: 5px;"><strong> Open </strong></button>
   </a>
   
   
   <a href="{{ url_for('cluster_updates', cluster_id=cluster.id) }}"> 
-  <button class="dashboardBtn" style="background: ; width: 90%; display: block;margin-bottom: 5px;"><strong> Cluster Updates </strong></button>
+  <button class="dashboardBtn" style="background: ; width: 90%; display: block;margin-bottom: 5px;"><strong>Updates </strong></button>
   </a>
   
   <a href="{{ url_for('requested', cluster_id=cluster.id) }}">
-  <button class="dashboardBtn" style="background: ; width: 90%; display: block;margin-bottom: 5px;"><strong> Member Requests </strong></button>
+  <button class="dashboardBtn" style="background: ; width: 90%; display: block;margin-bottom: 5px;"><strong>Requests </strong></button>
   </a>
   
   <a href="{{ url_for('cluster_updater', id=cluster.id) }}" > 
-  <button class="dashboardBtn" style="background: ; width: 90%; display: block;margin-bottom: 5px;"><strong> Cluster settings </strong></button>
+  <button class="dashboardBtn" style="background: ; width: 90%; display: block;margin-bottom: 5px;"><strong>settings </strong></button>
   </a>
   
  <button onclick="openRemoveMembersPopup({{ cluster.id }})" class="dashboardBtn" style="background: red; width: 90%; display: block;margin-bottom: 5px;">
@@ -175,10 +175,10 @@
   
   {% elif is_member %}
   <a href="{{ url_for('show_cluster', cluster_id=cluster.id) }}"> 
-  <button class="dashboardBtn" style="background: ; width: 90%; display: block;margin-bottom: 5px;"><strong> Open Cluster </strong></button>
+  <button class="dashboardBtn" style="background: ; width: 90%; display: block;margin-bottom: 5px;"><strong> Open </strong></button>
   </a>
   <a href="{{ url_for('cluster_updates', cluster_id=cluster.id) }}"> 
-  <button class="dashboardBtn" style="background: ; width: 90%; display: block;margin-bottom: 5px;"><strong> Open Cluster Updates </strong></button>
+  <button class="dashboardBtn" style="background: ; width: 90%; display: block;margin-bottom: 5px;"><strong>Updates </strong></button>
   </a>
 <button onclick="openExitPopup({{ cluster.id }})" class="dashboardBtn" style="background: red; width: 90%;"><strong> Exit Cluster </strong></button>
 
@@ -195,11 +195,11 @@
   {% else %}
   {% if requested %}
   <a href="{{ url_for('user_requests') }}"> 
-  <button class="dashboardBtn" style="background: ; width: 90%; display: block;margin-bottom: 5px;"><strong> View sent request</strong></button>
+  <button class="dashboardBtn" style="background: ; width: 90%; display: block;margin-bottom: 5px;"><strong> View Request</strong></button>
   </a>
   {% else %}
   <button onclick="openRequestPopup({{ cluster.id }})" class="dashboardBtn" style="background: ; width: 90%; display: block; margin-bottom: 5px;" id="button_click">
-  <strong> Request membership </strong>
+  <strong> Request Membership </strong>
   </button>
   {% endif %}
   {% endif %} 
@@ -209,13 +209,15 @@
    </section>
    <br>
 <section class="extraText">
+<center>
     <ul style="list-style: none;">
-    <strong>
+     <strong>
         <li>Author: <a href="{{ url_for('getUser', user_id=author.id) }}">@{{ author.name }}</a></li>
         <li>Created: {{ cluster.created | naturaltime }}</li>
         <li>Status: {{ cluster.status }}</li>
      </strong>
     </ul>
+    
 </section>
   </section>
  </section>
