@@ -146,7 +146,7 @@
   </a>
   
   <a href="{{ url_for('cluster_updater', id=cluster.id) }}" > 
-  <button class="dashboardBtn" style="background: ; width: 90%; display: block;margin-bottom: 5px;"><strong>settings </strong></button>
+  <button class="dashboardBtn" style="background: ; width: 90%; display: block;margin-bottom: 5px;"><strong>Settings </strong></button>
   </a>
   
  <button onclick="openRemoveMembersPopup({{ cluster.id }})" class="dashboardBtn" style="background: red; width: 90%; display: block;margin-bottom: 5px;">
@@ -209,7 +209,6 @@
    </section>
    <br>
 <section class="extraText">
-<center>
     <ul style="list-style: none;">
      <strong>
         <li>Author: <a href="{{ url_for('getUser', user_id=author.id) }}">@{{ author.name }}</a></li>

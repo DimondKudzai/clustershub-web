@@ -37,7 +37,7 @@
         <a href="{{ url_for('myProfile') }}" > <button class="dashboardBtn"><strong>👤 Profile</strong></button></a>
      <!--   <a href="{{ url_for('register_update') }}" ><button class="dashboardBtn"><strong>⚙️ Profile Settings</strong></button></a> -->
         <a href="{{ url_for('about') }}" > <button class="dashboardBtn"><strong>🙏 About - Feedback</strong></button></a>
-        {% if id == 1 %}
+        {% if id == 1 or 2 %}
         <a href="{{ url_for('admin_analytics') }}" >
          <button class="dashboardBtn" style="background: #1E90FF;"><strong>✍️ Admin</strong></button>
         </a>

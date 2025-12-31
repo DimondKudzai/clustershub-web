@@ -52,12 +52,12 @@ def get_all_clusters():
 	"name": "Brain Flow AI",
 	"status": "In progress",
 	"target": "Building AI that solves health issues",
-	"author": 1,
+	"author": 2,
 	"created": "2025-10-12T14:30:00.000000",
 	"location": "International",
 	"description": "Brain Flow AI is a project that aims to develop AI tools that reads brain flow data. This brain data will be recorded, analyzed and used for medical treatment eg Stroke, Stress, and Rehab. Github project https://github.com/BrainFlowAi/BrainFlowAi.",
 	"tags": ["ML", "AI", "Neurology","health"],
-	"members": [1],
+	"members": [1,2],
 	"updates": [{
 	"message": "Cluster created by author",
 	"timestamp": "2025-11-12T14:30:00.000000"
@@ -100,10 +100,10 @@ def get_all_clusters():
 	"name": "Fish Farmers",
 	"target": "Produce Breams for sale",
 	"status": "Idea",
-	"author": 1,
+	"author": 2,
 	"created": "2025-11-12T14:30:00.000000",
 	"location": "Zimbabwe",
-	"members": [1],
+	"members": [1,2],
 	"updates": [{
 	"message": "Cluster created",
 	"timestamp": "2025-11-12T14:30:00.000000"
@@ -152,12 +152,12 @@ def get_all_clusters():
 	"id": 3,
 	"name": "Legal Minds",
 	"status": "In progresss",
-	"author": 1,
+	"author": 2,
 	"created": "2025-12-12T14:30:00.000000",
 	"description": "Legal Firm",
 	"target": "Fairness to everyone",
 	"tags": ["legal", "marketing"],
-	"members": [1],
+	"members": [1,2],
 	"updates": [{
 	"message": "Created by author",
 	"timestamp": "2025-12-12T14:30:00.000000"
@@ -206,13 +206,13 @@ def get_all_clusters():
 	"name": "Design Lab",
 	"location": "Panama",
 	"status": "Idea",
-	"author": 1,
+	"author": 2,
 	"created": "2025-11-12T14:30:00.000000",
 	"location": "Harare",
 	"description": "Buiding Everything",
 	"tags": ["Co-founders", "DevOps"],
 	"target": "Let's Design apps and softwares.",
-	"members": [1],
+	"members": [1,2],
 	"updates": [{
 	"message": "Thank you for joining",
 	"timestamp": "2025-11-12T14:30:00.000000"

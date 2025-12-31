@@ -32,7 +32,7 @@ app.config.from_object(Config)
 app.config['SECRET_KEY'] = Config.SECRET_KEY
 
 db.init_app(app)
-
+"""
 app.config['MAIL_SERVER'] = Config.MAIL_SERVER
 app.config['MAIL_PORT'] = Config.MAIL_PORT
 app.config['MAIL_USE_TLS'] = Config.MAIL_USE_TLS
@@ -41,6 +41,7 @@ app.config['MAIL_PASSWORD'] = Config.MAIL_PASSWORD
 app.config['MAIL_DEFAULT_SENDER'] = Config.MAIL_DEFAULT_SENDER
 
 mail = Mail(app)
+"""
 
 class MyModelView(ModelView):
     def is_accessible(self):
@@ -88,6 +89,7 @@ def naturaltime_filter(timestamp):
         dt = timestamp
     return humanize.naturaltime(dt)   
     
+"""
 
 # Create a URLSafeTimedSerializer for generating and verifying tokens
 ts = URLSafeTimedSerializer(app.config['SECRET_KEY'])
@@ -101,7 +103,6 @@ def verify_confirmation_token(token, expiration=3600):
     except:
         return None
     return email
-
 
 @app.route('/send-confirmation-email', methods=['POST', 'GET'])
 @login_required
@@ -145,7 +146,7 @@ def confirm_email(token):
     erorr = "User not found"
     return redirect(url_for('error'), error=error)
     
-
+    
 @app.before_request
 def check_confirmed():
     exempt_routes = ['login', 'logout', 'confirm_email', 'send_confirmation_email', 'resend_confirmation_email', 'static']
@@ -174,6 +175,7 @@ def resend_confirmation_email():
     mail.send(msg)
     message = "We have sent you an email. Please click on the link sent to you to confirm your account. Please check your mailbox and click on the link before it expires in 60 minutes."
     return render_template('confirm.html', message=message)
+"""
 
 # HOME
 @app.route('/')
@@ -228,7 +230,7 @@ def login():
     notice = session.pop('notice', None)
     return render_template('auth.html', notice=notice)
 
-
+"""
 @app.route('/forgot', methods=['GET', 'POST'])
 def forgot_password():
     if request.method == 'POST':
@@ -273,7 +275,7 @@ def reset_password(token):
             return redirect('/login')
     return render_template('reset.html', token=token)
     
-        
+   """     
 # Register
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -1393,7 +1395,7 @@ def recommended_clusters():
     matched_clusters = [c for score, c in scored if score > 0]
     return render_template('recommended.html', clusters=matched_clusters, user=user)
     
-    
+"""   
 # ai powered matching
 
 @app.route('/ai_recommended_clusters')
@@ -1453,14 +1455,14 @@ def ai_recommended_clusters():
     matched_clusters = [c for score, c in scored]
 
     return render_template('recommended.html', clusters=matched_clusters, user=user)
-
+"""
     
 # Extra endpoints
 
 @app.route('/admin/analytics')
 @login_required
 def admin_analytics():
-    if session.get('user_id') != 1:
+    if session.get('user_id') != 2:
         return redirect('/home')
 
     total_users = User.query.count()
@@ -1485,7 +1487,7 @@ def admin_analytics():
         data=data
     )
     
-    
+"""  
 @app.route('/send_message', methods=['GET', 'POST'])
 @login_required
 def send_message():
@@ -1506,7 +1508,7 @@ def send_message():
             mail.send(msg)
         return 'Messages sent successfully!'
     return render_template('send_message.html')
-    
+"""
 
 @app.template_filter('linkify')
 def linkify(text):

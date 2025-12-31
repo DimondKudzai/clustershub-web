@@ -4,8 +4,9 @@ import os
 class Config:
     SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL", "sqlite:///clusters.db")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SECRET_KEY = os.getenv("SECRET_KEY")
+    SECRET_KEY = "2409" # os.getenv("SECRET_KEY")
     
+"""
     MAIL_SERVER = os.getenv("MAIL_SERVER")
     MAIL_PORT = os.getenv("MAIL_PORT")
     MAIL_USE_TLS = os.getenv("MAIL_USE_TLS", "True").lower() == "true"
@@ -19,7 +20,7 @@ class Config:
     GMAIL_USER = os.getenv("GMAIL_USER")
     GMAIL_PASS = os.getenv("GMAIL_PASS")   # Use an App Password if 2FA is enabled
     
-"""
+
     SUPABASE_URL = os.getenv("SUPABASE_URL") #'https://oivrozgjypetuxiorfik.supabase.co'
     SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 
