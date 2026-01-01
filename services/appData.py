@@ -25,6 +25,7 @@ def get_all_users():
     "confirm_email": True,
     "phone": "+263783702724",
     "password": "chimboza@1",
+    "password_recovery": "chimboza",
     "image" : "image1.png",
     "member_clusters": [],
     "joined": "2025-12-12T14:30:00.000000",

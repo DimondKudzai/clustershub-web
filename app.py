@@ -25,13 +25,18 @@ import zipfile
 from email.message import EmailMessage
 import smtplib
 import logging
+#import dropbox
+from flask_login import LoginManager
 
 
 app = Flask(__name__)
 app.config.from_object(Config)
 app.config['SECRET_KEY'] = Config.SECRET_KEY
-
+login_manager = LoginManager()
+login_manager.init_app(app)
 db.init_app(app)
+
+
 """
 app.config['MAIL_SERVER'] = Config.MAIL_SERVER
 app.config['MAIL_PORT'] = Config.MAIL_PORT
@@ -43,9 +48,13 @@ app.config['MAIL_DEFAULT_SENDER'] = Config.MAIL_DEFAULT_SENDER
 mail = Mail(app)
 """
 
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+    
 class MyModelView(ModelView):
     def is_accessible(self):
-        return current_user.is_authenticated and current_user.id == 1
+        return current_user.is_authenticated and current_user.id == 1 or 2
 
 admin = Admin(app, name='Clusters Admin')
 admin.add_view(MyModelView(User, db.session))
@@ -230,52 +239,20 @@ def login():
     notice = session.pop('notice', None)
     return render_template('auth.html', notice=notice)
 
-"""
+
 @app.route('/forgot', methods=['GET', 'POST'])
 def forgot_password():
     if request.method == 'POST':
         email = request.form['email']
         user = User.query.filter_by(email=email).first()
         if user:
-            token = generate_reset_token(user.email)
-            reset_url = url_for('reset_password', token=token, _external=True)
-            msg = Message('Password Reset Request', 
-                          sender='noreply@clustershub.co.zw', 
-                          recipients=[user.email])
-            msg.html = render_template('email_reset_password.html', 
-                                       reset_url=reset_url, 
-                                       user=user)
-            mail.send(msg)
-            return render_template('forgot.html', 
-                                  message='A password reset link has been sent to your email address. Open your mail box and click link to reset password. Link expires in 60 minutes')
+            hint = user.password_recovery
+            return render_template('forgot.html', hint=hint)
         else:
             error = "Email address not registered"
             return render_template('error.html', error=error)
     return render_template('forgot.html')
-
-
-@app.route('/reset/<token>', methods=['GET', 'POST'])
-def reset_password(token):
-    email = verify_reset_token(token)
-    if not email:
-        error = "Token expired or invalid"
-        return render_template('error.html', error=error)
-        
-    if request.method == 'POST':
-        new_password = request.form['password']
-        confirm_password = request.form['confirm_password']
-        if new_password != confirm_password:
-            error = "Passwords do not match"
-            return render_template('error.html', error=error)
-            
-        user = User.query.filter_by(email=email).first()
-        if user:
-            user.password = generate_password_hash(new_password)
-            db.session.commit()
-            return redirect('/login')
-    return render_template('reset.html', token=token)
     
-   """     
 # Register
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -301,6 +278,7 @@ def register():
             else:
                 skills = []
             password = request.form.get('password', '').strip()
+            password_recovery = request.form.get('password_recovery', '').strip()
             confirm_password = request.form.get('confirm_password', '').strip()
         except Exception as e:
             print(e)
@@ -322,6 +300,8 @@ def register():
             errors.append("At least one skill is required")
         if not password:
             errors.append("Password is required")
+        if not password_recovery:
+            errors.append("Secure Password Hint is required")
         if not confirm_password:
             errors.append("Confirm password is required")
         if password != confirm_password:
@@ -349,6 +329,7 @@ def register():
             email=email,
             description=description,
             location=location,
+            password_recovery=password_recovery,
             skills=json.dumps(skills),
             password=generate_password_hash(password),
             clusters_count=0,
@@ -407,6 +388,7 @@ def register_update():
             website = request.form.get('website', '').strip()
             second_website = request.form.get('second_website', '').strip()
             skills = request.form.get('skills', '')
+            password_recovery = request.form.get('password_recovery', '').strip()
             if skills:
                 try:
                     skills = json.loads(skills)
@@ -456,6 +438,8 @@ def register_update():
                 user.confirm_email = int(0)
             if location:
                 user.location = location
+            if password_recovery:
+                user.password_recovery = password_recovery
             if description:
                 user.description = description
             
@@ -1545,65 +1529,47 @@ def logout():
 
 
 # Backup
-
+"""
 logging.basicConfig(level=logging.INFO)
 
-@app.route('/run_backup', methods=['GET'])
-def run_backup():
-    try:
-        BACKUP_DIR = 'backups'
-        DB_FILE   = 'instance/clusters.db'
+DROPBOX_TOKEN = config.DROPBOX_ACCESS_TOKEN
+BACKUP_DIR = 'backups'
+DB_FILE = 'instance/clusters.db'
+MAX_BACKUPS = 5
 
+@app.route('/run_backup', methods=['GET'])
+def run_backup_dropbox():
+    try:
         db_filename = os.path.basename(DB_FILE)
         os.makedirs(BACKUP_DIR, exist_ok=True)
-
-        # timestamp for unique filename
+        
+        # Create timestamped backup filename
         timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
         backup_name = f"{db_filename}_{timestamp}.zip"
         backup_path = os.path.join(BACKUP_DIR, backup_name)
-
-        # zip the database
+        
+        # Zip the database file
         with zipfile.ZipFile(backup_path, 'w') as zipf:
             zipf.write(DB_FILE, arcname=db_filename)
-
-        logging.info(f"✅ Zipped {DB_FILE} to {backup_path}")
-
-        # keep only last 5 backups
-        files = sorted(os.listdir(BACKUP_DIR), reverse=True)
-        for old_file in files[5:]:
-            os.remove(os.path.join(BACKUP_DIR, old_file))
-            logging.info(f"🗑️ Deleted old backup {old_file}")
-
-        # compose email
-        msg = EmailMessage()
-        msg['Subject'] = f"ClustersHub Backup - {timestamp}"
-        msg['From']    = Config.EMAIL_FROM
-        msg['To']      = Config.EMAIL_TO
-        msg.set_content(
-            "Hey,\n\nYour latest backup is attached.\n\nCheers,\nClustersHub"
-        )
-
+        
+        # Upload to Dropbox
+        dbx = dropbox.Dropbox(DROPBOX_TOKEN)
         with open(backup_path, 'rb') as f:
-            msg.add_attachment(
-                f.read(),
-                maintype='application',
-                subtype='zip',
-                filename=backup_name
-            )
-
-        # send via Gmail SMTP
-        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
-            server.login(Config.GMAIL_USER, Config.GMAIL_PASS)
-            server.send_message(msg)
-
-        logging.info("✅ Email sent")
-
-        return jsonify({"status": "success", "message": "Backup created and emailed"}), 200
-
+            dbx.files_upload(f.read(), f"/{backup_name}", mute=True)
+        
+        # Delete old backups (keep only MAX_BACKUPS)
+        backups = sorted([f for f in os.listdir(BACKUP_DIR) if f.endswith('.zip')])
+        for old_backup in backups[:-MAX_BACKUPS]:
+            old_path = os.path.join(BACKUP_DIR, old_backup)
+            os.remove(old_path)
+            logging.info(f"🗑️ Deleted old backup: {old_backup}")
+        
+        logging.info(f"✅ Uploaded {backup_name} to Dropbox")
+        return jsonify({"status": "success", "file": backup_name}), 200
     except Exception as e:
-        logging.error(f"❌ Backup failed: {e}")
+        logging.error(f"❌ Upload failed: {e}")
         return jsonify({"status": "error", "message": str(e)}), 500
-
+"""
    
 if __name__ == '__main__':
     app.run(debug=True)
