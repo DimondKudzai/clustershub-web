@@ -25,6 +25,7 @@ class User(db.Model, UserMixin):
     joined = db.Column(db.DateTime, default=datetime.utcnow)
     phone = db.Column(db.String)
     password = db.Column(db.String)
+    password_recovery = db.Column(db.String)
     image = db.Column(db.String)
     clusters_count = db.Column(db.Integer)
     notifications_count = db.Column(db.Integer)

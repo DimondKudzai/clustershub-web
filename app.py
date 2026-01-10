@@ -25,13 +25,20 @@ import zipfile
 from email.message import EmailMessage
 import smtplib
 import logging
+#import dropbox
+from flask_login import LoginManager
+import math
+from collections import Counter
 
 
 app = Flask(__name__)
 app.config.from_object(Config)
 app.config['SECRET_KEY'] = Config.SECRET_KEY
-
+login_manager = LoginManager()
+login_manager.init_app(app)
 db.init_app(app)
+
+
 """
 app.config['MAIL_SERVER'] = Config.MAIL_SERVER
 app.config['MAIL_PORT'] = Config.MAIL_PORT
@@ -43,9 +50,13 @@ app.config['MAIL_DEFAULT_SENDER'] = Config.MAIL_DEFAULT_SENDER
 mail = Mail(app)
 """
 
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+    
 class MyModelView(ModelView):
     def is_accessible(self):
-        return current_user.is_authenticated and current_user.id == 1
+        return current_user.is_authenticated and current_user.id == 1 or 2
 
 admin = Admin(app, name='Clusters Admin')
 admin.add_view(MyModelView(User, db.session))
@@ -230,52 +241,20 @@ def login():
     notice = session.pop('notice', None)
     return render_template('auth.html', notice=notice)
 
-"""
+
 @app.route('/forgot', methods=['GET', 'POST'])
 def forgot_password():
     if request.method == 'POST':
         email = request.form['email']
         user = User.query.filter_by(email=email).first()
         if user:
-            token = generate_reset_token(user.email)
-            reset_url = url_for('reset_password', token=token, _external=True)
-            msg = Message('Password Reset Request', 
-                          sender='noreply@clustershub.co.zw', 
-                          recipients=[user.email])
-            msg.html = render_template('email_reset_password.html', 
-                                       reset_url=reset_url, 
-                                       user=user)
-            mail.send(msg)
-            return render_template('forgot.html', 
-                                  message='A password reset link has been sent to your email address. Open your mail box and click link to reset password. Link expires in 60 minutes')
+            hint = user.password_recovery
+            return render_template('forgot.html', hint=hint)
         else:
             error = "Email address not registered"
             return render_template('error.html', error=error)
     return render_template('forgot.html')
-
-
-@app.route('/reset/<token>', methods=['GET', 'POST'])
-def reset_password(token):
-    email = verify_reset_token(token)
-    if not email:
-        error = "Token expired or invalid"
-        return render_template('error.html', error=error)
-        
-    if request.method == 'POST':
-        new_password = request.form['password']
-        confirm_password = request.form['confirm_password']
-        if new_password != confirm_password:
-            error = "Passwords do not match"
-            return render_template('error.html', error=error)
-            
-        user = User.query.filter_by(email=email).first()
-        if user:
-            user.password = generate_password_hash(new_password)
-            db.session.commit()
-            return redirect('/login')
-    return render_template('reset.html', token=token)
     
-   """     
 # Register
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -301,6 +280,7 @@ def register():
             else:
                 skills = []
             password = request.form.get('password', '').strip()
+            password_recovery = request.form.get('password_recovery', '').strip()
             confirm_password = request.form.get('confirm_password', '').strip()
         except Exception as e:
             print(e)
@@ -322,6 +302,8 @@ def register():
             errors.append("At least one skill is required")
         if not password:
             errors.append("Password is required")
+        if not password_recovery:
+            errors.append("Secure Password Hint is required")
         if not confirm_password:
             errors.append("Confirm password is required")
         if password != confirm_password:
@@ -349,6 +331,7 @@ def register():
             email=email,
             description=description,
             location=location,
+            password_recovery=password_recovery,
             skills=json.dumps(skills),
             password=generate_password_hash(password),
             clusters_count=0,
@@ -407,6 +390,7 @@ def register_update():
             website = request.form.get('website', '').strip()
             second_website = request.form.get('second_website', '').strip()
             skills = request.form.get('skills', '')
+            password_recovery = request.form.get('password_recovery', '').strip()
             if skills:
                 try:
                     skills = json.loads(skills)
@@ -456,6 +440,8 @@ def register_update():
                 user.confirm_email = int(0)
             if location:
                 user.location = location
+            if password_recovery:
+                user.password_recovery = password_recovery
             if description:
                 user.description = description
             
@@ -590,7 +576,7 @@ def startCluster():
         # Send notification
         notification = {
             "id": len(user.get_messages()) + 1,
-            "body": f"Congratulations, You have successfully created Cluster - { name }. Tip: Did you know sharing your Cluster online increases member quality by 3X. Here are your Clusters.",
+            "body": f"Congratulations, You have successfully created Cluster - { name }. As the author of the Cluster your responsiblity is to manage the Cluster. Did you know sharing your Cluster online increases member quality by 3X. Here are your Clusters.",
             "read": False,
             "url": f"/clusters",
             "timestamp": datetime.now(timezone.utc).isoformat()
@@ -1363,6 +1349,91 @@ def cluster_updates(cluster_id):
        
 
 # Recomended clusters
+
+@app.route('/recommended_clusters')
+@login_required
+def recommended_clusters():
+    user_id = session.get('user_id')
+    if user_id is None:
+        return redirect('/login')
+    user = db.session.get(User, user_id)
+    if user is None:
+        return redirect('/login')
+
+    def tokenize(text):
+        return re.findall(r'[a-zA-Z0-9_]+', text.lower()) if text else []
+
+    def compute_tf(text_tokens):
+        tf = Counter(text_tokens)
+        total_terms = len(text_tokens)
+        return {word: count / total_terms for word, count in tf.items()}
+
+    def compute_idf(documents):
+        N = len(documents)
+        idf = {}
+        all_tokens = set(token for doc in documents for token in set(doc))
+        for token in all_tokens:
+            containing_docs = sum(1 for doc in documents if token in doc)
+            idf[token] = math.log((N + 1) / (containing_docs + 1)) + 1  # Smoothed
+        return idf
+
+    def compute_tfidf(tf, idf):
+        return {word: tf[word] * idf[word] for word in tf}
+
+    def cosine_sim(vec1, vec2):
+        common = set(vec1) & set(vec2)
+        num = sum(vec1[x] * vec2[x] for x in common)
+        denom1 = math.sqrt(sum(v ** 2 for v in vec1.values()))
+        denom2 = math.sqrt(sum(v ** 2 for v in vec2.values()))
+        if denom1 == 0 or denom2 == 0:
+            return 0.0
+        return num / (denom1 * denom2)
+
+    def semantic_similarity_score(text1, text2):
+        tokens1 = tokenize(text1)
+        tokens2 = tokenize(text2)
+        idf = compute_idf([tokens1, tokens2])
+        tfidf1 = compute_tfidf(compute_tf(tokens1), idf)
+        tfidf2 = compute_tfidf(compute_tf(tokens2), idf)
+        return cosine_sim(tfidf1, tfidf2)
+
+    user_skills = [skill.lower() for skill in user.get_skills()]
+    user_desc_words = tokenize(user.description)
+    user_location = user.location.lower() if user.location else ''
+    user_text = ' '.join(user_skills + user_desc_words + [user_location])
+
+    scored = []
+    for cluster in Cluster.query.all():
+        tags = [tag.lower() for tag in cluster.get_tags()]
+        target = cluster.target.lower() if cluster.target else ''
+        cluster_desc = cluster.description.lower() if cluster.description else ''
+        cluster_location = cluster.location.lower() if cluster.location else ''
+        target_words = tokenize(target)
+        cluster_desc_words = tokenize(cluster_desc)
+        score = 0
+        # Exact skill/tag match
+        score += 3 * len(set(user_skills) & set(tags))
+        # Partial skill in target string
+        score += sum(1 for skill in user_skills if skill in target)
+        # Substring match in individual target words
+        score += sum(1 for skill in user_skills if any(skill in word for word in target_words))
+        # Word overlap in description
+        score += sum(1 for word in user_desc_words if word in cluster_desc_words)
+        # Location match
+        if user_location and cluster_location and (user_location in cluster_location or cluster_location in user_location):
+            score += 5
+        # Semantic similarity
+        cluster_text = ' '.join(tags + [target, cluster_desc, cluster_location])
+        score += semantic_similarity_score(user_text, cluster_text) * 5
+        # Member count bonus
+        score += 0.1 * len(cluster.get_members())
+        if score > 0:
+            scored.append((score, cluster))
+    scored.sort(key=lambda x: x[0], reverse=True)
+    matched_clusters = [c for score, c in scored]
+    return render_template('recommended.html', clusters=matched_clusters, user=user)
+    
+"""
 @app.route('/recommended_clusters')
 @login_required
 def recommended_clusters():
@@ -1395,7 +1466,7 @@ def recommended_clusters():
     matched_clusters = [c for score, c in scored if score > 0]
     return render_template('recommended.html', clusters=matched_clusters, user=user)
     
-"""   
+
 # ai powered matching
 
 @app.route('/ai_recommended_clusters')
@@ -1545,65 +1616,47 @@ def logout():
 
 
 # Backup
-
+"""
 logging.basicConfig(level=logging.INFO)
 
-@app.route('/run_backup', methods=['GET'])
-def run_backup():
-    try:
-        BACKUP_DIR = 'backups'
-        DB_FILE   = 'instance/clusters.db'
+DROPBOX_TOKEN = config.DROPBOX_ACCESS_TOKEN
+BACKUP_DIR = 'backups'
+DB_FILE = 'instance/clusters.db'
+MAX_BACKUPS = 5
 
+@app.route('/run_backup', methods=['GET'])
+def run_backup_dropbox():
+    try:
         db_filename = os.path.basename(DB_FILE)
         os.makedirs(BACKUP_DIR, exist_ok=True)
-
-        # timestamp for unique filename
+        
+        # Create timestamped backup filename
         timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
         backup_name = f"{db_filename}_{timestamp}.zip"
         backup_path = os.path.join(BACKUP_DIR, backup_name)
-
-        # zip the database
+        
+        # Zip the database file
         with zipfile.ZipFile(backup_path, 'w') as zipf:
             zipf.write(DB_FILE, arcname=db_filename)
-
-        logging.info(f"✅ Zipped {DB_FILE} to {backup_path}")
-
-        # keep only last 5 backups
-        files = sorted(os.listdir(BACKUP_DIR), reverse=True)
-        for old_file in files[5:]:
-            os.remove(os.path.join(BACKUP_DIR, old_file))
-            logging.info(f"🗑️ Deleted old backup {old_file}")
-
-        # compose email
-        msg = EmailMessage()
-        msg['Subject'] = f"ClustersHub Backup - {timestamp}"
-        msg['From']    = Config.EMAIL_FROM
-        msg['To']      = Config.EMAIL_TO
-        msg.set_content(
-            "Hey,\n\nYour latest backup is attached.\n\nCheers,\nClustersHub"
-        )
-
+        
+        # Upload to Dropbox
+        dbx = dropbox.Dropbox(DROPBOX_TOKEN)
         with open(backup_path, 'rb') as f:
-            msg.add_attachment(
-                f.read(),
-                maintype='application',
-                subtype='zip',
-                filename=backup_name
-            )
-
-        # send via Gmail SMTP
-        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
-            server.login(Config.GMAIL_USER, Config.GMAIL_PASS)
-            server.send_message(msg)
-
-        logging.info("✅ Email sent")
-
-        return jsonify({"status": "success", "message": "Backup created and emailed"}), 200
-
+            dbx.files_upload(f.read(), f"/{backup_name}", mute=True)
+        
+        # Delete old backups (keep only MAX_BACKUPS)
+        backups = sorted([f for f in os.listdir(BACKUP_DIR) if f.endswith('.zip')])
+        for old_backup in backups[:-MAX_BACKUPS]:
+            old_path = os.path.join(BACKUP_DIR, old_backup)
+            os.remove(old_path)
+            logging.info(f"🗑️ Deleted old backup: {old_backup}")
+        
+        logging.info(f"✅ Uploaded {backup_name} to Dropbox")
+        return jsonify({"status": "success", "file": backup_name}), 200
     except Exception as e:
-        logging.error(f"❌ Backup failed: {e}")
+        logging.error(f"❌ Upload failed: {e}")
         return jsonify({"status": "error", "message": str(e)}), 500
-
+"""
    
 if __name__ == '__main__':
     app.run(debug=True)

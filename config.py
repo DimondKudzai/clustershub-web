@@ -5,6 +5,7 @@ class Config:
     SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL", "sqlite:///clusters.db")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SECRET_KEY = "2409" # os.getenv("SECRET_KEY")
+    DROPBOX_ACCESS_TOKEN = os.getenv("DROPBOX_ACCESS_TOKEN")
     
 """
     MAIL_SERVER = os.getenv("MAIL_SERVER")

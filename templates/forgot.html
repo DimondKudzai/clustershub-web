@@ -1,34 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="keywords" content="recover, forget" />
-  <meta name="description" content="Password recovery" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Password Recovery</title>
-  <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}">
-  <link rel="icon" type="image/jpg" href="{{url_for('static', filename='banner.jpg')}}">
-  </head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="recover, forget" />
+    <meta name="description" content="Password recovery" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Recovery</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}">
+    <link rel="icon" type="image/jpg" href="{{url_for('static', filename='banner.jpg')}}">
+</head>
 <body>
-
-{% include 'partials/header.html' %}
- 
-  <div class="container">
-  
-    <section class="create-cluster">
-    <center><h3>Reset password?</h3></center>
-    <p> {{ url }}</p>
- <form method="POST" action="{{ url_for('forgot_password') }}">
- <label for="email"><strong>Email</strong></label>
- <input type="email" id="email" name="email" required placeholder="account email address">
- <button type="submit" class="dashboardBtn">Reset Password</button>
- </form>
- 
-       
-    </section>
+    {% include 'partials/header.html' %}
+    <div class="container">
+        <section class="create-cluster">
+            <center><h3>Forgot Password?</h3></center>
+            <form method="POST" action="{{ url_for('forgot_password') }}">
+                <label for="email"><strong>Email</strong></label>
+                <input type="email" id="email" name="email" required placeholder="account email address">
+                <button type="submit" class="dashboardBtn">View Password Hint</button>
+            </form>
+            {% if hint %}
+                <p>Password hint: <i>{{ hint }}</i> </p>
+                <p>Remember your password? <a href="{{ url_for('login') }}" >Login</a></p>
+            {% endif %}
+        </section>
     </div>
-    
     {% include 'partials/footer.html' %}
-    
-   </body>
- </html>
+</body>
+</html>
