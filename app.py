@@ -1631,13 +1631,13 @@ def logout():
 
 
 # Backup
-
 @app.route('/download_db')
 @login_required
 def download_db():
     if session.get('user_id') > 2:
         return redirect('/home')
-    return send_file('data/clusters.db', as_attachment=True)
+    db_path = '/data/clusters.db'  # Match Render disk path
+    return send_file(db_path, as_attachment=True)
 
    
 if __name__ == '__main__':
