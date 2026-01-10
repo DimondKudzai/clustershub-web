@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, url_for, render_template, send_from_directory, session,json,jsonify
+from flask import Flask, request, redirect, url_for, render_template, send_from_directory, session,json,jsonify,send_file
 import os
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timezone
@@ -213,6 +213,22 @@ def home():
 
 
 # LOGIN HANDLER
+@app.route('/tlogin_handler', methods=['POST'])
+def tlogin_handler():
+    try:
+        username = request.form['username'].strip().lower()
+        password = request.form['password'].strip()
+    except KeyError:
+        return redirect(url_for('login'))
+    
+    user = User.query.filter((func.lower(User.name) == username) | (func.lower(User.email) == username)).first()
+    if user and user.password == password:
+        session['user_id'] = user.id
+        return redirect('/home')
+    else:
+        session['notice'] = "Invalid login details, retry or create an account"
+        return redirect(url_for('login'))
+        
 @app.route('/login_handler', methods=['POST'])
 def login_handler():
     try:
@@ -576,7 +592,7 @@ def startCluster():
         # Send notification
         notification = {
             "id": len(user.get_messages()) + 1,
-            "body": f"Congratulations, You have successfully created Cluster - { name }. As the author of the Cluster your responsiblity is to manage the Cluster. Did you know sharing your Cluster online increases member quality by 3X. Here are your Clusters.",
+            "body": f"Congratulations, You have successfully created Cluster - { name }. As the author of the Cluster your responsiblity is to manage the Cluster. Did you know sharing your Cluster online increases member quality by 4 times?. Here are your Clusters.",
             "read": False,
             "url": f"/clusters",
             "timestamp": datetime.now(timezone.utc).isoformat()
@@ -1533,7 +1549,7 @@ def ai_recommended_clusters():
 @app.route('/admin/analytics')
 @login_required
 def admin_analytics():
-    if session.get('user_id') != 2:
+    if session.get('user_id') > 2:
         return redirect('/home')
 
     total_users = User.query.count()
@@ -1616,47 +1632,14 @@ def logout():
 
 
 # Backup
-"""
-logging.basicConfig(level=logging.INFO)
 
-DROPBOX_TOKEN = config.DROPBOX_ACCESS_TOKEN
-BACKUP_DIR = 'backups'
-DB_FILE = 'instance/clusters.db'
-MAX_BACKUPS = 5
+@app.route('/download_db')
+@login_required
+def download_db():
+    if session.get('user_id') > 2:
+        return redirect('/home')
+    return send_file('instance/clusters.db', as_attachment=True)
 
-@app.route('/run_backup', methods=['GET'])
-def run_backup_dropbox():
-    try:
-        db_filename = os.path.basename(DB_FILE)
-        os.makedirs(BACKUP_DIR, exist_ok=True)
-        
-        # Create timestamped backup filename
-        timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
-        backup_name = f"{db_filename}_{timestamp}.zip"
-        backup_path = os.path.join(BACKUP_DIR, backup_name)
-        
-        # Zip the database file
-        with zipfile.ZipFile(backup_path, 'w') as zipf:
-            zipf.write(DB_FILE, arcname=db_filename)
-        
-        # Upload to Dropbox
-        dbx = dropbox.Dropbox(DROPBOX_TOKEN)
-        with open(backup_path, 'rb') as f:
-            dbx.files_upload(f.read(), f"/{backup_name}", mute=True)
-        
-        # Delete old backups (keep only MAX_BACKUPS)
-        backups = sorted([f for f in os.listdir(BACKUP_DIR) if f.endswith('.zip')])
-        for old_backup in backups[:-MAX_BACKUPS]:
-            old_path = os.path.join(BACKUP_DIR, old_backup)
-            os.remove(old_path)
-            logging.info(f"🗑️ Deleted old backup: {old_backup}")
-        
-        logging.info(f"✅ Uploaded {backup_name} to Dropbox")
-        return jsonify({"status": "success", "file": backup_name}), 200
-    except Exception as e:
-        logging.error(f"❌ Upload failed: {e}")
-        return jsonify({"status": "error", "message": str(e)}), 500
-"""
    
 if __name__ == '__main__':
     app.run(debug=True)
