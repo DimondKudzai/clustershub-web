@@ -1563,7 +1563,6 @@ def admin_analytics():
     labels = [cluster.name for cluster in clusters]
     data = [len(cluster.get_members()) for cluster in clusters]
     
-
     return render_template('analytics.html', 
         total_users=total_users,
         total_clusters=total_clusters,
@@ -1638,7 +1637,7 @@ def logout():
 def download_db():
     if session.get('user_id') > 2:
         return redirect('/home')
-    return send_file('instance/clusters.db', as_attachment=True)
+    return send_file('data/clusters.db', as_attachment=True)
 
    
 if __name__ == '__main__':
