@@ -21,23 +21,30 @@ from flask import render_template_string
 from flask_login import current_user
 #from sklearn.feature_extraction.text import TfidfVectorizer
 #from sklearn.metrics.pairwise import cosine_similarity
-import zipfile
 from email.message import EmailMessage
 import smtplib
 import logging
-#import dropbox
 from flask_login import LoginManager
 import math
 from collections import Counter
-
+import pytz
+import requests as http_requests
 
 app = Flask(__name__)
 app.config.from_object(Config)
 app.config['SECRET_KEY'] = Config.SECRET_KEY
+
+REMOTE_META_URL = 'http://smartlearning.liveblog365.com/backups/db_meta.php'
+REMOTE_DB_URL = 'http://smartlearning.liveblog365.com/backups/clusters.db'
+REMOTE_UPLOAD_URL = 'http://smartlearning.liveblog365.com/backups/upload_db.php'
+DB_PATH = '/tmp/clusters.db'
+
+if not os.path.exists(DB_PATH):
+    download_remote_db()
+    
 login_manager = LoginManager()
 login_manager.init_app(app)
 db.init_app(app)
-
 
 """
 app.config['MAIL_SERVER'] = Config.MAIL_SERVER
@@ -1630,14 +1637,62 @@ def logout():
     return redirect('/login')
 
 
-# Backup
-@app.route('/download_db')
-@login_required
-def download_db():
-    if session.get('user_id') > 2:
-        return redirect('/home')
-    db_path = '/data/clusters.db'  # Match Render disk path
-    return send_file(db_path, as_attachment=True)
+# BACKUP   
+
+def get_local_timestamp():
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        c = conn.cursor()
+        c.execute("SELECT last_updated FROM meta WHERE id = 1")
+        ts = c.fetchone()[0]
+        conn.close()
+        return ts
+    except:
+        return None
+
+def get_remote_timestamp():
+    try:
+        r = http_requests.get(REMOTE_META_URL, timeout=10)
+        return r.json().get('last_updated')
+    except:
+        return None
+
+def download_remote_db():
+    r = http_requests.get(REMOTE_DB_URL)
+    with open(DB_PATH, 'wb') as f:
+        f.write(r.content)
+
+def upload_local_db():
+    with open(DB_PATH, 'rb') as f:
+        r = http_requests.post(REMOTE_UPLOAD_URL, files={'file': f})
+        print(r.text)
+
+def update_local_timestamp():
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+    now_utc = datetime.now(pytz.utc).strftime('%Y-%m-%d %H:%M:%S')
+    c.execute("UPDATE meta SET last_updated = ? WHERE id = 1", (now_utc,))
+    conn.commit()
+    conn.close()
+
+@app.route('/sync')
+def sync():
+    if not os.path.exists(DB_PATH):
+        download_remote_db()
+        return "Downloaded DB", 200
+    
+    local_ts = get_local_timestamp()
+    remote_ts = get_remote_timestamp()
+    if not local_ts or not remote_ts:
+        return "Missing timestamp", 500
+    if remote_ts > local_ts:
+        download_remote_db()
+        return "Downloaded newer DB", 200
+    elif local_ts > remote_ts:
+        upload_local_db()
+        return "Uploaded newer DB", 200
+    else:
+        return "Already synced", 200
 
    
 if __name__ == '__main__':
