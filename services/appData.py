@@ -1,3 +1,11 @@
+def get_all_backups():
+    backups = [
+    {
+    "id": 1,
+    "last_updated": "2026-01-01 00:00:00"
+     }
+     ]
+    return backups
 def get_suggestions():
     skills = [
     "Frontend", "Backend", "DevOps", "Marketing", "Finance", "Legal", "Real estate", "Bookkeeping", "Animation", "Video editing", "Data analysis",

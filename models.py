@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 import json
 from datetime import datetime
 from config import Config
-from services.appData import get_all_users, get_all_clusters, get_suggestions
+from services.appData import get_all_users, get_all_clusters, get_suggestions, get_all_backups
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -125,6 +125,22 @@ class Suggestion(db.Model):
     def set_skills(self, skills):
         self.skills = json.dumps(skills)
 
+class Backup(db.Model):
+    __tablename__ = 'meta'
+    id = db.Column(db.Integer, primary_key=True)
+    last_updated = db.Column(db.Text) 
+
+
+def seed_backup():
+    backups = get_all_backups()
+    for backup_data in backups:
+        if not Backup.query.filter_by(id=backup_data["id"]).first():
+            backup = Backup(
+                id=backup_data["id"],
+                last_updated=backup_data["last_updated"]
+            )
+            db.session.add(backup)
+    db.session.commit()
 
 def seed_users():
     users = get_all_users()
@@ -195,6 +211,7 @@ with app.app_context():
     seed_users()
     seed_clusters()
     seed_suggestions()
+    seed_backup()
 
 if __name__ == '__main__':
     app.run(debug=True)
