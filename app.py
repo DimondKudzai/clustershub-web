@@ -37,8 +37,44 @@ app.config['SECRET_KEY'] = Config.SECRET_KEY
 REMOTE_META_URL = 'http://smartlearning.liveblog365.com/backups/db_meta.php'
 REMOTE_DB_URL = 'http://smartlearning.liveblog365.com/backups/clusters.db'
 REMOTE_UPLOAD_URL = 'http://smartlearning.liveblog365.com/backups/upload_db.php'
-DB_PATH = 'tmp/clusters.db'
+DB_PATH = '/tmp/clusters.db'
 
+def get_local_timestamp():
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        c = conn.cursor()
+        c.execute("SELECT last_updated FROM meta WHERE id = 1")
+        ts = c.fetchone()[0]
+        conn.close()
+        return ts
+    except:
+        return None
+
+def get_remote_timestamp():
+    try:
+        r = http_requests.get(REMOTE_META_URL, timeout=10)
+        return r.json().get('last_updated')
+    except:
+        return None
+
+def download_remote_db():
+    r = http_requests.get(REMOTE_DB_URL)
+    with open(DB_PATH, 'wb') as f:
+        f.write(r.content)
+
+def upload_local_db():
+    with open(DB_PATH, 'rb') as f:
+        r = http_requests.post(REMOTE_UPLOAD_URL, files={'file': f})
+        print(r.text)
+
+def update_local_timestamp():
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+    now_utc = datetime.now(pytz.utc).strftime('%Y-%m-%d %H:%M:%S')
+    c.execute("UPDATE meta SET last_updated = ? WHERE id = 1", (now_utc,))
+    conn.commit()
+    conn.close()
+    
 if not os.path.exists(DB_PATH):
     download_remote_db()
     
@@ -1639,41 +1675,7 @@ def logout():
 
 # BACKUP   
 
-def get_local_timestamp():
-    try:
-        conn = sqlite3.connect(DB_PATH)
-        c = conn.cursor()
-        c.execute("SELECT last_updated FROM meta WHERE id = 1")
-        ts = c.fetchone()[0]
-        conn.close()
-        return ts
-    except:
-        return None
 
-def get_remote_timestamp():
-    try:
-        r = http_requests.get(REMOTE_META_URL, timeout=10)
-        return r.json().get('last_updated')
-    except:
-        return None
-
-def download_remote_db():
-    r = http_requests.get(REMOTE_DB_URL)
-    with open(DB_PATH, 'wb') as f:
-        f.write(r.content)
-
-def upload_local_db():
-    with open(DB_PATH, 'rb') as f:
-        r = http_requests.post(REMOTE_UPLOAD_URL, files={'file': f})
-        print(r.text)
-
-def update_local_timestamp():
-    conn = sqlite3.connect(DB_PATH)
-    c = conn.cursor()
-    now_utc = datetime.now(pytz.utc).strftime('%Y-%m-%d %H:%M:%S')
-    c.execute("UPDATE meta SET last_updated = ? WHERE id = 1", (now_utc,))
-    conn.commit()
-    conn.close()
 
 @app.route('/sync')
 def sync():
