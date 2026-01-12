@@ -37,7 +37,7 @@ app.config['SECRET_KEY'] = Config.SECRET_KEY
 REMOTE_META_URL = 'http://smartlearning.liveblog365.com/backups/db_meta.php'
 REMOTE_DB_URL = 'http://smartlearning.liveblog365.com/backups/clusters.db'
 REMOTE_UPLOAD_URL = 'http://smartlearning.liveblog365.com/backups/upload_db.php'
-DB_PATH = '/tmp/clusters.db'
+DB_PATH = 'tmp/clusters.db'
 
 if not os.path.exists(DB_PATH):
     download_remote_db()
