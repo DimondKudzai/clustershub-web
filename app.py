@@ -24,22 +24,15 @@ from flask_login import current_user
 from email.message import EmailMessage
 import smtplib
 import logging
-<<<<<<< HEAD
 from flask_login import LoginManager
 import math
 from collections import Counter
 import pytz
 import requests as http_requests
-=======
-#import dropbox
-from flask_login import LoginManager
-
->>>>>>> web/master
 
 app = Flask(__name__)
 app.config.from_object(Config)
 app.config['SECRET_KEY'] = Config.SECRET_KEY
-<<<<<<< HEAD
 
 REMOTE_META_URL = 'http://smartlearning.liveblog365.com/backups/db_meta.php'
 REMOTE_DB_URL = 'http://smartlearning.liveblog365.com/backups/clusters.db'
@@ -49,16 +42,10 @@ DB_PATH = '/tmp/clusters.db'
 if not os.path.exists(DB_PATH):
     download_remote_db()
     
-=======
->>>>>>> web/master
 login_manager = LoginManager()
 login_manager.init_app(app)
 db.init_app(app)
 
-<<<<<<< HEAD
-=======
-
->>>>>>> web/master
 """
 app.config['MAIL_SERVER'] = Config.MAIL_SERVER
 app.config['MAIL_PORT'] = Config.MAIL_PORT
@@ -1650,7 +1637,6 @@ def logout():
     return redirect('/login')
 
 
-<<<<<<< HEAD
 # BACKUP   
 
 def get_local_timestamp():
@@ -1708,50 +1694,6 @@ def sync():
     else:
         return "Already synced", 200
 
-=======
-# Backup
-"""
-logging.basicConfig(level=logging.INFO)
-
-DROPBOX_TOKEN = config.DROPBOX_ACCESS_TOKEN
-BACKUP_DIR = 'backups'
-DB_FILE = 'instance/clusters.db'
-MAX_BACKUPS = 5
-
-@app.route('/run_backup', methods=['GET'])
-def run_backup_dropbox():
-    try:
-        db_filename = os.path.basename(DB_FILE)
-        os.makedirs(BACKUP_DIR, exist_ok=True)
-        
-        # Create timestamped backup filename
-        timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
-        backup_name = f"{db_filename}_{timestamp}.zip"
-        backup_path = os.path.join(BACKUP_DIR, backup_name)
-        
-        # Zip the database file
-        with zipfile.ZipFile(backup_path, 'w') as zipf:
-            zipf.write(DB_FILE, arcname=db_filename)
-        
-        # Upload to Dropbox
-        dbx = dropbox.Dropbox(DROPBOX_TOKEN)
-        with open(backup_path, 'rb') as f:
-            dbx.files_upload(f.read(), f"/{backup_name}", mute=True)
-        
-        # Delete old backups (keep only MAX_BACKUPS)
-        backups = sorted([f for f in os.listdir(BACKUP_DIR) if f.endswith('.zip')])
-        for old_backup in backups[:-MAX_BACKUPS]:
-            old_path = os.path.join(BACKUP_DIR, old_backup)
-            os.remove(old_path)
-            logging.info(f"🗑️ Deleted old backup: {old_backup}")
-        
-        logging.info(f"✅ Uploaded {backup_name} to Dropbox")
-        return jsonify({"status": "success", "file": backup_name}), 200
-    except Exception as e:
-        logging.error(f"❌ Upload failed: {e}")
-        return jsonify({"status": "error", "message": str(e)}), 500
-"""
->>>>>>> web/master
    
 if __name__ == '__main__':
     app.run(debug=True)
