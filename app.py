@@ -38,7 +38,7 @@ REMOTE_META_URL = 'http://smartlearning.liveblog365.com/backups/db_meta.php'
 REMOTE_DB_URL = 'http://smartlearning.liveblog365.com/backups/clusters.db'
 REMOTE_UPLOAD_URL = 'http://smartlearning.liveblog365.com/backups/upload_db.php'
 DB_PATH = '/tmp/clusters.db'
-SQLALCHEMY_DATABASE_URI = "sqlite:////tmp/clusters.db")
+SQLALCHEMY_DATABASE_URI = "sqlite:////tmp/clusters.db"
 
 def get_local_timestamp():
     try:
