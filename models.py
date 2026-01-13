@@ -1,17 +1,11 @@
-from flask import Flask
 from flask_login import UserMixin
 from flask_sqlalchemy import SQLAlchemy
+from services.appData import get_all_users, get_all_clusters, get_suggestions, get_all_backups
+from flask_login import UserMixin
 import json
 from datetime import datetime
-from config import Config
-from services.appData import get_all_users, get_all_clusters, get_suggestions, get_all_backups
-
-
-app = Flask(__name__)
-app.config.from_object(Config)
-app.config['SECRET_KEY'] = Config.SECRET_KEY
-
-db = SQLAlchemy(app) 
+from services.appData import get_all_users, get_all_clusters, get_suggestions
+from database import db
 
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
@@ -206,13 +200,3 @@ def seed_suggestions():
         suggestion.set_skills(new_skills)
         db.session.add(suggestion)
     db.session.commit()
-
-with app.app_context():
-    db.create_all()
-    seed_users()
-    seed_clusters()
-    seed_suggestions()
-    seed_backup()
-
-if __name__ == '__main__':
-    app.run(debug=True)
