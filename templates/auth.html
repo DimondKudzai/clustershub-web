@@ -58,7 +58,32 @@
 </form>
 
 </section>
- 
+ <br>
+ <section>
+  <h1>Featured Clusters</h1>
+   {% for cluster in clusters %}
+   
+   <section class="profile" id="cluster" class="">
+   <img src="{{ url_for('static', filename='cluster.jpg') }}" class="circle" id="">
+   <a href="{{ url_for('getCluster', id=cluster.id) }}">
+   <button class="dashboardBtn" style="float: right;background-color: #1E90FF;"> 👀 View Cluster</button></a>
+   <h2>{{ cluster.name }}</h2>
+   <p class="about">{{ cluster.target }}</p>      
+   
+   <section class="badges">
+   <strong>Open Slots: </strong>
+   {% for tag in cluster.get_tags() %}
+   <span class="badge">{{ tag }}</span>
+   {% endfor %}
+   </section>
+   
+   </section>
+   <br>
+   
+   
+   {% endfor %}  
+   
+ </section>
 {% include 'partials/footer.html' %}
 </body>
 </html>

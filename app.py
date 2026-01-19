@@ -269,7 +269,22 @@ def login_handler():
 @app.route('/login')
 def login():
     notice = session.pop('notice', None)
-    return render_template('auth.html', notice=notice)
+    user = db.session.get(User, 1)
+    if user is None:
+        return redirect('/login')
+    
+    clusters = Cluster.query.all()
+    created_clusters = user.get_created_clusters()
+    joined_clusters = user.get_joined()
+    requested_clusters = user.get_clusters_requests()
+    total_clusters = joined_clusters + created_clusters + requested_clusters
+    cluster_count = len(total_clusters)
+    show_clusters = [c for c in clusters if c.id in total_clusters]
+    if show_clusters:
+        return render_template('auth.html', user=user, clusters=show_clusters, notice=notice)
+    error = "no featured clusters"
+    return render_template('error.html', error=error)
+    #return render_template('auth.html', notice=notice)
 
 
 @app.route('/forgot', methods=['GET', 'POST'])
