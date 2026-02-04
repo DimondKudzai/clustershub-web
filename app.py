@@ -529,12 +529,12 @@ def myProfile():
 
     return render_template('myProfile.html', user=user)
         
-
+"""
 @app.route("/users")
 @login_required
 def users():
     return jsonify(User.query.all())
-    
+"""    
     
 @app.route("/users/<int:user_id>")
 @login_required
@@ -1479,6 +1479,7 @@ def recommended_clusters():
     return render_template('recommended.html', clusters=matched_clusters, user=user)
     
 """
+# Basic matching
 @app.route('/recommended_clusters')
 @login_required
 def recommended_clusters():

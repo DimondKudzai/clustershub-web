@@ -8,6 +8,13 @@
   <title>Login | Clusters Hub</title>
   <link rel="icon" type="image/jpg" href="{{url_for('static', filename='banner.jpg')}}">
   <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}">
+  <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/static/sw.js');
+    }
+  </script>
+  
 </head>
 <body>
 {% include 'partials/header.html' %}
@@ -29,7 +36,6 @@
  &#160 No account? 
 <a href="{{ url_for('register') }}" >
 <strong> Create Account </strong>
-</a>
  </a>
  <small> It takes less than 2 minutes and it's free.</small>
  </p>
@@ -55,6 +61,12 @@
 <button class="dashboardBtn" style="background-color: blue;" type="submit">Login</button>
 
 &#160 &#160 <a href="{{url_for('forgot_password')}}" style="text-decoration: none;"> <span style="" class="dashboardBtn"> Forgot Password?</span></a>
+<p style="">
+&#160 No account? 
+<a href="{{ url_for('register') }}" >
+<strong> Create Account </strong>
+</a>
+</p>
 </form>
 
 </section>
@@ -83,6 +95,11 @@
    
    {% endfor %}  
    
+ <center>
+ <a href="{{ url_for('home') }}" >
+ <h2> More Clusters</h2>
+ </center>
+ </a>
  </section>
 {% include 'partials/footer.html' %}
 </body>

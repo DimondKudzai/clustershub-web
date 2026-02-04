@@ -8,6 +8,13 @@
     <title>Password Recovery</title>
     <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}">
     <link rel="icon" type="image/jpg" href="{{url_for('static', filename='banner.jpg')}}">
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    <script>
+    if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/static/sw.js');
+    }
+    </script>
+    
 </head>
 <body>
     {% include 'partials/header.html' %}
