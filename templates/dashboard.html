@@ -9,12 +9,7 @@
   <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}"> 
   <link rel="icon" type="image/jpg" href="{{url_for('static', filename='banner.jpg')}}">
   <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/static/sw.js');
-    }
-  </script>
-  
+
   <style type="text/css">
   *{ font-family: 'roboto';}
   </style>
@@ -22,7 +17,7 @@
 <body>
 
 {% include 'partials/header.html' %}
-  
+  <button id="install-button" class="dashboardBtn" style="display: none;">✨ Install ClustersHub</button>
   <section class="dashboardContainer" style="margin-top: +10px;">
   
   <section style="padding: 5px; border: none; display: flex; align-items: center; gap: 10px;">
@@ -57,11 +52,46 @@
   
 </body>
 <script>
-       const playSoundButton = document.getElementById('mark');
-       const audio = new Audio('{{ url_for('static', filename='ztink.wav') }}');
 
-       playSoundButton.addEventListener('click', () => {
-           audio.play();
-       });
+const playSoundButton = document.getElementById('mark');
+const audio = new Audio("{{ url_for('static', filename='ztink.wav') }}");
+
+playSoundButton.addEventListener('click', () => {
+audio.play();
+});
+       
+       
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  // Prevent the mini-infobar from appearing
+  e.preventDefault();
+  // Stash the event so it can be triggered later
+  deferredPrompt = e;
+  // Show your custom install button
+  showInstallButton();
+});
+
+function showInstallButton() {
+  const installButton = document.getElementById('install-button');
+  installButton.style.display = 'block';
+  installButton.addEventListener('click', () => {
+    // Show the install prompt
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        console.log('User accepted the install prompt');
+      } else {
+        console.log('User dismissed the install prompt');
+      }
+      deferredPrompt = null;
+    });
+  });
+}
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register("{{ url_for('static', filename='sw.js') }}");
+  }
+
 </script>
 </html>

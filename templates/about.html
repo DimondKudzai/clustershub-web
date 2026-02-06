@@ -9,11 +9,6 @@
   <link rel="icon" type="image/jpg" href="{{url_for('static', filename='banner.jpg')}}">
   <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}">
   <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/static/sw.js');
-    }
-  </script>
   
   <style>
   body {
@@ -82,7 +77,7 @@
     {% include 'partials/header.html' %}
     <div class="container">
     <p class="subtitle">Communicate. Collaborate. Build. </p>
-    <p>Create or join a cluster with people who have the skills you need.</p>
+    <p>Create or join a Cluster with people who have the skills you need.</p>
     
     
     <div class="cluster-explainer" style="padding: 1.5rem; background: #f9f9f9; border-radius: 8px; border-left: 4px solid green; margin: 2rem 0; font-family: Arial, sans-serif; line-height: 1.6;">
@@ -104,7 +99,7 @@
      "Clusters Hub lets your team find you, and hit the ground running."
     </blockquote>
     </div>
-<p>As we try to build a perfect platform that solves your problems, your input is impotant. Please report issues.
+<p>As we try to build a perfect platform that solves your problems, your input is impotant. Please report issues.</p>
     
     <form action="https://formsubmit.co/diamondkudzai70@gmail.com" method="POST" class="idea-form">
       <input type="text" name="name" placeholder="Your name (optional)">
@@ -112,10 +107,18 @@
       <textarea name="message" placeholder="Report issues" required></textarea>
       <button type="submit">Submit</button>
     </form>
-
+</div>
     <footer>
-      <p>© 2026 Clusters Hub </p>
+    <center>
+      <p>© 2026 Clusters Hub Lite</p>
+      </center>
     </footer>
-  </div>
+
 </body>
+<script>
+    if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register("{{ url_for('static', filename='sw.js') }}");
+    }
+</script>
+  
 </html>

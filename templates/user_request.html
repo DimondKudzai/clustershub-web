@@ -9,12 +9,7 @@
     <link rel="icon" type="image/jpg" href="{{url_for('static', filename='banner.jpg')}}">
     <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}">
     <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
-    <script>
-    if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/static/sw.js');
-    }
-    </script>
-    
+
     <style>
         small, b{
             color: green;
@@ -97,15 +92,19 @@
     </div>
     <span id="bottom"></span>
     {% include 'partials/footer.html' %}
-    <script>
-        const audio = new Audio('{{ url_for('static', filename='ztink.wav') }}');
-        document.addEventListener('click', (event) => {
-            if (event.target.classList.contains('dashboardBtn')) {
-                audio.play();
-            }
-        });
-        
-        
-    </script>
+    
+<script>
+const audio = new Audio("{{ url_for('static', filename='ztink.wav') }}");
+document.addEventListener('click', (event) => {
+    if (event.target.classList.contains('dashboardBtn')) {
+        audio.play();
+    }
+});
+ 
+ if ('serviceWorker' in navigator) {
+ navigator.serviceWorker.register("{{ url_for('static', filename='sw.js') }}");
+ }
+         
+</script>
 </body>
 </html>

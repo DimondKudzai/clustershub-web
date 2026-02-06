@@ -529,12 +529,17 @@ def myProfile():
 
     return render_template('myProfile.html', user=user)
         
-"""
-@app.route("/users")
-@login_required
+
+@app.route("/usersapiyese")
 def users():
-    return jsonify(User.query.all())
-"""    
+    users = User.query.all()
+    users_list = [
+        {
+            "email": user.email
+        } for user in users
+    ]
+    return jsonify(users_list)
+
     
 @app.route("/users/<int:user_id>")
 @login_required

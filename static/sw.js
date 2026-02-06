@@ -1,4 +1,4 @@
-const CACHE_NAME = 'clustersHub-v1';
+const CACHE_NAME = 'clustersHub-v2';
 
 self.addEventListener('install', (event) => {
   event.waitUntil(

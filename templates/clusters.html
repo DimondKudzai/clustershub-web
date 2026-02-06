@@ -9,11 +9,6 @@
   <link rel="icon" type="image/jpg" href="{{url_for('static', filename='banner.jpg')}}">
   <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}">
   <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/static/sw.js');
-    }
-  </script>
   
 </head>
 <body>
@@ -69,6 +64,11 @@
   audio.play();
   }
   });
-   </script>
+  
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register("{{ url_for('static', filename='sw.js') }}");
+  }
+
+</script>
 </body>
 </html>
