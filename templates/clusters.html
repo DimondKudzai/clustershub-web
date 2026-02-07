@@ -65,10 +65,7 @@
   }
   });
   
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register("{{ url_for('static', filename='sw.js') }}");
-  }
-
 </script>
+<script type="text/javascript" src="{{url_for('static', filename='main.js')}}"></script>
 </body>
 </html>

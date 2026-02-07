@@ -1,4 +1,4 @@
-const CACHE_NAME = 'clustersHub-v2';
+const CACHE_NAME = 'clustersHub-v1';
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -18,8 +18,16 @@ self.addEventListener('install', (event) => {
         '/forgot',
         '/myProfile',
         '/terms',
-        '/login'
+        '/login',
+        '/'
       ]))
       .catch((error) => console.error('Cache error:', error))
+  );
+});
+
+self.addEventListener('fetch', (event) => {
+  event.respondWith(
+    caches.match(event.request)
+      .then((response) => response || fetch(event.request))
   );
 });
