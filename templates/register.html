@@ -55,6 +55,7 @@
   <form id="registrationForm" action="{{ url_for('register') }}" method="POST">
     <!-- Step 1: Personal Details -->
     <div class="form-step active">
+    <h2>1/4</h2>
       <strong>Username</strong>
       <input type="text" name="username" placeholder="Preferred Username" required><br>
       <strong>Full Name</strong>
@@ -68,6 +69,7 @@
 
     <!-- Step 2: About and Skills -->
     <div class="form-step">
+    <h2>2/4</h2>
       <strong>About</strong>
       <textarea name="description" placeholder="About you" required></textarea><br><br>
       <strong>Key Skills</strong>
@@ -83,6 +85,7 @@
 
     <!-- Step 3: Password Setup -->
     <div class="form-step">
+    <h2>3/4</h2>
       <strong>Password</strong>
       <input type="password" name="password" placeholder="Password" required><br>
       <strong>Confirm Password</strong>
