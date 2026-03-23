@@ -1,6 +1,6 @@
 import os
 
-class Configfff:
+class Configff:
     SQLALCHEMY_DATABASE_URI = 'sqlite:///clusters.db'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SECRET_KEY = os.getenv("SECRET_KEY", "2409")

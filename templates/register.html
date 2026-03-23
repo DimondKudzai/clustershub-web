@@ -8,6 +8,153 @@
   <title>Join Clusters Hub</title>
   <link rel="icon" type="image/jpg" href="{{url_for('static', filename='banner.jpg')}}">
   <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}">
+  <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+  <style>
+    .form-step {
+      display: none;
+    }
+    .form-step.active {
+      display: block;
+    }
+    .prevBtn {
+    margin-left: 10px;
+    }
+  </style>
+</head>
+<body>
+
+{% include 'partials/header.html' %}
+
+<center>
+  <img src="{{url_for('static', filename='banner.jpg')}}" style="width: 100%;border-radius: 10px;">
+</center>
+
+<div class="hero" style="background: url('{{url_for('static', filename='')}}') center/cover no-repeat; border-radius: 10px; font: weight: 400; padding: 15px;">
+  <h3 style="purple">
+    Where ideas and teams meet, <a href="{{ url_for('about') }}"><u>Learn more</u></a>
+  </h3>
+  <p style="padding: 15px;">
+    Already have an account?
+    <a href="{{ url_for('login') }}"><strong>Login</strong></a>
+  </p>
+</div>
+
+<br>
+
+<center>
+  {% if notice %}
+    <section style="color: red; border: 1px solid red">
+      <i>{{ notice }}</i>
+    </section>
+  {% endif %}
+</center>
+<br>
+
+<section class="create-cluster">
+  <h2>Create Account</h2>
+  <form id="registrationForm" action="{{ url_for('register') }}" method="POST">
+    <!-- Step 1: Personal Details -->
+    <div class="form-step active">
+      <strong>Username</strong>
+      <input type="text" name="username" placeholder="Preferred Username" required><br>
+      <strong>Full Name</strong>
+      <input type="text" name="full_name" placeholder="Full Name" required><br>
+      <strong>Email</strong>
+      <input type="email" name="email" placeholder="Email" required><br>
+      <strong>Location</strong>
+      <input type="text" name="location" placeholder="Location" required><br><br>
+      <button type="button" class="nextBtn" onclick="nextStep(1)">⏩ Next</button>
+    </div>
+
+    <!-- Step 2: About and Skills -->
+    <div class="form-step">
+      <strong>About</strong>
+      <textarea name="description" placeholder="About you" required></textarea><br><br>
+      <strong>Key Skills</strong>
+      <div class="tag-input-container">
+        <ul id="tag-list"></ul>
+        <input type="text" id="tag-input" placeholder="Add up to 3 skills you offer" autocomplete="off" />
+        <input type="hidden" name="skills" id="skills-input" />
+        <ul id="suggestions"></ul>
+      </div><br><br>
+      <button type="button" class="nextBtn" onclick="nextStep(2)">⏩ Next</button>
+      <button type="button" class="prevBtn" onclick="prevStep(2)">⏪ Previous</button>
+    </div>
+
+    <!-- Step 3: Password Setup -->
+    <div class="form-step">
+      <strong>Password</strong>
+      <input type="password" name="password" placeholder="Password" required><br>
+      <strong>Confirm Password</strong>
+      <input type="password" name="confirm_password" placeholder="Confirm Password" required><br>
+      <strong>Password Hint <small>(future password recovery)</small></strong>
+      <input type="text/number" name="password_recovery" placeholder="Password Hint must be secure" required><br><br>
+      <button type="button" class="nextBtn" onclick="nextStep(3)">⏩ Next</button>
+      <button type="button" class="prevBtn" onclick="prevStep(3)">⏪ Previous</button>
+    </div>
+
+    <!-- Step 4: Terms and Submit -->
+    <div class="form-step">
+      <p>By clicking register, you confirm that you agree to our <a href="{{ url_for('terms') }}">Terms and Conditions</a>.</p>
+      <p>Make sure all fields are set👌.</p>
+      <button type="submit" class="submitBtn" style="background-color: blue">Register</button>
+      <button type="button" class="prevBtn" onclick="prevStep(4)">⏪ Previous</button>
+    </div>
+  </form>
+</section>
+
+{% include 'partials/footer.html' %}
+
+<script>
+  const availableTags = {{ suggested_skills | tojson }};
+  
+  let currentStep = 0;
+  
+  function showStep(step) {
+    const steps = document.querySelectorAll('.form-step');
+    steps.forEach((el, idx) => {
+      if (idx === step) {
+        el.classList.add('active');
+      } else {
+        el.classList.remove('active');
+      }
+    });
+  }
+
+  function nextStep(step) {
+    currentStep = step;
+    showStep(currentStep);
+  }
+
+  function prevStep(step) {
+    currentStep = step - 2;
+    showStep(currentStep);
+  }
+
+  showStep(currentStep);
+</script>
+
+<script type="text/javascript" src="{{url_for('static', filename='createCluster.js')}}"></script>
+<script type="text/javascript" src="{{url_for('static', filename='main.js')}}"></script>
+
+</body>
+</html>
+
+
+
+
+
+
+<!--<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="keywords" content="Welcome, Register, Free Account" />
+  <meta name="description" content="Welcome, Join Clusters Hub now " />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Join Clusters Hub</title>
+  <link rel="icon" type="image/jpg" href="{{url_for('static', filename='banner.jpg')}}">
+  <link rel="stylesheet" href="{{url_for('static', filename='createCluster.css')}}">
 <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
 </head>
 <body>
@@ -100,3 +247,4 @@ const availableTags = {{ suggested_skills | tojson }};
 
 </body>
 </html>
+-->

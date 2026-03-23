@@ -204,7 +204,7 @@ height: 5rem;
 .bold_text{
 margin-top: +40px;
 }
-.dashboardBtn{
+.dashboardBtn, .nextBtn, .prevBtn, .submitBtn{
 background-color: green;
 color: white;
 border: 0px solid green;
